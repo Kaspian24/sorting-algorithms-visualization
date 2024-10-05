@@ -1,6 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { app, BrowserWindow, ipcMain, session, shell } from 'electron'
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-installer'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+
 import icon from '../../resources/icon.png?asset'
 
 function createWindow(): void {
@@ -13,8 +17,8 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+    },
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -72,3 +76,16 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+app.whenReady().then(() => {
+  !is.dev
+    ? () => null
+    : installExtension(REACT_DEVELOPER_TOOLS)
+        .then((name) => {
+          console.log(`Added Extension:  ${name}`)
+          session.defaultSession.getAllExtensions().map((e) => {
+            session.defaultSession.loadExtension(e.path)
+          })
+        })
+        .catch((err) => console.log('An error occurred: ', err))
+})
