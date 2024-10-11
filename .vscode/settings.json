@@ -18,8 +18,17 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.format": "explicit"
   },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+  "tailwindCSS.classAttributes": [
+    "class",
+    ".*className*",
+    "classNames",
+    "ngClass"
   ]
 }
