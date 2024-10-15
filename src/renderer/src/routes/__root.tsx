@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import PageContent from '@renderer/components/PageContent/PageContent'
 import { ThemeProvider } from '@renderer/components/ThemeProvider/ThemeProvider'
-import { ModeToggle } from '@renderer/components/ModeToggle/ModeToggle'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === 'production'
@@ -14,27 +14,15 @@ const TanStackRouterDevtools =
 
 export const Route = createRootRoute({
   component: () => (
-    <>
+    <div className="flex min-h-screen flex-col font-sans">
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <header className="flex h-12 items-center border-b">
-          <div className="flex gap-2 p-2">
-            <Link to="/" className="[&.active]:font-bold">
-              Home
-            </Link>{' '}
-            <Link to="/about" className="[&.active]:font-bold">
-              About
-            </Link>
-          </div>
-          <ModeToggle />
-        </header>
-        <main className="flex grow flex-col">
+        <PageContent>
           <Outlet />
-        </main>
-        <footer className="flex h-16 border-t"></footer>
+        </PageContent>
       </ThemeProvider>
       <Suspense>
-        <TanStackRouterDevtools />
+        <TanStackRouterDevtools position="top-right" />
       </Suspense>
-    </>
+    </div>
   ),
 })

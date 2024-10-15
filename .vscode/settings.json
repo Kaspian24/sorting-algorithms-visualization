@@ -30,5 +30,6 @@
     ".*className*",
     "classNames",
     "ngClass"
-  ]
+  ],
+  "typescript.preferences.autoImportFileExcludePatterns": ["@radix-ui"]
 }
