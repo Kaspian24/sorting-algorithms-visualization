@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.marcin.sorting-algorithms-visualization
 productName: sorting-algorithms-visualization
 directories:
   buildResources: build
@@ -13,6 +13,10 @@ asarUnpack:
   - resources/**
 win:
   executableName: sorting-algorithms-visualization
+  target:
+    - zip
+    - portable
+    - nsis
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -20,22 +24,29 @@ nsis:
   createDesktopShortcut: always
 mac:
   entitlementsInherit: build/entitlements.mac.plist
-  extendInfo:
-    - NSCameraUsageDescription: Application requests access to the device's camera.
-    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
-    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
-    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
+  target:
+    - zip
+#    - dmg # it should work when run on mac
+#    - pkg # it should work when run on mac
 dmg:
+  artifactName: ${name}-${version}.${ext}
+pkg:
   artifactName: ${name}-${version}.${ext}
 linux:
   target:
-    - dir
-  maintainer: electronjs.org
-  category: Utility
-appImage:
+    - tar.gz
+    - flatpak
+    - deb
+  maintainer: Marcin
+  category: Education
   artifactName: ${name}-${version}.${ext}
+flatpak:
+  useWaylandFlags: true
+  runtimeVersion: 24.08
+  baseVersion: 24.08
 npmRebuild: false
 publish:
   provider: generic
-  url: https://example.com/auto-updates
+  publishAutoUpdate: false
+  url: https://github.com/Kaspian24/sorting-algorithms-visualization
