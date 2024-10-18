@@ -1,20 +1,17 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
 import { ChartConfig } from '@renderer/components/ui/Chart'
-import {
-  ChartDataField,
-  COMPARE_ACTION,
-  SortingAlgorithm,
-} from '@renderer/types/types'
+import { COMPARE_ACTION, SortingAlgorithm } from '@renderer/types/types'
 import { LabelProps } from 'recharts'
 
-export default function useChartCard(
-  defaultChartData: ChartDataField[],
-  sortingAlgorithm: SortingAlgorithm,
-) {
+export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   const [maxCompareActionCounter, setMaxCompareActionsCounter] = useState(0)
   const [maxHighlightCounter, setMaxHighlightCounter] = useState(0)
-  const { addControlData, removeControlData } = useChartControl()
+  const {
+    addControlData,
+    removeControlData,
+    compareActionCounterRef: globalCompareActionCounterRef,
+  } = useChartControl()
   const {
     sortFunction,
     chartDataRef,
@@ -22,7 +19,7 @@ export default function useChartCard(
     highlightCounterRef,
     compareActionRef,
     reset,
-  } = sortingAlgorithm(defaultChartData)
+  } = sortingAlgorithm()
 
   const chartConfig = {
     default: {
@@ -119,6 +116,13 @@ export default function useChartCard(
     setMaxHighlightCounter(highlightCounterRef.current)
     reset()
 
+    while (
+      compareActionCounterRef.current < globalCompareActionCounterRef.current &&
+      compareActionRef.current !== COMPARE_ACTION.FINISHED
+    ) {
+      sortFunction()
+    }
+
     const instance = {
       sortFunction,
       compareActionCounterRef,
@@ -136,6 +140,7 @@ export default function useChartCard(
     addControlData,
     compareActionCounterRef,
     compareActionRef,
+    globalCompareActionCounterRef,
     highlightCounterRef,
     maxCompareActionCounter,
     removeControlData,

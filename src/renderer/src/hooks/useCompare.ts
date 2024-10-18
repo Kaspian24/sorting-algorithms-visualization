@@ -13,7 +13,8 @@ interface CompareParams {
   compareAction: CompareAction
 }
 
-export default function useCompare(defaultChartData: ChartDataField[]) {
+export default function useCompare() {
+  const { defaultChartData, directionForwardRef } = useChartControl()
   const chartDataRef = useRef(defaultChartData)
   const highlightCounterRef = useRef(0)
   const compareActionCounterRef = useRef(0)
@@ -31,10 +32,13 @@ export default function useCompare(defaultChartData: ChartDataField[]) {
         highlightCounterRef.current += 1
       }
 
-      const className =
-        compareAction === COMPARE_ACTION.ANIMATE_SWAP
-          ? 'transition-transform'
-          : ''
+      const transitionProperty =
+        (compareAction === COMPARE_ACTION.ANIMATE_SWAP &&
+          directionForwardRef.current === true) ||
+        (compareAction === COMPARE_ACTION.MATCH &&
+          directionForwardRef.current === false)
+          ? 'transform'
+          : 'none'
 
       const colorFirst =
         compareAction === COMPARE_ACTION.MATCH ||
@@ -48,15 +52,9 @@ export default function useCompare(defaultChartData: ChartDataField[]) {
           ? 'var(--color-swap)'
           : 'var(--color-second)'
 
-      const transitionDuration =
-        compareAction === COMPARE_ACTION.ANIMATE_SWAP
-          ? `${durationRef.current}ms`
-          : ''
-
       const newChartData = chartData.map((data, index) => {
         return {
           ...data,
-          className,
           fill:
             compareAction === COMPARE_ACTION.FINISHED
               ? 'var(--color-finished)'
@@ -67,7 +65,8 @@ export default function useCompare(defaultChartData: ChartDataField[]) {
                   : 'var(--color-default)',
           style: {
             ...data.style,
-            transitionDuration,
+            transitionProperty,
+            transitionDuration: `${durationRef.current}ms`,
             transform:
               compareAction === COMPARE_ACTION.ANIMATE_SWAP
                 ? index === first
@@ -88,7 +87,7 @@ export default function useCompare(defaultChartData: ChartDataField[]) {
       chartDataRef.current = newChartData
       setChartData(newChartData)
     },
-    [durationRef],
+    [directionForwardRef, durationRef],
   )
 
   const reset = useCallback(() => {

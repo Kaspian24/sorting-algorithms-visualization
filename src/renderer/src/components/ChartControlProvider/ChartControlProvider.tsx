@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useRef, useState } from 'react'
-import { CompareAction } from '@renderer/types/types'
+import { ChartDataField, CompareAction } from '@renderer/types/types'
 
 interface ControlData {
   sortFunction: () => void
@@ -16,6 +16,9 @@ interface ChartControlContextType {
   durationRef: React.MutableRefObject<number>
   compareActionCounterRef: React.MutableRefObject<number>
   maxCompareActionCounterRef: React.MutableRefObject<number>
+  defaultChartData: ChartDataField[]
+  setDefaultChartData: React.Dispatch<React.SetStateAction<ChartDataField[]>>
+  directionForwardRef: React.MutableRefObject<boolean>
 }
 
 const ChartControlContext = createContext<ChartControlContextType | undefined>(
@@ -26,13 +29,34 @@ interface ChartControlProviderProps {
   children: ReactNode
 }
 
+function generateStarterDefaultChartData(): ChartDataField[] {
+  const numbers = [
+    275, 200, 187, 173, 90, 90, 1, 2, 3, 10, 11, 12, 13, 14, 15, 20, 25, 30,
+  ]
+
+  return numbers.map((number) => ({
+    number: number,
+    fill: 'var(--color-default)',
+    className: '',
+    style: {
+      transform: 'translateX(0)',
+      transitionDuration: '250ms',
+      transitionProperty: 'transform',
+    },
+  }))
+}
+
 export function ChartControlProvider({ children }: ChartControlProviderProps) {
   const controlData = useRef<ControlData[]>([])
   const durationRef = useRef<number>(250)
   const compareActionCounterRef = useRef<number>(0)
   const maxCompareActionCounterRef = useRef<number>(0)
+  const directionForwardRef = useRef<boolean>(true)
 
   const [, setMaxCompareActionCounter] = useState<number>(0)
+  const [defaultChartData, setDefaultChartData] = useState<ChartDataField[]>(
+    generateStarterDefaultChartData(),
+  )
 
   const value: ChartControlContextType = {
     controlData,
@@ -57,6 +81,9 @@ export function ChartControlProvider({ children }: ChartControlProviderProps) {
     durationRef,
     compareActionCounterRef,
     maxCompareActionCounterRef,
+    defaultChartData,
+    setDefaultChartData,
+    directionForwardRef,
   }
 
   return (

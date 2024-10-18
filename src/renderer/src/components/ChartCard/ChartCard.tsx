@@ -7,24 +7,15 @@ import {
 } from '@renderer/components/ui/Card'
 import { ChartContainer } from '@renderer/components/ui/Chart'
 import useChartCard from '@renderer/hooks/useChartCard'
-import {
-  ChartDataField,
-  COMPARE_ACTION,
-  SortingAlgorithm,
-} from '@renderer/types/types'
+import { COMPARE_ACTION, SortingAlgorithm } from '@renderer/types/types'
 import { Bar, BarChart, LabelList } from 'recharts'
 
 export interface ChartCardProps {
   title: string
-  defaultChartData: ChartDataField[]
   sortingAlgorithm: SortingAlgorithm
 }
 
-export default function ChartCard({
-  title,
-  defaultChartData,
-  sortingAlgorithm,
-}: ChartCardProps) {
+export default function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
   const {
     chartConfig,
     renderCustomizedLabel,
@@ -34,7 +25,7 @@ export default function ChartCard({
     maxCompareActionCounter,
     maxHighlightCounter,
     compareActionRef,
-  } = useChartCard(defaultChartData, sortingAlgorithm)
+  } = useChartCard(sortingAlgorithm)
 
   return (
     <Card>

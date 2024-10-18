@@ -9,6 +9,7 @@ export default function ChartControls() {
     durationRef,
     compareActionCounterRef,
     maxCompareActionCounterRef,
+    directionForwardRef,
   } = useChartControl()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
@@ -41,6 +42,7 @@ export default function ChartControls() {
   }
 
   function handleStart() {
+    directionForwardRef.current = true
     handleStop()
     isRunningRef.current = true
     sortAll()
@@ -66,6 +68,7 @@ export default function ChartControls() {
   }
 
   function handleNext() {
+    directionForwardRef.current = true
     handleStop()
     sortAll()
   }
@@ -76,7 +79,10 @@ export default function ChartControls() {
   }
 
   function handleSetStep(step: number) {
-    handleReset()
+    directionForwardRef.current = compareActionCounterRef.current < step
+    if (!directionForwardRef.current) {
+      handleReset()
+    }
     while (compareActionCounterRef.current < step) {
       const areAllSorted = sortAll()
       if (areAllSorted) {

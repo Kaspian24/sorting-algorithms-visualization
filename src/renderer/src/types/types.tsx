@@ -11,7 +11,7 @@ export const COMPARE_ACTION = {
 export type CompareAction = (typeof COMPARE_ACTION)[keyof typeof COMPARE_ACTION]
 
 export interface UseSort {
-  (defaultChartData: ChartDataField[]): {
+  (): {
     sortFunction: () => void
     chartDataRef: React.MutableRefObject<ChartDataField[]>
     compareActionCounterRef: React.MutableRefObject<number>
@@ -34,5 +34,7 @@ export interface ChartDataField {
   className: string
   style: {
     transform: string
+    transitionDuration: string
+    transitionProperty: string
   }
 }

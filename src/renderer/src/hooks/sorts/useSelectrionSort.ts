@@ -1,15 +1,8 @@
 import { useCallback, useRef } from 'react'
 import useCompare from '@renderer/hooks/useCompare'
-import {
-  ChartDataField,
-  COMPARE_ACTION,
-  CompareAction,
-  UseSort,
-} from '@renderer/types/types'
+import { COMPARE_ACTION, CompareAction, UseSort } from '@renderer/types/types'
 
-export const useSelectionSort: UseSort = (
-  defaultChartData: ChartDataField[],
-) => {
+export const useSelectionSort: UseSort = () => {
   const {
     highlight,
     match,
@@ -20,7 +13,7 @@ export const useSelectionSort: UseSort = (
     compareActionCounterRef,
     highlightCounterRef,
     reset,
-  } = useCompare(defaultChartData)
+  } = useCompare()
 
   const iRef = useRef(0)
   const jRef = useRef(1)
