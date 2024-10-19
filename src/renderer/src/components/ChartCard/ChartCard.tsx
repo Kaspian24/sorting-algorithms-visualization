@@ -1,3 +1,4 @@
+import { ChartStateProvider } from '@renderer/components/ChartStateProvider/ChartStateProvider'
 import {
   Card,
   CardContent,
@@ -15,7 +16,7 @@ export interface ChartCardProps {
   sortingAlgorithm: SortingAlgorithm
 }
 
-export default function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
+function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
   const {
     chartConfig,
     renderCustomizedLabel,
@@ -68,3 +69,13 @@ export default function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
     </Card>
   )
 }
+
+function ChartCardWrapper({ title, sortingAlgorithm }: ChartCardProps) {
+  return (
+    <ChartStateProvider>
+      <ChartCard title={title} sortingAlgorithm={sortingAlgorithm} />
+    </ChartStateProvider>
+  )
+}
+
+export { ChartCardWrapper as ChartCard }

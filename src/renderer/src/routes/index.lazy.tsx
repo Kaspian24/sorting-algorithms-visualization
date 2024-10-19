@@ -1,4 +1,4 @@
-import ChartCard from '@renderer/components/ChartCard/ChartCard'
+import { ChartCard } from '@renderer/components/ChartCard/ChartCard'
 import { SORTING_ALGORITHM } from '@renderer/types/types'
 import { createLazyFileRoute } from '@tanstack/react-router'
 

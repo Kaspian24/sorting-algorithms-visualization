@@ -1,95 +1,17 @@
-import { useRef, useState } from 'react'
-import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
 import { Button } from '@renderer/components/ui/Button'
-import { COMPARE_ACTION } from '@renderer/types/types'
+import useChartControls from '@renderer/hooks/useChartControls'
 
 export default function ChartControls() {
   const {
-    controlData,
-    durationRef,
+    handleStart,
+    handleStop,
+    handleNext,
+    handleReset,
+    handleSetStep,
+    handleDurationChange,
     compareActionCounterRef,
     maxCompareActionCounterRef,
-    directionForwardRef,
-  } = useChartControl()
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const isRunningRef = useRef(false)
-
-  const [, setCompareActionCounter] = useState(0) // trigger re-render
-
-  /** returns `areAllSorted` */
-  function sortAll() {
-    let areAllSorted = true
-    controlData.current.forEach((data) => {
-      data.sortFunction()
-      if (data.compareActionRef.current !== COMPARE_ACTION.FINISHED) {
-        areAllSorted = false
-      }
-    })
-    compareActionCounterRef.current += 1
-    if (areAllSorted) {
-      compareActionCounterRef.current = maxCompareActionCounterRef.current
-    }
-    setCompareActionCounter(compareActionCounterRef.current)
-    return areAllSorted
-  }
-
-  function resetAll() {
-    compareActionCounterRef.current = 0
-    setCompareActionCounter(compareActionCounterRef.current)
-    controlData.current.forEach((data) => {
-      data.reset()
-    })
-  }
-
-  function handleStart() {
-    directionForwardRef.current = true
-    handleStop()
-    isRunningRef.current = true
-    sortAll()
-    continueSort()
-  }
-
-  function continueSort() {
-    intervalRef.current = setTimeout(() => {
-      isRunningRef.current = true
-      const areAllSorted = sortAll()
-      if (areAllSorted) {
-        handleStop()
-      }
-      continueSort()
-    }, durationRef.current)
-  }
-
-  function handleStop() {
-    if (intervalRef.current) {
-      isRunningRef.current = false
-      clearTimeout(intervalRef.current)
-    }
-  }
-
-  function handleNext() {
-    directionForwardRef.current = true
-    handleStop()
-    sortAll()
-  }
-
-  function handleReset() {
-    handleStop()
-    resetAll()
-  }
-
-  function handleSetStep(step: number) {
-    directionForwardRef.current = compareActionCounterRef.current < step
-    if (!directionForwardRef.current) {
-      handleReset()
-    }
-    while (compareActionCounterRef.current < step) {
-      const areAllSorted = sortAll()
-      if (areAllSorted) {
-        break
-      }
-    }
-  }
+  } = useChartControls()
 
   return (
     <>
@@ -106,28 +28,8 @@ export default function ChartControls() {
       <Button onClick={handleNext}>next</Button>
       <Button onClick={handleReset}>reset</Button>
       <Button onClick={() => handleSetStep(150)}>set step</Button>
-      <Button
-        onClick={() => {
-          durationRef.current = 250
-          if (isRunningRef.current) {
-            handleStop()
-            continueSort()
-          }
-        }}
-      >
-        speedUp
-      </Button>
-      <Button
-        onClick={() => {
-          durationRef.current = 2000
-          if (isRunningRef.current) {
-            handleStop()
-            continueSort()
-          }
-        }}
-      >
-        speedDown
-      </Button>
+      <Button onClick={() => handleDurationChange(250)}>speedUp</Button>
+      <Button onClick={() => handleDurationChange(1000)}>speedDown</Button>
     </>
   )
 }
