@@ -1,21 +1,24 @@
 import { createContext, ReactNode, useContext, useRef, useState } from 'react'
 import { ChartDataField, CompareAction } from '@renderer/types/types'
 
-interface ControlData {
+export interface ControlData {
   sortFunction: () => void
-  compareActionCounterRef: React.MutableRefObject<number>
-  compareActionRef: React.MutableRefObject<CompareAction>
   reset: () => void
-  maxCompareActionCounter: number
+  maxCompareActionCounterRef: React.MutableRefObject<number>
+  maxHighlightCounterRef: React.MutableRefObject<number>
+  chartDataRef: React.MutableRefObject<ChartDataField[]>
+  compareActionCounterRef: React.MutableRefObject<number>
+  highlightCounterRef: React.MutableRefObject<number>
+  compareActionRef: React.MutableRefObject<CompareAction>
 }
 
 interface ChartControlContextType {
-  controlData: React.MutableRefObject<ControlData[]>
-  addControlData: (addedData: ControlData) => void
-  removeControlData: (removedData: ControlData) => void
+  controlData: React.MutableRefObject<React.MutableRefObject<ControlData>[]>
+  addControlData: (addedData: React.MutableRefObject<ControlData>) => void
+  removeControlData: (removedData: React.MutableRefObject<ControlData>) => void
   durationRef: React.MutableRefObject<number>
-  compareActionCounterRef: React.MutableRefObject<number>
-  maxCompareActionCounterRef: React.MutableRefObject<number>
+  globalCompareActionCounterRef: React.MutableRefObject<number>
+  globalMaxCompareActionCounterRef: React.MutableRefObject<number>
   defaultChartData: ChartDataField[]
   setDefaultChartData: React.Dispatch<React.SetStateAction<ChartDataField[]>>
   directionForwardRef: React.MutableRefObject<boolean>
@@ -47,10 +50,10 @@ function generateStarterDefaultChartData(): ChartDataField[] {
 }
 
 export function ChartControlProvider({ children }: ChartControlProviderProps) {
-  const controlData = useRef<ControlData[]>([])
+  const controlData = useRef<React.MutableRefObject<ControlData>[]>([])
   const durationRef = useRef<number>(250)
-  const compareActionCounterRef = useRef<number>(0)
-  const maxCompareActionCounterRef = useRef<number>(0)
+  const globalCompareActionCounterRef = useRef<number>(0)
+  const globalMaxCompareActionCounterRef = useRef<number>(0)
   const directionForwardRef = useRef<boolean>(true)
 
   const [, setMaxCompareActionCounter] = useState<number>(0)
@@ -62,25 +65,26 @@ export function ChartControlProvider({ children }: ChartControlProviderProps) {
     controlData,
     addControlData: (addedData) => {
       controlData.current.push(addedData)
-      maxCompareActionCounterRef.current = Math.max(
-        maxCompareActionCounterRef.current,
-        addedData.maxCompareActionCounter,
+      globalMaxCompareActionCounterRef.current = Math.max(
+        globalMaxCompareActionCounterRef.current,
+        addedData.current.maxCompareActionCounterRef.current,
       )
-      setMaxCompareActionCounter(maxCompareActionCounterRef.current)
+      setMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
     },
     removeControlData: (removedData) => {
       controlData.current = controlData.current.filter(
         (data) => data !== removedData,
       )
-      maxCompareActionCounterRef.current = controlData.current.reduce(
-        (acc, data) => Math.max(acc, data.maxCompareActionCounter),
+      globalMaxCompareActionCounterRef.current = controlData.current.reduce(
+        (acc, data) =>
+          Math.max(acc, data.current.maxCompareActionCounterRef.current),
         0,
       )
-      setMaxCompareActionCounter(maxCompareActionCounterRef.current)
+      setMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
     },
     durationRef,
-    compareActionCounterRef,
-    maxCompareActionCounterRef,
+    globalCompareActionCounterRef,
+    globalMaxCompareActionCounterRef,
     defaultChartData,
     setDefaultChartData,
     directionForwardRef,

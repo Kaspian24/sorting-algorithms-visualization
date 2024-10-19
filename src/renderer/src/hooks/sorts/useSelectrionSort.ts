@@ -4,12 +4,7 @@ import useCompare from '@renderer/hooks/useCompare'
 import { COMPARE_ACTION, UseSort } from '@renderer/types/types'
 
 export const useSelectionSort: UseSort = () => {
-  const {
-    chartDataRef,
-    compareActionCounterRef,
-    highlightCounterRef,
-    compareActionRef,
-  } = useChartState()
+  const { chartDataRef, compareActionRef } = useChartState()
   const { highlight, match, animateSwap, swap, finish, reset } = useCompare()
 
   const iRef = useRef(0)
@@ -87,9 +82,5 @@ export const useSelectionSort: UseSort = () => {
   return {
     sortFunction: selectionSort,
     reset: selectionSortReset,
-    chartDataRef,
-    compareActionCounterRef,
-    highlightCounterRef,
-    compareActionRef,
   }
 }

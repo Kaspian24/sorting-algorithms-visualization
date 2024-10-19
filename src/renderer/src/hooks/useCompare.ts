@@ -190,8 +190,5 @@ export default function useCompare() {
     swap,
     finish,
     reset,
-    chartDataRef,
-    highlightCounterRef,
-    compareActionCounterRef,
   }
 }

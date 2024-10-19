@@ -1,5 +1,9 @@
-import { useEffect, useState } from 'react'
-import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
+import { useEffect, useRef } from 'react'
+import {
+  ControlData,
+  useChartControl,
+} from '@renderer/components/ChartControlProvider/ChartControlProvider'
+import { useChartState } from '@renderer/components/ChartStateProvider/ChartStateProvider'
 import { ChartConfig } from '@renderer/components/ui/Chart'
 import { COMPARE_ACTION, SortingAlgorithm } from '@renderer/types/types'
 import { LabelProps } from 'recharts'
@@ -79,28 +83,35 @@ function renderCustomizedLabel({
 }
 
 export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
-  const [maxCompareActionCounter, setMaxCompareActionsCounter] = useState(0)
-  const [maxHighlightCounter, setMaxHighlightCounter] = useState(0)
+  const { addControlData, removeControlData, globalCompareActionCounterRef } =
+    useChartControl()
+  const { sortFunction, reset } = sortingAlgorithm()
   const {
-    addControlData,
-    removeControlData,
-    compareActionCounterRef: globalCompareActionCounterRef,
-  } = useChartControl()
-  const {
-    sortFunction,
-    reset,
     chartDataRef,
+    compareActionRef,
     compareActionCounterRef,
     highlightCounterRef,
+    maxCompareActionCounterRef,
+    maxHighlightCounterRef,
+  } = useChartState()
+
+  const controlData = useRef<ControlData>({
+    sortFunction,
+    reset,
+    maxCompareActionCounterRef,
+    maxHighlightCounterRef,
+    chartDataRef,
     compareActionRef,
-  } = sortingAlgorithm()
+    compareActionCounterRef,
+    highlightCounterRef,
+  })
 
   useEffect(() => {
     while (compareActionRef.current !== COMPARE_ACTION.FINISHED) {
       sortFunction()
     }
-    setMaxCompareActionsCounter(compareActionCounterRef.current)
-    setMaxHighlightCounter(highlightCounterRef.current)
+    maxCompareActionCounterRef.current = compareActionCounterRef.current
+    maxHighlightCounterRef.current = highlightCounterRef.current
     reset()
 
     while (
@@ -110,18 +121,10 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
       sortFunction()
     }
 
-    const instance = {
-      sortFunction,
-      compareActionCounterRef,
-      compareActionRef,
-      reset,
-      maxCompareActionCounter,
-    }
-
-    addControlData(instance)
+    addControlData(controlData)
 
     return () => {
-      removeControlData(instance)
+      removeControlData(controlData)
     }
   }, [
     addControlData,
@@ -129,7 +132,8 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     compareActionRef,
     globalCompareActionCounterRef,
     highlightCounterRef,
-    maxCompareActionCounter,
+    maxCompareActionCounterRef,
+    maxHighlightCounterRef,
     removeControlData,
     reset,
     sortFunction,
@@ -139,12 +143,6 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     renderCustomizedLabel,
     sortFunction,
     reset,
-    chartDataRef,
-    compareActionCounterRef,
-    highlightCounterRef,
-    compareActionRef,
-    maxCompareActionCounter,
-    maxHighlightCounter,
     chartConfig,
   }
 }

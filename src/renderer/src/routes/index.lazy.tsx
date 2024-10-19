@@ -25,10 +25,6 @@ function Index() {
         title="selection sort"
         sortingAlgorithm={SORTING_ALGORITHM.SELECTION_SORT}
       />
-      <ChartCard
-        title="selection sort"
-        sortingAlgorithm={SORTING_ALGORITHM.SELECTION_SORT}
-      />
     </div>
   )
 }

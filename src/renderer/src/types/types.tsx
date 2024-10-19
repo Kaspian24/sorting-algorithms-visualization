@@ -13,10 +13,6 @@ export type CompareAction = (typeof COMPARE_ACTION)[keyof typeof COMPARE_ACTION]
 export interface UseSort {
   (): {
     sortFunction: () => void
-    chartDataRef: React.MutableRefObject<ChartDataField[]>
-    compareActionCounterRef: React.MutableRefObject<number>
-    highlightCounterRef: React.MutableRefObject<number>
-    compareActionRef: React.MutableRefObject<CompareAction>
     reset: () => void
   }
 }

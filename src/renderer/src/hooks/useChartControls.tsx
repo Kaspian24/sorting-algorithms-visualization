@@ -6,8 +6,8 @@ export default function useChartControls() {
   const {
     controlData,
     durationRef,
-    compareActionCounterRef,
-    maxCompareActionCounterRef,
+    globalCompareActionCounterRef,
+    globalMaxCompareActionCounterRef,
     directionForwardRef,
   } = useChartControl()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
@@ -19,24 +19,25 @@ export default function useChartControls() {
   function sortAll() {
     let areAllSorted = true
     controlData.current.forEach((data) => {
-      data.sortFunction()
-      if (data.compareActionRef.current !== COMPARE_ACTION.FINISHED) {
+      data.current.sortFunction()
+      if (data.current.compareActionRef.current !== COMPARE_ACTION.FINISHED) {
         areAllSorted = false
       }
     })
-    compareActionCounterRef.current += 1
+    globalCompareActionCounterRef.current += 1
     if (areAllSorted) {
-      compareActionCounterRef.current = maxCompareActionCounterRef.current
+      globalCompareActionCounterRef.current =
+        globalMaxCompareActionCounterRef.current
     }
-    setCompareActionCounter(compareActionCounterRef.current)
+    setCompareActionCounter(globalCompareActionCounterRef.current)
     return areAllSorted
   }
 
   function resetAll() {
-    compareActionCounterRef.current = 0
-    setCompareActionCounter(compareActionCounterRef.current)
+    globalCompareActionCounterRef.current = 0
+    setCompareActionCounter(globalCompareActionCounterRef.current)
     controlData.current.forEach((data) => {
-      data.reset()
+      data.current.reset()
     })
   }
 
@@ -78,11 +79,11 @@ export default function useChartControls() {
   }
 
   function handleSetStep(step: number) {
-    directionForwardRef.current = compareActionCounterRef.current < step
+    directionForwardRef.current = globalCompareActionCounterRef.current < step
     if (!directionForwardRef.current) {
       handleReset()
     }
-    while (compareActionCounterRef.current < step) {
+    while (globalCompareActionCounterRef.current < step) {
       const areAllSorted = sortAll()
       if (areAllSorted) {
         break
@@ -105,7 +106,5 @@ export default function useChartControls() {
     handleReset,
     handleSetStep,
     handleDurationChange,
-    compareActionCounterRef,
-    maxCompareActionCounterRef,
   }
 }

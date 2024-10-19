@@ -1,7 +1,10 @@
+import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
 import { Button } from '@renderer/components/ui/Button'
 import useChartControls from '@renderer/hooks/useChartControls'
 
 export default function ChartControls() {
+  const { globalCompareActionCounterRef, globalMaxCompareActionCounterRef } =
+    useChartControl()
   const {
     handleStart,
     handleStop,
@@ -9,19 +12,18 @@ export default function ChartControls() {
     handleReset,
     handleSetStep,
     handleDurationChange,
-    compareActionCounterRef,
-    maxCompareActionCounterRef,
   } = useChartControls()
 
   return (
     <>
       <p>
-        {compareActionCounterRef.current}/{maxCompareActionCounterRef.current}
+        {globalCompareActionCounterRef.current}/
+        {globalMaxCompareActionCounterRef.current}
       </p>
       <Button onClick={handleStart}>start</Button>
       <Button onClick={handleStop}>stop</Button>
       <Button
-        onClick={() => handleSetStep(compareActionCounterRef.current - 1)}
+        onClick={() => handleSetStep(globalCompareActionCounterRef.current - 1)}
       >
         previous
       </Button>

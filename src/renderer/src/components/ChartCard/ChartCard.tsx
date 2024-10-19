@@ -1,4 +1,7 @@
-import { ChartStateProvider } from '@renderer/components/ChartStateProvider/ChartStateProvider'
+import {
+  ChartStateProvider,
+  useChartState,
+} from '@renderer/components/ChartStateProvider/ChartStateProvider'
 import {
   Card,
   CardContent,
@@ -17,16 +20,15 @@ export interface ChartCardProps {
 }
 
 function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
+  const { chartConfig, renderCustomizedLabel } = useChartCard(sortingAlgorithm)
   const {
-    chartConfig,
-    renderCustomizedLabel,
     chartDataRef,
     compareActionCounterRef,
     highlightCounterRef,
-    maxCompareActionCounter,
-    maxHighlightCounter,
+    maxCompareActionCounterRef,
+    maxHighlightCounterRef,
     compareActionRef,
-  } = useChartCard(sortingAlgorithm)
+  } = useChartState()
 
   return (
     <Card>
@@ -55,10 +57,10 @@ function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
       </CardContent>
       <CardFooter className="justify-center gap-4 border-t p-6">
         <p>
-          {compareActionCounterRef.current}/{maxCompareActionCounter}
+          {compareActionCounterRef.current}/{maxCompareActionCounterRef.current}
         </p>
         <p>
-          {highlightCounterRef.current}/{maxHighlightCounter}
+          {highlightCounterRef.current}/{maxHighlightCounterRef.current}
         </p>
         <p>
           {compareActionRef.current === COMPARE_ACTION.FINISHED
