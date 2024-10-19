@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react'
-import { useChartState } from '@renderer/components/ChartStateProvider/ChartStateProvider'
+import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import useCompare from '@renderer/hooks/useCompare'
 import { COMPARE_ACTION, UseSort } from '@renderer/types/types'
 

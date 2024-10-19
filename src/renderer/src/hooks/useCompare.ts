@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
-import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
-import { useChartState } from '@renderer/components/ChartStateProvider/ChartStateProvider'
+import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import {
   ChartDataField,
   COMPARE_ACTION,
@@ -80,8 +80,7 @@ function compareFunction({
 }
 
 export default function useCompare() {
-  const { defaultChartData, directionForwardRef, durationRef } =
-    useChartControl()
+  const { defaultChartData, directionForwardRef, durationRef } = useChartsInfo()
   const { chartDataRef, highlightCounterRef, compareActionCounterRef } =
     useChartState()
   const [, setChartData] = useState(defaultChartData) // trigger re-render

@@ -34,3 +34,14 @@ export interface ChartDataField {
     transitionProperty: string
   }
 }
+
+export interface ChartInfoData {
+  sortFunction: () => void
+  reset: () => void
+  maxCompareActionCounterRef: React.MutableRefObject<number>
+  maxHighlightCounterRef: React.MutableRefObject<number>
+  chartDataRef: React.MutableRefObject<ChartDataField[]>
+  compareActionCounterRef: React.MutableRefObject<number>
+  highlightCounterRef: React.MutableRefObject<number>
+  compareActionRef: React.MutableRefObject<CompareAction>
+}

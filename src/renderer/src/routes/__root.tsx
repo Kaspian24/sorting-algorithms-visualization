@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
-import { ChartControlProvider } from '@renderer/components/ChartControlProvider/ChartControlProvider'
 import ChartControls from '@renderer/components/ChartControls/ChartControls'
 import { ModeToggle } from '@renderer/components/ModeToggle/ModeToggle'
-import { ThemeProvider } from '@renderer/components/ThemeProvider/ThemeProvider'
+import { ChartsInfoProvider } from '@renderer/components/providers/ChartsInfoProvider'
+import { ThemeProvider } from '@renderer/components/providers/ThemeProvider'
 import { Button } from '@renderer/components/ui/Button'
 import { ScrollArea } from '@renderer/components/ui/ScrollArea'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
@@ -20,7 +20,7 @@ export const Route = createRootRoute({
   component: () => (
     <div className="flex min-h-screen flex-col font-sans">
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <ChartControlProvider>
+        <ChartsInfoProvider>
           <header className="flex h-12 items-center border-b">
             <ModeToggle />
             <Button onClick={() => location.reload()}>Reload</Button>
@@ -34,7 +34,7 @@ export const Route = createRootRoute({
             <ChartControls />
             <p>footer</p>
           </footer>
-        </ChartControlProvider>
+        </ChartsInfoProvider>
       </ThemeProvider>
       <Suspense>
         <TanStackRouterDevtools position="top-right" />

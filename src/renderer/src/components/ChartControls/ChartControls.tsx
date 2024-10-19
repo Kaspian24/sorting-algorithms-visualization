@@ -1,10 +1,10 @@
-import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
+import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
 import useChartControls from '@renderer/hooks/useChartControls'
 
 export default function ChartControls() {
   const { globalCompareActionCounterRef, globalMaxCompareActionCounterRef } =
-    useChartControl()
+    useChartsInfo()
   const {
     handleStart,
     handleStop,

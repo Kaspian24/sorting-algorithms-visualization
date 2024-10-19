@@ -1,7 +1,7 @@
 import {
   ChartStateProvider,
   useChartState,
-} from '@renderer/components/ChartStateProvider/ChartStateProvider'
+} from '@renderer/components/providers/ChartStateProvider'
 import {
   Card,
   CardContent,

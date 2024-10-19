@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react'
-import {
-  ControlData,
-  useChartControl,
-} from '@renderer/components/ChartControlProvider/ChartControlProvider'
-import { useChartState } from '@renderer/components/ChartStateProvider/ChartStateProvider'
+import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import { ChartConfig } from '@renderer/components/ui/Chart'
-import { COMPARE_ACTION, SortingAlgorithm } from '@renderer/types/types'
+import {
+  COMPARE_ACTION,
+  ChartInfoData,
+  SortingAlgorithm,
+} from '@renderer/types/types'
 import { LabelProps } from 'recharts'
 
 const chartConfig = {
@@ -83,8 +84,11 @@ function renderCustomizedLabel({
 }
 
 export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
-  const { addControlData, removeControlData, globalCompareActionCounterRef } =
-    useChartControl()
+  const {
+    addChartInfoData: addControlData,
+    removeChartInfoData: removeControlData,
+    globalCompareActionCounterRef,
+  } = useChartsInfo()
   const { sortFunction, reset } = sortingAlgorithm()
   const {
     chartDataRef,
@@ -95,7 +99,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     maxHighlightCounterRef,
   } = useChartState()
 
-  const controlData = useRef<ControlData>({
+  const controlData = useRef<ChartInfoData>({
     sortFunction,
     reset,
     maxCompareActionCounterRef,

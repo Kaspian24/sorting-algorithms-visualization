@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useRef } from 'react'
-import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
+import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import {
   ChartDataField,
   COMPARE_ACTION,
@@ -24,7 +24,7 @@ interface ChartStateProviderProps {
 }
 
 export function ChartStateProvider({ children }: ChartStateProviderProps) {
-  const { defaultChartData } = useChartControl()
+  const { defaultChartData } = useChartsInfo()
   const maxCompareActionCounterRef = useRef<number>(0)
   const maxHighlightCounterRef = useRef<number>(0)
   const chartDataRef = useRef<ChartDataField[]>(defaultChartData)

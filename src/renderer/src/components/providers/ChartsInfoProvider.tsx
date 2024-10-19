@@ -1,21 +1,12 @@
 import { createContext, ReactNode, useContext, useRef, useState } from 'react'
-import { ChartDataField, CompareAction } from '@renderer/types/types'
+import { ChartDataField, ChartInfoData } from '@renderer/types/types'
 
-export interface ControlData {
-  sortFunction: () => void
-  reset: () => void
-  maxCompareActionCounterRef: React.MutableRefObject<number>
-  maxHighlightCounterRef: React.MutableRefObject<number>
-  chartDataRef: React.MutableRefObject<ChartDataField[]>
-  compareActionCounterRef: React.MutableRefObject<number>
-  highlightCounterRef: React.MutableRefObject<number>
-  compareActionRef: React.MutableRefObject<CompareAction>
-}
-
-interface ChartControlContextType {
-  controlData: React.MutableRefObject<React.MutableRefObject<ControlData>[]>
-  addControlData: (addedData: React.MutableRefObject<ControlData>) => void
-  removeControlData: (removedData: React.MutableRefObject<ControlData>) => void
+interface ChartsInfoContextType {
+  chartInfoData: React.MutableRefObject<React.MutableRefObject<ChartInfoData>[]>
+  addChartInfoData: (addedData: React.MutableRefObject<ChartInfoData>) => void
+  removeChartInfoData: (
+    removedData: React.MutableRefObject<ChartInfoData>,
+  ) => void
   durationRef: React.MutableRefObject<number>
   globalCompareActionCounterRef: React.MutableRefObject<number>
   globalMaxCompareActionCounterRef: React.MutableRefObject<number>
@@ -24,11 +15,11 @@ interface ChartControlContextType {
   directionForwardRef: React.MutableRefObject<boolean>
 }
 
-const ChartControlContext = createContext<ChartControlContextType | undefined>(
+const ChartsInfoContext = createContext<ChartsInfoContextType | undefined>(
   undefined,
 )
 
-interface ChartControlProviderProps {
+interface ChartsInfoProviderProps {
   children: ReactNode
 }
 
@@ -49,8 +40,8 @@ function generateStarterDefaultChartData(): ChartDataField[] {
   }))
 }
 
-export function ChartControlProvider({ children }: ChartControlProviderProps) {
-  const controlData = useRef<React.MutableRefObject<ControlData>[]>([])
+export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
+  const chartInfoData = useRef<React.MutableRefObject<ChartInfoData>[]>([])
   const durationRef = useRef<number>(250)
   const globalCompareActionCounterRef = useRef<number>(0)
   const globalMaxCompareActionCounterRef = useRef<number>(0)
@@ -61,21 +52,21 @@ export function ChartControlProvider({ children }: ChartControlProviderProps) {
     generateStarterDefaultChartData(),
   )
 
-  const value: ChartControlContextType = {
-    controlData,
-    addControlData: (addedData) => {
-      controlData.current.push(addedData)
+  const value: ChartsInfoContextType = {
+    chartInfoData,
+    addChartInfoData: (addedData) => {
+      chartInfoData.current.push(addedData)
       globalMaxCompareActionCounterRef.current = Math.max(
         globalMaxCompareActionCounterRef.current,
         addedData.current.maxCompareActionCounterRef.current,
       )
       setMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
     },
-    removeControlData: (removedData) => {
-      controlData.current = controlData.current.filter(
+    removeChartInfoData: (removedData) => {
+      chartInfoData.current = chartInfoData.current.filter(
         (data) => data !== removedData,
       )
-      globalMaxCompareActionCounterRef.current = controlData.current.reduce(
+      globalMaxCompareActionCounterRef.current = chartInfoData.current.reduce(
         (acc, data) =>
           Math.max(acc, data.current.maxCompareActionCounterRef.current),
         0,
@@ -91,17 +82,17 @@ export function ChartControlProvider({ children }: ChartControlProviderProps) {
   }
 
   return (
-    <ChartControlContext.Provider value={value}>
+    <ChartsInfoContext.Provider value={value}>
       {children}
-    </ChartControlContext.Provider>
+    </ChartsInfoContext.Provider>
   )
 }
 
-export function useChartControl() {
-  const context = useContext(ChartControlContext)
+export function useChartsInfo() {
+  const context = useContext(ChartsInfoContext)
 
   if (!context) {
-    throw new Error('useChartControl must be used within ChartControlProvider')
+    throw new Error('useChartsInfo must be used within ChartsInfoProvider')
   }
   return context
 }

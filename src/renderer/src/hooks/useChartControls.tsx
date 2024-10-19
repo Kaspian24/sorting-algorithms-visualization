@@ -1,15 +1,15 @@
 import { useRef, useState } from 'react'
-import { useChartControl } from '@renderer/components/ChartControlProvider/ChartControlProvider'
+import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { COMPARE_ACTION } from '@renderer/types/types'
 
 export default function useChartControls() {
   const {
-    controlData,
+    chartInfoData: controlData,
     durationRef,
     globalCompareActionCounterRef,
     globalMaxCompareActionCounterRef,
     directionForwardRef,
-  } = useChartControl()
+  } = useChartsInfo()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
 
