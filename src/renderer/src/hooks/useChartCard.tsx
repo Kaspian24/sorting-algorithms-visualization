@@ -3,8 +3,8 @@ import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import { ChartConfig } from '@renderer/components/ui/Chart'
 import {
-  COMPARE_ACTION,
   ChartInfoData,
+  COMPARE_ACTION,
   SortingAlgorithm,
 } from '@renderer/types/types'
 import { LabelProps } from 'recharts'

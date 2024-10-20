@@ -14,37 +14,27 @@ asarUnpack:
 win:
   executableName: sorting-algorithms-visualization
   target:
-    - zip
     - portable
-    - nsis
-nsis:
-  artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
-  createDesktopShortcut: always
+portable:
+  artifactName: ${name}-${version}-windows.${ext}
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
   target:
-    - zip
+    - zip # archive because I can't package it without mac
 #    - dmg # it should work when run on mac
 #    - pkg # it should work when run on mac
 dmg:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: ${name}-${version}-mac.${ext}
 pkg:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: ${name}-${version}-mac.${ext}
 linux:
   target:
-    - tar.gz
-    - flatpak
-    - deb
+    - appImage
   maintainer: Marcin
   category: Education
-  artifactName: ${name}-${version}.${ext}
-flatpak:
-  useWaylandFlags: true
-  runtimeVersion: 24.08
-  baseVersion: 24.08
+appImage:
+  artifactName: ${name}-${version}-linux.${ext}
 npmRebuild: false
 publish:
   provider: generic
