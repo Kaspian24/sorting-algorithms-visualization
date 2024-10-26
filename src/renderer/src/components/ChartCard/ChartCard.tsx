@@ -14,7 +14,9 @@ import { ChartContainer } from '@renderer/components/ui/Chart'
 import {
   ContextMenu,
   ContextMenuContent,
+  ContextMenuGroup,
   ContextMenuItem,
+  ContextMenuLabel,
   ContextMenuTrigger,
 } from '@renderer/components/ui/ContextMenu'
 import useChartCard from '@renderer/hooks/useChartCard'
@@ -95,14 +97,19 @@ function ChartCard({ algorithm, sortingAlgorithm }: ChartCardProps) {
           >
             Remove (&times;)
           </ContextMenuItem>
-          <ContextMenuItem onClick={() => moveAlgorithmPositionLeft(algorithm)}>
-            Move left (&larr;)
-          </ContextMenuItem>
-          <ContextMenuItem
-            onClick={() => moveAlgorithmPositionRight(algorithm)}
-          >
-            Move right (&rarr;)
-          </ContextMenuItem>
+          <ContextMenuLabel className="text-center">Move</ContextMenuLabel>
+          <ContextMenuGroup className="flex">
+            <ContextMenuItem
+              onClick={() => moveAlgorithmPositionLeft(algorithm)}
+            >
+              Left (&larr;)
+            </ContextMenuItem>
+            <ContextMenuItem
+              onClick={() => moveAlgorithmPositionRight(algorithm)}
+            >
+              Right (&rarr;)
+            </ContextMenuItem>
+          </ContextMenuGroup>
         </ContextMenuContent>
       </ContextMenu>
     </Card>

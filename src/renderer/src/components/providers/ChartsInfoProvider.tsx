@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react'
 import {
-  AlgorithmsVisibility,
+  AlgorithmVisibilityData,
   ChartDataField,
   ChartInfoData,
   SORTING_ALGORITHM,
@@ -25,7 +25,7 @@ interface ChartsInfoContextType {
   defaultChartData: ChartDataField[]
   setDefaultChartData: React.Dispatch<React.SetStateAction<ChartDataField[]>>
   directionForwardRef: React.MutableRefObject<boolean>
-  algorithmsVisibility: AlgorithmsVisibility
+  algorithmsVisibilityData: AlgorithmVisibilityData[]
   setAlgorithmVisibility: (
     algorithm: keyof typeof SORTING_ALGORITHM,
     state: boolean,
@@ -65,14 +65,11 @@ function generateStarterDefaultChartData(): ChartDataField[] {
   }))
 }
 
-function generateStarterAlgorithmsVisibility(): AlgorithmsVisibility {
-  let i = 0
-  return Object.fromEntries(
-    Object.keys(SORTING_ALGORITHM).map((algorithm) => [
-      algorithm as keyof typeof SORTING_ALGORITHM,
-      { visibility: true, position: i++ },
-    ]),
-  ) as AlgorithmsVisibility
+function generateStarterAlgorithmsVisibility(): AlgorithmVisibilityData[] {
+  return Object.keys(SORTING_ALGORITHM).map((algorithm) => ({
+    algorithm: algorithm as keyof typeof SORTING_ALGORITHM,
+    visible: false,
+  }))
 }
 
 export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
@@ -81,35 +78,13 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   const globalCompareActionCounterRef = useRef<number>(0)
   const globalMaxCompareActionCounterRef = useRef<number>(0)
   const directionForwardRef = useRef<boolean>(true)
-  const [algorithmsVisibility, setAlgorithmsVisibilityState] =
-    useState<AlgorithmsVisibility>(generateStarterAlgorithmsVisibility())
+  const [algorithmsVisibilityData, setAlgorithmsVisibilityData] = useState<
+    AlgorithmVisibilityData[]
+  >(generateStarterAlgorithmsVisibility())
 
-  const [, setMaxCompareActionCounter] = useState<number>(0)
+  const [, setglobalMaxCompareActionCounter] = useState<number>(0)
   const [defaultChartData, setDefaultChartData] = useState<ChartDataField[]>(
     generateStarterDefaultChartData(),
-  )
-
-  const switchAlgorithmsPosition = useCallback(
-    (a: keyof typeof SORTING_ALGORITHM, b?: keyof typeof SORTING_ALGORITHM) => {
-      setAlgorithmsVisibilityState((prev) => {
-        if (!b || prev[a].position === prev[b].position) {
-          return prev
-        }
-
-        return {
-          ...prev,
-          [a]: {
-            ...prev[a],
-            position: prev[b].position,
-          },
-          [b]: {
-            ...prev[b],
-            position: prev[a].position,
-          },
-        }
-      })
-    },
-    [],
   )
 
   const addChartInfoData = useCallback(
@@ -119,7 +94,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
         globalMaxCompareActionCounterRef.current,
         addedData.current.maxCompareActionCounterRef.current,
       )
-      setMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
+      setglobalMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
     },
     [],
   )
@@ -134,63 +109,91 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
           Math.max(acc, data.current.maxCompareActionCounterRef.current),
         0,
       )
-      setMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
+      setglobalMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
     },
     [],
   )
 
   const setAlgorithmVisibility = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM, state: boolean) => {
-      setAlgorithmsVisibilityState((prev) => ({
-        ...prev,
-        [algorithm]: {
-          ...prev[algorithm],
-          visibility: state,
-        },
-      }))
-    },
+    (algorithm: keyof typeof SORTING_ALGORITHM, state: boolean) =>
+      setAlgorithmsVisibilityData((prev) => {
+        const position = prev.findIndex((data) => data.algorithm === algorithm)
+        if (position < 0) {
+          return prev
+        }
+        return prev.map((data, index) =>
+          index === position ? { ...data, visible: state } : data,
+        )
+      }),
     [],
   )
 
   const setAlgorithmPosition = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM, newPosition: number) => {
-      const targetAlgorithm = Object.keys(algorithmsVisibility).find(
-        (key) =>
-          algorithmsVisibility[key as keyof typeof SORTING_ALGORITHM]
-            .position === newPosition,
-      ) as keyof typeof SORTING_ALGORITHM
-
-      switchAlgorithmsPosition(algorithm, targetAlgorithm)
-    },
-    [algorithmsVisibility, switchAlgorithmsPosition],
+    (algorithm: keyof typeof SORTING_ALGORITHM, newPosition: number) =>
+      setAlgorithmsVisibilityData((prev) => {
+        const position = prev.findIndex((data) => data.algorithm === algorithm)
+        if (position < 0 || position === newPosition) {
+          return prev
+        }
+        return prev.map((data, index) =>
+          index === position
+            ? { ...prev[newPosition] }
+            : index === newPosition
+              ? { ...prev[position] }
+              : data,
+        )
+      }),
+    [],
   )
 
   const moveAlgorithmPositionLeft = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM) => {
-      const targetAlgorithm = Object.entries(algorithmsVisibility)
-        .sort(([, a], [, b]) => b.position - a.position)
-        .find(
-          ([, data]) =>
-            data.position < algorithmsVisibility[algorithm].position &&
-            data.visibility,
-        )?.[0] as keyof typeof SORTING_ALGORITHM
-      switchAlgorithmsPosition(algorithm, targetAlgorithm)
-    },
-    [algorithmsVisibility, switchAlgorithmsPosition],
+    (algorithm: keyof typeof SORTING_ALGORITHM) =>
+      setAlgorithmsVisibilityData((prev) => {
+        const position = prev.findIndex((data) => data.algorithm === algorithm)
+        let newPosition = -1
+        for (let i = position - 1; i >= 0; i--) {
+          if (prev[i].visible === true) {
+            newPosition = i
+            break
+          }
+        }
+        if (newPosition < 0) {
+          return prev
+        }
+        return prev.map((data, index) =>
+          index === position
+            ? { ...prev[newPosition] }
+            : index === newPosition
+              ? { ...prev[position] }
+              : data,
+        )
+      }),
+    [],
   )
 
   const moveAlgorithmPositionRight = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM) => {
-      const targetAlgorithm = Object.entries(algorithmsVisibility)
-        .sort(([, a], [, b]) => a.position - b.position)
-        .find(
-          ([, data]) =>
-            data.position > algorithmsVisibility[algorithm].position &&
-            data.visibility,
-        )?.[0] as keyof typeof SORTING_ALGORITHM
-      switchAlgorithmsPosition(algorithm, targetAlgorithm)
-    },
-    [algorithmsVisibility, switchAlgorithmsPosition],
+    (algorithm: keyof typeof SORTING_ALGORITHM) =>
+      setAlgorithmsVisibilityData((prev) => {
+        const position = prev.findIndex((data) => data.algorithm === algorithm)
+        let newPosition = -1
+        for (let i = position + 1; i < prev.length; i++) {
+          if (prev[i].visible === true) {
+            newPosition = i
+            break
+          }
+        }
+        if (newPosition < 0) {
+          return prev
+        }
+        return prev.map((data, index) =>
+          index === position
+            ? { ...prev[newPosition] }
+            : index === newPosition
+              ? { ...prev[position] }
+              : data,
+        )
+      }),
+    [],
   )
 
   const value: ChartsInfoContextType = {
@@ -203,7 +206,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     defaultChartData,
     setDefaultChartData,
     directionForwardRef,
-    algorithmsVisibility,
+    algorithmsVisibilityData,
     setAlgorithmVisibility,
     setAlgorithmPosition,
     moveAlgorithmPositionLeft,

@@ -15,15 +15,14 @@ export const Route = createLazyFileRoute('/')({
 })
 
 function Index() {
-  const { algorithmsVisibility, setAlgorithmVisibility } = useChartsInfo()
+  const { algorithmsVisibilityData, setAlgorithmVisibility } = useChartsInfo()
   return (
     <ContextMenu>
       <ContextMenuTrigger className="contents">
         <div className="grid h-full grid-cols-chartsBoard gap-4 p-10">
-          {Object.entries(algorithmsVisibility)
-            .filter(([, { visibility }]) => visibility === true)
-            .sort(([, a], [, b]) => a.position - b.position)
-            .map(([algorithm], index) => (
+          {algorithmsVisibilityData
+            .filter(({ visible }) => visible === true)
+            .map(({ algorithm }, index) => (
               <ChartCard
                 key={`chart${index}`}
                 algorithm={algorithm as keyof typeof SORTING_ALGORITHM}
@@ -35,22 +34,21 @@ function Index() {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        {Object.entries(algorithmsVisibility)
-          .sort(([, a], [, b]) => a.position - b.position)
-          .map(([algorithm, { visibility }], index) => (
-            <ContextMenuCheckboxItem
-              key={`chartContextItem${index}`}
-              checked={visibility}
-              onClick={() =>
-                setAlgorithmVisibility(
-                  algorithm as keyof typeof SORTING_ALGORITHM,
-                  !visibility,
-                )
-              }
-            >
-              {constantToTitleCase(algorithm)}
-            </ContextMenuCheckboxItem>
-          ))}
+        {algorithmsVisibilityData.map(({ algorithm, visible }, index) => (
+          <ContextMenuCheckboxItem
+            key={`chartContextItem${index}`}
+            checked={visible}
+            onClick={(e) => {
+              e.preventDefault()
+              setAlgorithmVisibility(
+                algorithm as keyof typeof SORTING_ALGORITHM,
+                !visible,
+              )
+            }}
+          >
+            {constantToTitleCase(algorithm)}
+          </ContextMenuCheckboxItem>
+        ))}
       </ContextMenuContent>
     </ContextMenu>
   )

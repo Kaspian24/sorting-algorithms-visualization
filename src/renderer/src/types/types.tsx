@@ -49,9 +49,7 @@ export interface ChartInfoData {
   compareActionRef: React.MutableRefObject<CompareAction>
 }
 
-export type AlgorithmsVisibility = {
-  [K in keyof typeof SORTING_ALGORITHM]: {
-    visibility: boolean
-    position: number
-  }
+export type AlgorithmVisibilityData = {
+  algorithm: keyof typeof SORTING_ALGORITHM
+  visible: boolean
 }

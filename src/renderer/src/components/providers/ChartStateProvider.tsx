@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useRef } from 'react'
+import { createContext, ReactNode, useContext, useRef, useState } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import {
   ChartDataField,
@@ -13,6 +13,7 @@ interface ChartStateContextType {
   compareActionRef: React.MutableRefObject<CompareAction>
   maxCompareActionCounterRef: React.MutableRefObject<number>
   maxHighlightCounterRef: React.MutableRefObject<number>
+  setMaxCompareActionCounter: React.Dispatch<React.SetStateAction<number>>
 }
 
 const ChartStateContext = createContext<ChartStateContextType | undefined>(
@@ -32,6 +33,8 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
   const compareActionCounterRef = useRef<number>(0)
   const highlightCounterRef = useRef<number>(0)
 
+  const [, setMaxCompareActionCounter] = useState<number>(0)
+
   const value: ChartStateContextType = {
     chartDataRef,
     highlightCounterRef,
@@ -39,6 +42,7 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
     compareActionRef,
     maxCompareActionCounterRef,
     maxHighlightCounterRef,
+    setMaxCompareActionCounter,
   }
 
   return (
