@@ -53,3 +53,19 @@ export type AlgorithmVisibilityData = {
   algorithm: keyof typeof SORTING_ALGORITHM
   visible: boolean
 }
+
+export const DRAG_ITEM_TYPE = {
+  CHART_CARD: 'CHART_CARD',
+  CONTEXT_ITEM: 'CONTEXT_ITEM',
+} as const
+
+export type DragItemType = (typeof DRAG_ITEM_TYPE)[keyof typeof DRAG_ITEM_TYPE]
+
+export const DRAG_CONTAINER_LAYOUT = {
+  HORIZONTAL: 'HORIZONTAL',
+  VERTICAL: 'VERTICAL',
+  GRID: 'GRID',
+} as const
+
+export type DragContainerLayout =
+  (typeof DRAG_CONTAINER_LAYOUT)[keyof typeof DRAG_CONTAINER_LAYOUT]

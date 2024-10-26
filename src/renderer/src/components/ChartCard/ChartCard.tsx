@@ -20,8 +20,10 @@ import {
   ContextMenuTrigger,
 } from '@renderer/components/ui/ContextMenu'
 import useChartCard from '@renderer/hooks/useChartCard'
+import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
 import {
   COMPARE_ACTION,
+  DRAG_ITEM_TYPE,
   SORTING_ALGORITHM,
   SortingAlgorithm,
 } from '@renderer/types/types'
@@ -48,9 +50,17 @@ function ChartCard({ algorithm, sortingAlgorithm }: ChartCardProps) {
     moveAlgorithmPositionLeft,
     moveAlgorithmPositionRight,
   } = useChartsInfo()
+  const { isDragging, ref, handlerId } = useDragAlgorithm(
+    DRAG_ITEM_TYPE.CHART_CARD,
+    algorithm,
+  )
 
   return (
-    <Card className="flex flex-col">
+    <Card
+      className={`flex flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      ref={ref}
+      data-handler-id={handlerId}
+    >
       <ContextMenu>
         <ContextMenuTrigger className="contents">
           <CardHeader className="text-center">
