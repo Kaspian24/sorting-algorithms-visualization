@@ -38,6 +38,10 @@ interface ChartsInfoContextType {
   moveAlgorithmPositionRight: (
     algorithm: keyof typeof SORTING_ALGORITHM,
   ) => void
+  swapAlgorithmsPosition: (
+    a: keyof typeof SORTING_ALGORITHM,
+    b: keyof typeof SORTING_ALGORITHM,
+  ) => void
 }
 
 const ChartsInfoContext = createContext<ChartsInfoContextType | undefined>(
@@ -196,6 +200,22 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     [],
   )
 
+  const swapAlgorithmsPosition = useCallback(
+    (a: keyof typeof SORTING_ALGORITHM, b: keyof typeof SORTING_ALGORITHM) =>
+      setAlgorithmsVisibilityData((prev) => {
+        const aIndex = prev.findIndex((data) => data.algorithm === a)
+        const bIndex = prev.findIndex((data) => data.algorithm === b)
+        return prev.map((data, index) =>
+          index == aIndex
+            ? { ...prev[bIndex] }
+            : index === bIndex
+              ? { ...prev[aIndex] }
+              : data,
+        )
+      }),
+    [],
+  )
+
   const value: ChartsInfoContextType = {
     chartInfoData,
     addChartInfoData,
@@ -211,6 +231,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     setAlgorithmPosition,
     moveAlgorithmPositionLeft,
     moveAlgorithmPositionRight,
+    swapAlgorithmsPosition,
   }
 
   return (
