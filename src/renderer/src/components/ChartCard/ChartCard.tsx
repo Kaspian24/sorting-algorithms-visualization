@@ -1,3 +1,4 @@
+import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import {
   ChartStateProvider,
   useChartState,
@@ -10,16 +11,27 @@ import {
   CardTitle,
 } from '@renderer/components/ui/Card'
 import { ChartContainer } from '@renderer/components/ui/Chart'
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from '@renderer/components/ui/ContextMenu'
 import useChartCard from '@renderer/hooks/useChartCard'
-import { COMPARE_ACTION, SortingAlgorithm } from '@renderer/types/types'
+import {
+  COMPARE_ACTION,
+  SORTING_ALGORITHM,
+  SortingAlgorithm,
+} from '@renderer/types/types'
+import constantToTitleCase from '@renderer/utils/constantToTitleCase'
 import { Bar, BarChart, LabelList } from 'recharts'
 
 export interface ChartCardProps {
-  title: string
+  algorithm: keyof typeof SORTING_ALGORITHM
   sortingAlgorithm: SortingAlgorithm
 }
 
-function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
+function ChartCard({ algorithm, sortingAlgorithm }: ChartCardProps) {
   const { chartConfig, renderCustomizedLabel } = useChartCard(sortingAlgorithm)
   const {
     chartDataRef,
@@ -29,53 +41,78 @@ function ChartCard({ title, sortingAlgorithm }: ChartCardProps) {
     maxHighlightCounterRef,
     compareActionRef,
   } = useChartState()
+  const {
+    setAlgorithmVisibility,
+    moveAlgorithmPositionLeft,
+    moveAlgorithmPositionRight,
+  } = useChartsInfo()
 
   return (
-    <Card>
-      <CardHeader className="border-b p-6 text-center">
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartDataRef.current}
-            margin={{
-              top: 20,
-            }}
+    <Card className="flex flex-col">
+      <ContextMenu>
+        <ContextMenuTrigger className="contents">
+          <CardHeader className="text-center">
+            <CardTitle>{constantToTitleCase(algorithm)}</CardTitle>
+          </CardHeader>
+          <CardContent className="flex grow flex-col justify-center p-6 pt-0">
+            <ChartContainer config={chartConfig} className="h-0 flex-auto">
+              <BarChart
+                accessibilityLayer
+                data={chartDataRef.current}
+                margin={{
+                  top: 20,
+                }}
+              >
+                <Bar dataKey="number" radius={8} isAnimationActive={false}>
+                  <LabelList
+                    position="inside"
+                    offset={12}
+                    fontSize={12}
+                    content={renderCustomizedLabel}
+                  />
+                </Bar>
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+          <CardFooter className="justify-center gap-4">
+            <p>
+              {compareActionCounterRef.current}/
+              {maxCompareActionCounterRef.current}
+            </p>
+            <p>
+              {highlightCounterRef.current}/{maxHighlightCounterRef.current}
+            </p>
+            <p>
+              {compareActionRef.current === COMPARE_ACTION.FINISHED
+                ? 'finished'
+                : 'not finished'}
+            </p>
+          </CardFooter>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem
+            onClick={() => setAlgorithmVisibility(algorithm, false)}
           >
-            <Bar dataKey="number" radius={8} isAnimationActive={false}>
-              <LabelList
-                position="inside"
-                offset={12}
-                fontSize={12}
-                content={renderCustomizedLabel}
-              />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="justify-center gap-4 border-t p-6">
-        <p>
-          {compareActionCounterRef.current}/{maxCompareActionCounterRef.current}
-        </p>
-        <p>
-          {highlightCounterRef.current}/{maxHighlightCounterRef.current}
-        </p>
-        <p>
-          {compareActionRef.current === COMPARE_ACTION.FINISHED
-            ? 'finished'
-            : 'not finished'}
-        </p>
-      </CardFooter>
+            Remove (&times;)
+          </ContextMenuItem>
+          <ContextMenuItem onClick={() => moveAlgorithmPositionLeft(algorithm)}>
+            Move left (&larr;)
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => moveAlgorithmPositionRight(algorithm)}
+          >
+            Move right (&rarr;)
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
     </Card>
   )
 }
 
-function ChartCardWrapper({ title, sortingAlgorithm }: ChartCardProps) {
+function ChartCardWrapper({ algorithm, sortingAlgorithm }: ChartCardProps) {
   return (
     <ChartStateProvider>
-      <ChartCard title={title} sortingAlgorithm={sortingAlgorithm} />
+      <ChartCard algorithm={algorithm} sortingAlgorithm={sortingAlgorithm} />
     </ChartStateProvider>
   )
 }

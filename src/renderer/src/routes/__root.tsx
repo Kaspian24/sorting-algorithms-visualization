@@ -4,7 +4,6 @@ import { ModeToggle } from '@renderer/components/ModeToggle/ModeToggle'
 import { ChartsInfoProvider } from '@renderer/components/providers/ChartsInfoProvider'
 import { ThemeProvider } from '@renderer/components/providers/ThemeProvider'
 import { Button } from '@renderer/components/ui/Button'
-import { ScrollArea } from '@renderer/components/ui/ScrollArea'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 
 const TanStackRouterDevtools =
@@ -25,11 +24,9 @@ export const Route = createRootRoute({
             <ModeToggle />
             <Button onClick={() => location.reload()}>Reload</Button>
           </header>
-          <ScrollArea className="h-0 flex-auto">
-            <main>
-              <Outlet />
-            </main>
-          </ScrollArea>
+          <main className="h-0 flex-auto">
+            <Outlet />
+          </main>
           <footer className="flex h-16 items-center justify-center border-t">
             <ChartControls />
             <p>footer</p>

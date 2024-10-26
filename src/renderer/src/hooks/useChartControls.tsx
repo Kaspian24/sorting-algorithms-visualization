@@ -79,6 +79,7 @@ export default function useChartControls() {
   }
 
   function handleSetStep(step: number) {
+    handleStop()
     directionForwardRef.current = globalCompareActionCounterRef.current < step
     if (!directionForwardRef.current) {
       handleReset()

@@ -19,6 +19,9 @@ export interface UseSort {
 
 export const SORTING_ALGORITHM = {
   SELECTION_SORT: useSelectionSort,
+  TEST_ONE: useSelectionSort,
+  TEST_TWO: useSelectionSort,
+  TEST_THREE: useSelectionSort,
 } as const
 
 export type SortingAlgorithm =
@@ -44,4 +47,11 @@ export interface ChartInfoData {
   compareActionCounterRef: React.MutableRefObject<number>
   highlightCounterRef: React.MutableRefObject<number>
   compareActionRef: React.MutableRefObject<CompareAction>
+}
+
+export type AlgorithmsVisibility = {
+  [K in keyof typeof SORTING_ALGORITHM]: {
+    visibility: boolean
+    position: number
+  }
 }
