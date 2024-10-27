@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import {
@@ -81,9 +81,12 @@ function compareFunction({
 
 export default function useCompare() {
   const { defaultChartData, directionForwardRef, durationRef } = useChartsInfo()
-  const { chartDataRef, highlightCounterRef, compareActionCounterRef } =
-    useChartState()
-  const [, setChartData] = useState(defaultChartData) // trigger re-render
+  const {
+    chartDataRef,
+    highlightCounterRef,
+    compareActionCounterRef,
+    setCompareActionCounter,
+  } = useChartState()
 
   const compare = useCallback(
     ({ chartData, first, second, compareAction }) => {
@@ -104,7 +107,7 @@ export default function useCompare() {
         duration,
         isForward,
       })
-      setChartData(chartDataRef.current)
+      setCompareActionCounter(compareActionCounterRef.current)
     },
     [
       chartDataRef,
@@ -112,6 +115,7 @@ export default function useCompare() {
       directionForwardRef,
       durationRef,
       highlightCounterRef,
+      setCompareActionCounter,
     ],
   )
 
@@ -119,12 +123,13 @@ export default function useCompare() {
     chartDataRef.current = defaultChartData
     compareActionCounterRef.current = 0
     highlightCounterRef.current = 0
-    setChartData(defaultChartData)
+    setCompareActionCounter(compareActionCounterRef.current)
   }, [
     chartDataRef,
     compareActionCounterRef,
     defaultChartData,
     highlightCounterRef,
+    setCompareActionCounter,
   ])
 
   const highlight = useCallback(

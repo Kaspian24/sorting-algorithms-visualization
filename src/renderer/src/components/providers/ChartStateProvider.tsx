@@ -14,6 +14,8 @@ interface ChartStateContextType {
   maxCompareActionCounterRef: React.MutableRefObject<number>
   maxHighlightCounterRef: React.MutableRefObject<number>
   setMaxCompareActionCounter: React.Dispatch<React.SetStateAction<number>>
+  compareActionCounterState: number
+  setCompareActionCounter: React.Dispatch<React.SetStateAction<number>>
 }
 
 const ChartStateContext = createContext<ChartStateContextType | undefined>(
@@ -33,6 +35,8 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
   const compareActionCounterRef = useRef<number>(0)
   const highlightCounterRef = useRef<number>(0)
 
+  const [compareActionCounterState, setCompareActionCounter] =
+    useState<number>(0)
   const [, setMaxCompareActionCounter] = useState<number>(0)
 
   const value: ChartStateContextType = {
@@ -43,6 +47,8 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
     maxCompareActionCounterRef,
     maxHighlightCounterRef,
     setMaxCompareActionCounter,
+    compareActionCounterState,
+    setCompareActionCounter,
   }
 
   return (

@@ -19,10 +19,10 @@ import {
   ContextMenuLabel,
   ContextMenuTrigger,
 } from '@renderer/components/ui/ContextMenu'
+import { Progress } from '@renderer/components/ui/Progress'
 import useChartCard from '@renderer/hooks/useChartCard'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
 import {
-  COMPARE_ACTION,
   DRAG_ITEM_TYPE,
   SORTING_ALGORITHM,
   SortingAlgorithm,
@@ -44,11 +44,10 @@ function ChartCard({
   const { chartConfig, renderCustomizedLabel } = useChartCard(sortingAlgorithm)
   const {
     chartDataRef,
-    compareActionCounterRef,
+    compareActionCounterState,
     highlightCounterRef,
     maxCompareActionCounterRef,
     maxHighlightCounterRef,
-    compareActionRef,
   } = useChartState()
   const {
     setAlgorithmVisibility,
@@ -93,18 +92,15 @@ function ChartCard({
             </ChartContainer>
           </CardContent>
           <CardFooter className="justify-center gap-4">
-            <p>
-              {compareActionCounterRef.current}/
-              {maxCompareActionCounterRef.current}
-            </p>
-            <p>
-              {highlightCounterRef.current}/{maxHighlightCounterRef.current}
-            </p>
-            <p>
-              {compareActionRef.current === COMPARE_ACTION.FINISHED
-                ? 'finished'
-                : 'not finished'}
-            </p>
+            <p>{highlightCounterRef.current}</p>
+            <Progress
+              value={
+                (compareActionCounterState /
+                  maxCompareActionCounterRef.current) *
+                100
+              }
+            />
+            <p>{maxHighlightCounterRef.current}</p>
           </CardFooter>
         </ContextMenuTrigger>
         <ContextMenuContent>
