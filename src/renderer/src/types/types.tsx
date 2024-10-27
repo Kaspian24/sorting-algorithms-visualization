@@ -27,6 +27,11 @@ export const SORTING_ALGORITHM = {
 export type SortingAlgorithm =
   (typeof SORTING_ALGORITHM)[keyof typeof SORTING_ALGORITHM]
 
+export type AlgorithmVisibilityData = {
+  algorithm: keyof typeof SORTING_ALGORITHM
+  visible: boolean
+}
+
 export interface ChartDataField {
   number: number
   fill: string
@@ -49,17 +54,14 @@ export interface ChartInfoData {
   compareActionRef: React.MutableRefObject<CompareAction>
 }
 
-export type AlgorithmVisibilityData = {
-  algorithm: keyof typeof SORTING_ALGORITHM
-  visible: boolean
-}
-
 export const DRAG_ITEM_TYPE = {
   CHART_CARD: 'CHART_CARD',
   CONTEXT_ITEM: 'CONTEXT_ITEM',
 } as const
 
 export type DragItemType = (typeof DRAG_ITEM_TYPE)[keyof typeof DRAG_ITEM_TYPE]
+
+export type DraggablesTransitionState = { [key in DragItemType]: boolean }
 
 export const DRAG_CONTAINER_LAYOUT = {
   HORIZONTAL: 'HORIZONTAL',

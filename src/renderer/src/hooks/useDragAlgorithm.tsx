@@ -21,7 +21,8 @@ export default function useDragAlgorithm(
   containerLayout: DragContainerLayout = DRAG_CONTAINER_LAYOUT.GRID,
 ) {
   const ref = useRef<HTMLDivElement>(null)
-  const { swapAlgorithmsPosition } = useChartsInfo()
+  const { swapAlgorithmsPosition, draggablesTransitionStateRef } =
+    useChartsInfo()
 
   const [{ isDragging }, drag] = useDrag({
     type: ITEM_TYPE,
@@ -48,6 +49,10 @@ export default function useDragAlgorithm(
       }
 
       if (item.algorithm === algorithm) {
+        return
+      }
+
+      if (draggablesTransitionStateRef.current[ITEM_TYPE]) {
         return
       }
 

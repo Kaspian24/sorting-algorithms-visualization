@@ -33,9 +33,14 @@ import { Bar, BarChart, LabelList } from 'recharts'
 export interface ChartCardProps {
   algorithm: keyof typeof SORTING_ALGORITHM
   sortingAlgorithm: SortingAlgorithm
+  flippedProps: object
 }
 
-function ChartCard({ algorithm, sortingAlgorithm }: ChartCardProps) {
+function ChartCard({
+  algorithm,
+  sortingAlgorithm,
+  flippedProps,
+}: ChartCardProps) {
   const { chartConfig, renderCustomizedLabel } = useChartCard(sortingAlgorithm)
   const {
     chartDataRef,
@@ -60,6 +65,7 @@ function ChartCard({ algorithm, sortingAlgorithm }: ChartCardProps) {
       className={`flex flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       ref={ref}
       data-handler-id={handlerId}
+      {...flippedProps}
     >
       <ContextMenu>
         <ContextMenuTrigger className="contents">
@@ -126,10 +132,18 @@ function ChartCard({ algorithm, sortingAlgorithm }: ChartCardProps) {
   )
 }
 
-function ChartCardWrapper({ algorithm, sortingAlgorithm }: ChartCardProps) {
+function ChartCardWrapper({
+  algorithm,
+  sortingAlgorithm,
+  flippedProps,
+}: ChartCardProps) {
   return (
     <ChartStateProvider>
-      <ChartCard algorithm={algorithm} sortingAlgorithm={sortingAlgorithm} />
+      <ChartCard
+        algorithm={algorithm}
+        sortingAlgorithm={sortingAlgorithm}
+        flippedProps={flippedProps}
+      />
     </ChartStateProvider>
   )
 }

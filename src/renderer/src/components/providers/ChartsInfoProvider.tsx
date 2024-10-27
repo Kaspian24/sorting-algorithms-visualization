@@ -10,6 +10,9 @@ import {
   AlgorithmVisibilityData,
   ChartDataField,
   ChartInfoData,
+  DRAG_ITEM_TYPE,
+  DraggablesTransitionState,
+  DragItemType,
   SORTING_ALGORITHM,
 } from '@renderer/types/types'
 
@@ -42,6 +45,7 @@ interface ChartsInfoContextType {
     a: keyof typeof SORTING_ALGORITHM,
     b: keyof typeof SORTING_ALGORITHM,
   ) => void
+  draggablesTransitionStateRef: React.MutableRefObject<DraggablesTransitionState>
 }
 
 const ChartsInfoContext = createContext<ChartsInfoContextType | undefined>(
@@ -54,7 +58,7 @@ interface ChartsInfoProviderProps {
 
 function generateStarterDefaultChartData(): ChartDataField[] {
   const numbers = [
-    275, 200, 187, 173, 90, 90, 1, 2, 3, 10, 11, 12, 13, 14, 15, 20, 25, 30,
+    40, 37, 35, 34, 33, 31, 5, 6, 7, 10, 11, 12, 13, 14, 15, 20, 25, 30,
   ]
 
   return numbers.map((number) => ({
@@ -76,6 +80,13 @@ function generateStarterAlgorithmsVisibility(): AlgorithmVisibilityData[] {
   }))
 }
 
+function generateStarterIsTransitioningRef(): DraggablesTransitionState {
+  return Object.values(DRAG_ITEM_TYPE).reduce((acc, key) => {
+    acc[key as DragItemType] = false
+    return acc
+  }, {} as DraggablesTransitionState)
+}
+
 export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   const chartInfoData = useRef<React.MutableRefObject<ChartInfoData>[]>([])
   const durationRef = useRef<number>(250)
@@ -85,6 +96,9 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   const [algorithmsVisibilityData, setAlgorithmsVisibilityData] = useState<
     AlgorithmVisibilityData[]
   >(generateStarterAlgorithmsVisibility())
+  const draggablesTransitionStateRef = useRef<DraggablesTransitionState>(
+    generateStarterIsTransitioningRef(),
+  )
 
   const [, setglobalMaxCompareActionCounter] = useState<number>(0)
   const [defaultChartData, setDefaultChartData] = useState<ChartDataField[]>(
@@ -232,6 +246,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     moveAlgorithmPositionLeft,
     moveAlgorithmPositionRight,
     swapAlgorithmsPosition,
+    draggablesTransitionStateRef,
   }
 
   return (

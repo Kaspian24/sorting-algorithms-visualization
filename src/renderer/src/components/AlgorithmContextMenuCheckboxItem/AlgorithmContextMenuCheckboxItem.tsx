@@ -11,11 +11,13 @@ import constantToTitleCase from '@renderer/utils/constantToTitleCase'
 export interface AlgorithmContextMenuCheckboxItemProps {
   algorithm: keyof typeof SORTING_ALGORITHM
   visible: boolean
+  flippedProps: object
 }
 
 export default function AlgorithmContextMenuCheckboxItem({
   algorithm,
   visible,
+  flippedProps,
 }: AlgorithmContextMenuCheckboxItemProps) {
   const { setAlgorithmVisibility } = useChartsInfo()
   const { isDragging, ref, handlerId } = useDragAlgorithm(
@@ -37,6 +39,7 @@ export default function AlgorithmContextMenuCheckboxItem({
           !visible,
         )
       }}
+      {...flippedProps}
     >
       {constantToTitleCase(algorithm)}
     </ContextMenuCheckboxItem>
