@@ -99,6 +99,8 @@ function ChartCard({
                   maxCompareActionCounterRef.current) *
                 100
               }
+              className="w-3/4"
+              indicatorClassName={`${compareActionCounterState === maxCompareActionCounterRef.current ? 'bg-red-400' : ''}`}
             />
             <p>{maxHighlightCounterRef.current}</p>
           </CardFooter>
