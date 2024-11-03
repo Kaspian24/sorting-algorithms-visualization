@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import ChartControls from '@renderer/components/ChartControls/ChartControls'
+import Footer from '@renderer/components/Footer/Footer'
 import { ModeToggle } from '@renderer/components/ModeToggle/ModeToggle'
 import { ChartsInfoProvider } from '@renderer/components/providers/ChartsInfoProvider'
 import { ThemeProvider } from '@renderer/components/providers/ThemeProvider'
@@ -30,10 +30,7 @@ export const Route = createRootRoute({
             <main className="h-0 flex-auto">
               <Outlet />
             </main>
-            <footer className="flex h-16 items-center justify-center border-t">
-              <ChartControls />
-              <p>footer</p>
-            </footer>
+            <Footer />
           </ChartsInfoProvider>
         </ThemeProvider>
       </DndProvider>

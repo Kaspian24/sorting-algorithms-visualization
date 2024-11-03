@@ -14,6 +14,7 @@ export default function useChartControls() {
   const isRunningRef = useRef(false)
 
   const [, setCompareActionCounter] = useState(0) // trigger re-render
+  const [isRunningState, setIsRunningState] = useState(false)
 
   /** returns `areAllSorted` */
   function sortAll() {
@@ -45,6 +46,7 @@ export default function useChartControls() {
     directionForwardRef.current = true
     handleStop()
     isRunningRef.current = true
+    setIsRunningState(isRunningRef.current)
     sortAll()
     continueSort()
   }
@@ -52,6 +54,7 @@ export default function useChartControls() {
   function continueSort() {
     intervalRef.current = setTimeout(() => {
       isRunningRef.current = true
+      setIsRunningState(isRunningRef.current)
       const areAllSorted = sortAll()
       if (areAllSorted) {
         handleStop()
@@ -63,6 +66,7 @@ export default function useChartControls() {
   function handleStop() {
     if (intervalRef.current) {
       isRunningRef.current = false
+      setIsRunningState(isRunningRef.current)
       clearTimeout(intervalRef.current)
     }
   }
@@ -93,7 +97,7 @@ export default function useChartControls() {
   }
 
   function handleDurationChange(duration: number) {
-    durationRef.current = duration
+    durationRef.current = 250 / duration
     if (isRunningRef.current) {
       handleStop()
       continueSort()
@@ -107,5 +111,6 @@ export default function useChartControls() {
     handleReset,
     handleSetStep,
     handleDurationChange,
+    isRunningState,
   }
 }
