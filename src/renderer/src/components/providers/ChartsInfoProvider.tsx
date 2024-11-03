@@ -26,7 +26,7 @@ interface ChartsInfoContextType {
   globalCompareActionCounterRef: React.MutableRefObject<number>
   globalMaxCompareActionCounterRef: React.MutableRefObject<number>
   defaultChartData: ChartDataField[]
-  setDefaultChartData: React.Dispatch<React.SetStateAction<ChartDataField[]>>
+  setDefaultChartData: (numbers: number[]) => void
   directionForwardRef: React.MutableRefObject<boolean>
   algorithmsVisibilityData: AlgorithmVisibilityData[]
   setAlgorithmVisibility: (
@@ -56,11 +56,7 @@ interface ChartsInfoProviderProps {
   children: ReactNode
 }
 
-function generateStarterDefaultChartData(): ChartDataField[] {
-  const numbers = [
-    40, 37, 35, 34, 33, 31, 5, 6, 7, 10, 11, 12, 13, 14, 15, 20, 25, 30,
-  ]
-
+function numbersToChartDataFieldArray(numbers: number[]): ChartDataField[] {
   return numbers.map((number) => ({
     number: number,
     fill: 'var(--color-default)',
@@ -73,19 +69,34 @@ function generateStarterDefaultChartData(): ChartDataField[] {
   }))
 }
 
-function generateStarterAlgorithmsVisibility(): AlgorithmVisibilityData[] {
+function generateInitialDefaultChartData(): ChartDataField[] {
+  const numbers = [
+    40, 37, 35, 34, 33, 31, 5, 6, 7, 10, 11, 12, 13, 14, 15, 20, 25, 30,
+  ]
+
+  return numbersToChartDataFieldArray(numbers)
+}
+
+const initialDefaultChartData = generateInitialDefaultChartData()
+
+function generateInitialAlgorithmsVisibility(): AlgorithmVisibilityData[] {
   return Object.keys(SORTING_ALGORITHM).map((algorithm) => ({
     algorithm: algorithm as keyof typeof SORTING_ALGORITHM,
     visible: false,
   }))
 }
 
-function generateStarterIsTransitioningRef(): DraggablesTransitionState {
+const initialAlgorithmsVisibility = generateInitialAlgorithmsVisibility()
+
+function generateInitialDraggablesTransitionStateRef(): DraggablesTransitionState {
   return Object.values(DRAG_ITEM_TYPE).reduce((acc, key) => {
     acc[key as DragItemType] = false
     return acc
   }, {} as DraggablesTransitionState)
 }
+
+const initialDraggablesTransitionState =
+  generateInitialDraggablesTransitionStateRef()
 
 export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   const chartInfoData = useRef<React.MutableRefObject<ChartInfoData>[]>([])
@@ -95,15 +106,19 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   const directionForwardRef = useRef<boolean>(true)
   const [algorithmsVisibilityData, setAlgorithmsVisibilityData] = useState<
     AlgorithmVisibilityData[]
-  >(generateStarterAlgorithmsVisibility())
+  >(initialAlgorithmsVisibility)
   const draggablesTransitionStateRef = useRef<DraggablesTransitionState>(
-    generateStarterIsTransitioningRef(),
+    initialDraggablesTransitionState,
   )
 
   const [, setglobalMaxCompareActionCounter] = useState<number>(0)
-  const [defaultChartData, setDefaultChartData] = useState<ChartDataField[]>(
-    generateStarterDefaultChartData(),
-  )
+  const [defaultChartData, setDefaultChartDataState] = useState<
+    ChartDataField[]
+  >(initialDefaultChartData)
+
+  const setDefaultChartData = useCallback((numbers: number[]) => {
+    setDefaultChartDataState(numbersToChartDataFieldArray(numbers))
+  }, [])
 
   const addChartInfoData = useCallback(
     (addedData: React.MutableRefObject<ChartInfoData>) => {
