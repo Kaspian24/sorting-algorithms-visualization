@@ -97,7 +97,7 @@ export default function useChartControls() {
   }
 
   function handleDurationChange(duration: number) {
-    durationRef.current = duration
+    durationRef.current = 250 / duration
     if (isRunningRef.current) {
       handleStop()
       continueSort()
