@@ -117,31 +117,31 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   const [defaultChartDataState, setDefaultChartDataState] = useState<
     ChartDataField[]
   >(initialDefaultChartData)
-  function getDefaultChartData() {
+  const getDefaultChartData = useCallback(() => {
     return defaultChartDataRef.current
-  }
-  function setDefaultChartData(numbers: number[]) {
+  }, [])
+  const setDefaultChartData = useCallback((numbers: number[]) => {
     defaultChartDataRef.current = numbersToChartDataFieldArray(numbers)
     setDefaultChartDataState(defaultChartDataRef.current)
-  }
+  }, [])
 
   const globalChartActionCounterRef = useRef<number>(0)
   const [globalChartActionCounterState, setGlobalChartActionCounterState] =
     useState<number>(0)
-  function getGlobalChartActionCounter() {
+  const getGlobalChartActionCounter = useCallback(() => {
     return globalChartActionCounterRef.current
-  }
-  function setGlobalChartActionCounter(value: number) {
+  }, [])
+  const setGlobalChartActionCounter = useCallback((value: number) => {
     globalChartActionCounterRef.current = value
     setGlobalChartActionCounterState(value)
-  }
+  }, [])
 
   const globalMaxChartActionCounterRef = useRef<number>(0)
   const [globalMaxChartActionCounterState, setGlobalMaxChartActionCounter] =
     useState<number>(0)
-  function getGlobalMaxChartActionCounter() {
+  const getGlobalMaxChartActionCounter = useCallback(() => {
     return globalMaxChartActionCounterRef.current
-  }
+  }, [])
 
   const addChartInfoData = useCallback(
     (addedData: React.MutableRefObject<ChartInfoData>) => {

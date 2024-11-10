@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { CHART_ACTION } from '@renderer/types/types'
 
@@ -16,7 +16,7 @@ export default function useChartControls() {
   const [isRunningState, setIsRunningState] = useState<boolean>(false)
 
   /** returns `areAllSorted` */
-  function sortAll() {
+  const sortAll = useCallback(() => {
     let areAllSorted = true
     chartInfoData.current.forEach((data) => {
       data.current.sortFunction()
@@ -29,25 +29,29 @@ export default function useChartControls() {
       setGlobalChartActionCounter(getGlobalMaxChartActionCounter())
     }
     return areAllSorted
-  }
+  }, [
+    chartInfoData,
+    getGlobalChartActionCounter,
+    getGlobalMaxChartActionCounter,
+    setGlobalChartActionCounter,
+  ])
 
-  function resetAll() {
+  const resetAll = useCallback(() => {
     setGlobalChartActionCounter(0)
     chartInfoData.current.forEach((data) => {
       data.current.reset()
     })
-  }
+  }, [chartInfoData, setGlobalChartActionCounter])
 
-  function handleStart() {
-    directionForwardRef.current = true
-    handleStop()
-    isRunningRef.current = true
-    setIsRunningState(isRunningRef.current)
-    sortAll()
-    continueSort()
-  }
+  const handleStop = useCallback(() => {
+    if (intervalRef.current) {
+      isRunningRef.current = false
+      setIsRunningState(isRunningRef.current)
+      clearTimeout(intervalRef.current)
+    }
+  }, [])
 
-  function continueSort() {
+  const continueSort = useCallback(() => {
     intervalRef.current = setTimeout(() => {
       isRunningRef.current = true
       setIsRunningState(isRunningRef.current)
@@ -57,48 +61,61 @@ export default function useChartControls() {
       }
       continueSort()
     }, durationRef.current)
-  }
+  }, [durationRef, handleStop, sortAll])
 
-  function handleStop() {
-    if (intervalRef.current) {
-      isRunningRef.current = false
-      setIsRunningState(isRunningRef.current)
-      clearTimeout(intervalRef.current)
-    }
-  }
+  const handleStart = useCallback(() => {
+    directionForwardRef.current = true
+    handleStop()
+    isRunningRef.current = true
+    setIsRunningState(isRunningRef.current)
+    sortAll()
+    continueSort()
+  }, [continueSort, directionForwardRef, handleStop, sortAll])
 
-  function handleNext() {
+  const handleNext = useCallback(() => {
     directionForwardRef.current = true
     handleStop()
     sortAll()
-  }
+  }, [directionForwardRef, handleStop, sortAll])
 
-  function handleReset() {
+  const handleReset = useCallback(() => {
     handleStop()
     resetAll()
-  }
+  }, [handleStop, resetAll])
 
-  function handleSetStep(step: number) {
-    handleStop()
-    directionForwardRef.current = getGlobalChartActionCounter() < step
-    if (!directionForwardRef.current) {
-      handleReset()
-    }
-    while (getGlobalChartActionCounter() < step) {
-      const areAllSorted = sortAll()
-      if (areAllSorted) {
-        break
-      }
-    }
-  }
-
-  function handleDurationChange(duration: number) {
-    durationRef.current = 250 / duration
-    if (isRunningRef.current) {
+  const handleSetStep = useCallback(
+    (step: number) => {
       handleStop()
-      continueSort()
-    }
-  }
+      directionForwardRef.current = getGlobalChartActionCounter() < step
+      if (!directionForwardRef.current) {
+        handleReset()
+      }
+      while (getGlobalChartActionCounter() < step) {
+        const areAllSorted = sortAll()
+        if (areAllSorted) {
+          break
+        }
+      }
+    },
+    [
+      directionForwardRef,
+      getGlobalChartActionCounter,
+      handleReset,
+      handleStop,
+      sortAll,
+    ],
+  )
+
+  const handleDurationChange = useCallback(
+    (duration: number) => {
+      durationRef.current = 250 / duration
+      if (isRunningRef.current) {
+        handleStop()
+        continueSort()
+      }
+    },
+    [continueSort, durationRef, handleStop],
+  )
 
   return {
     handleStart,
