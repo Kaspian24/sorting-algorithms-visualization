@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useRef, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import {
   CHART_ACTION,
@@ -40,58 +47,58 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
   const maxChartActionCounterRef = useRef<number>(0)
   const [maxChartActionCounterState, setMaxChartActionCounterState] =
     useState<number>(0)
-  function getMaxChartActionCounter() {
+  const getMaxChartActionCounter = useCallback(() => {
     return maxChartActionCounterRef.current
-  }
-  function setMaxChartActionCounter(value: number) {
+  }, [])
+  const setMaxChartActionCounter = useCallback((value: number) => {
     maxChartActionCounterRef.current = value
     setMaxChartActionCounterState(value)
-  }
+  }, [])
 
   const maxChartCompareCounterRef = useRef<number>(0)
   const [maxChartCompareCounterState, setMaxChartCompareCounterState] =
     useState<number>(0)
-  function getMaxChartCompareCounter() {
+  const getMaxChartCompareCounter = useCallback(() => {
     return maxChartCompareCounterRef.current
-  }
-  function setMaxChartCompareCounter(value: number) {
+  }, [])
+  const setMaxChartCompareCounter = useCallback((value: number) => {
     maxChartCompareCounterRef.current = value
     setMaxChartCompareCounterState(value)
-  }
+  }, [])
 
   const chartDataRef = useRef<ChartDataField[]>(getDefaultChartData())
   const [chartDataState, setChartDataState] = useState<ChartDataField[]>(() =>
     getDefaultChartData(),
   )
-  function getChartData() {
+  const getChartData = useCallback(() => {
     return chartDataRef.current
-  }
-  function setChartData(value: ChartDataField[]) {
+  }, [])
+  const setChartData = useCallback((value: ChartDataField[]) => {
     chartDataRef.current = value
     setChartDataState(value)
-  }
+  }, [])
 
   const chartActionCounterRef = useRef<number>(0)
   const [chartActionCounterState, setChartActionCounterState] =
     useState<number>(0)
-  function getChartActionCounter() {
+  const getChartActionCounter = useCallback(() => {
     return chartActionCounterRef.current
-  }
-  function setChartActionCounter(value: number) {
+  }, [])
+  const setChartActionCounter = useCallback((value: number) => {
     chartActionCounterRef.current = value
     setChartActionCounterState(value)
-  }
+  }, [])
 
   const chartCompareCounterRef = useRef<number>(0)
   const [chartCompareCounterState, setChartCompareCounterState] =
     useState<number>(0)
-  function getChartCompareCounter() {
+  const getChartCompareCounter = useCallback(() => {
     return chartCompareCounterRef.current
-  }
-  function setChartCompareCounter(value: number) {
+  }, [])
+  const setChartCompareCounter = useCallback((value: number) => {
     chartCompareCounterRef.current = value
     setChartCompareCounterState(value)
-  }
+  }, [])
 
   const value: ChartStateContextType = {
     chartActionRef,
