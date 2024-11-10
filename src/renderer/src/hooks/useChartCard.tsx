@@ -84,11 +84,17 @@ function renderCustomizedLabel({
 }
 
 export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
-  const { addChartInfoData, removeChartInfoData, getGlobalChartActionCounter } =
-    useChartsInfo()
+  const {
+    addChartInfoData,
+    removeChartInfoData,
+    getGlobalChartActionCounter,
+    getDefaultChartData,
+    defaultChartDataState,
+  } = useChartsInfo()
   const { sortFunction, reset } = sortingAlgorithm()
   const {
     getChartData,
+    setChartData,
     getChartActionCounter,
     getChartCompareCounter,
     getMaxChartActionCounter,
@@ -128,6 +134,8 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
     return () => {
       removeChartInfoData(controlData)
+      setChartData(getDefaultChartData())
+      reset()
     }
   }, [
     addChartInfoData,
@@ -140,6 +148,9 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     getChartActionCounter,
     setMaxChartCompareCounter,
     getChartCompareCounter,
+    defaultChartDataState,
+    setChartData,
+    getDefaultChartData,
   ])
 
   return {

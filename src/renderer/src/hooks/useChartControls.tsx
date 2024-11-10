@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { CHART_ACTION } from '@renderer/types/types'
 
@@ -10,6 +10,7 @@ export default function useChartControls() {
     setGlobalChartActionCounter,
     getGlobalMaxChartActionCounter,
     directionForwardRef,
+    defaultChartDataState,
   } = useChartsInfo()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
@@ -116,6 +117,10 @@ export default function useChartControls() {
     },
     [continueSort, durationRef, handleStop],
   )
+
+  useEffect(() => {
+    handleReset()
+  }, [defaultChartDataState, handleReset])
 
   return {
     handleStart,

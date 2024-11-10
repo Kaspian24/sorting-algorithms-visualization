@@ -27,6 +27,7 @@ interface ChartsInfoContextType {
   setGlobalChartActionCounter: (value: number) => void
   globalChartActionCounterState: number
   getGlobalMaxChartActionCounter: () => number
+  setGlobalMaxChartActionCounter: (value: number) => void
   globalMaxChartActionCounterState: number
   getDefaultChartData: () => ChartDataField[]
   setDefaultChartData: (numbers: number[]) => void
@@ -137,22 +138,29 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   }, [])
 
   const globalMaxChartActionCounterRef = useRef<number>(0)
-  const [globalMaxChartActionCounterState, setGlobalMaxChartActionCounter] =
-    useState<number>(0)
+  const [
+    globalMaxChartActionCounterState,
+    setGlobalMaxChartActionCounterState,
+  ] = useState<number>(0)
   const getGlobalMaxChartActionCounter = useCallback(() => {
     return globalMaxChartActionCounterRef.current
+  }, [])
+  const setGlobalMaxChartActionCounter = useCallback((value: number) => {
+    globalMaxChartActionCounterRef.current = value
+    setGlobalMaxChartActionCounterState(value)
   }, [])
 
   const addChartInfoData = useCallback(
     (addedData: React.MutableRefObject<ChartInfoData>) => {
       chartInfoData.current.push(addedData)
-      globalMaxChartActionCounterRef.current = Math.max(
-        globalMaxChartActionCounterRef.current,
-        addedData.current.getMaxChartActionCounter(),
+      setGlobalMaxChartActionCounter(
+        Math.max(
+          globalMaxChartActionCounterRef.current,
+          addedData.current.getMaxChartActionCounter(),
+        ),
       )
-      setGlobalMaxChartActionCounter(globalMaxChartActionCounterRef.current)
     },
-    [],
+    [setGlobalMaxChartActionCounter],
   )
 
   const removeChartInfoData = useCallback(
@@ -160,13 +168,14 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
       chartInfoData.current = chartInfoData.current.filter(
         (data) => data !== removedData,
       )
-      globalMaxChartActionCounterRef.current = chartInfoData.current.reduce(
-        (acc, data) => Math.max(acc, data.current.getMaxChartActionCounter()),
-        0,
+      setGlobalMaxChartActionCounter(
+        chartInfoData.current.reduce(
+          (acc, data) => Math.max(acc, data.current.getMaxChartActionCounter()),
+          0,
+        ),
       )
-      setGlobalMaxChartActionCounter(globalMaxChartActionCounterRef.current)
     },
-    [],
+    [setGlobalMaxChartActionCounter],
   )
 
   const setAlgorithmVisibility = useCallback(
@@ -276,6 +285,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     setGlobalChartActionCounter,
     globalChartActionCounterState,
     getGlobalMaxChartActionCounter,
+    setGlobalMaxChartActionCounter,
     globalMaxChartActionCounterState,
     getDefaultChartData,
     setDefaultChartData,
