@@ -43,11 +43,11 @@ function ChartCard({
 }: ChartCardProps) {
   const { chartConfig, renderCustomizedLabel } = useChartCard(sortingAlgorithm)
   const {
-    chartDataRef,
-    chartActionCounterState: compareActionCounterState,
-    chartCompareCounterRef: highlightCounterRef,
-    maxChartActionCounterRef: maxCompareActionCounterRef,
-    maxChartCompareCounterRef: maxHighlightCounterRef,
+    chartDataState,
+    chartActionCounterState,
+    chartCompareCounterState,
+    maxChartActionCounterState,
+    maxChartCompareCounterState,
   } = useChartState()
   const {
     setAlgorithmVisibility,
@@ -75,7 +75,7 @@ function ChartCard({
             <ChartContainer config={chartConfig} className="h-0 flex-auto">
               <BarChart
                 accessibilityLayer
-                data={chartDataRef.current}
+                data={chartDataState}
                 margin={{
                   top: 20,
                 }}
@@ -92,17 +92,15 @@ function ChartCard({
             </ChartContainer>
           </CardContent>
           <CardFooter className="justify-center gap-4">
-            <p>{highlightCounterRef.current}</p>
+            <p>{chartCompareCounterState}</p>
             <Progress
               value={
-                (compareActionCounterState /
-                  maxCompareActionCounterRef.current) *
-                100
+                (chartActionCounterState / maxChartActionCounterState) * 100
               }
               className="w-3/4"
-              indicatorClassName={`${compareActionCounterState === maxCompareActionCounterRef.current ? 'bg-red-400' : ''}`}
+              indicatorClassName={`${chartActionCounterState === maxChartActionCounterState ? 'bg-red-400' : ''}`}
             />
-            <p>{maxHighlightCounterRef.current}</p>
+            <p>{maxChartCompareCounterState}</p>
           </CardFooter>
         </ContextMenuTrigger>
         <ContextMenuContent>

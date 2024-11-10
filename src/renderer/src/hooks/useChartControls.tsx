@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { CHART_ACTION } from '@renderer/types/types'
 
@@ -6,15 +6,13 @@ export default function useChartControls() {
   const {
     chartInfoData,
     durationRef,
-    globalChartActionCounterRef,
-    globalMaxChartActionCounterRef,
+    getGlobalChartActionCounter,
+    setGlobalChartActionCounter,
+    getGlobalMaxChartActionCounter,
     directionForwardRef,
   } = useChartsInfo()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
-
-  const [, setChartActionCounter] = useState(0) // trigger re-render
-  const [isRunningState, setIsRunningState] = useState(false)
 
   /** returns `areAllSorted` */
   function sortAll() {
@@ -25,18 +23,15 @@ export default function useChartControls() {
         areAllSorted = false
       }
     })
-    globalChartActionCounterRef.current += 1
+    setGlobalChartActionCounter(getGlobalChartActionCounter() + 1)
     if (areAllSorted) {
-      globalChartActionCounterRef.current =
-        globalMaxChartActionCounterRef.current
+      setGlobalChartActionCounter(getGlobalMaxChartActionCounter())
     }
-    setChartActionCounter(globalChartActionCounterRef.current)
     return areAllSorted
   }
 
   function resetAll() {
-    globalChartActionCounterRef.current = 0
-    setChartActionCounter(globalChartActionCounterRef.current)
+    setGlobalChartActionCounter(0)
     chartInfoData.current.forEach((data) => {
       data.current.reset()
     })
@@ -46,7 +41,6 @@ export default function useChartControls() {
     directionForwardRef.current = true
     handleStop()
     isRunningRef.current = true
-    setIsRunningState(isRunningRef.current)
     sortAll()
     continueSort()
   }
@@ -54,7 +48,6 @@ export default function useChartControls() {
   function continueSort() {
     intervalRef.current = setTimeout(() => {
       isRunningRef.current = true
-      setIsRunningState(isRunningRef.current)
       const areAllSorted = sortAll()
       if (areAllSorted) {
         handleStop()
@@ -66,7 +59,6 @@ export default function useChartControls() {
   function handleStop() {
     if (intervalRef.current) {
       isRunningRef.current = false
-      setIsRunningState(isRunningRef.current)
       clearTimeout(intervalRef.current)
     }
   }
@@ -84,11 +76,11 @@ export default function useChartControls() {
 
   function handleSetStep(step: number) {
     handleStop()
-    directionForwardRef.current = globalChartActionCounterRef.current < step
+    directionForwardRef.current = getGlobalChartActionCounter() < step
     if (!directionForwardRef.current) {
       handleReset()
     }
-    while (globalChartActionCounterRef.current < step) {
+    while (getGlobalChartActionCounter() < step) {
       const areAllSorted = sortAll()
       if (areAllSorted) {
         break
@@ -111,6 +103,6 @@ export default function useChartControls() {
     handleReset,
     handleSetStep,
     handleDurationChange,
-    isRunningState,
+    isRunningRef,
   }
 }

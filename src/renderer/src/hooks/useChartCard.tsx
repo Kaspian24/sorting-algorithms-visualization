@@ -84,49 +84,45 @@ function renderCustomizedLabel({
 }
 
 export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
-  const {
-    addChartInfoData,
-    removeChartInfoData,
-    globalChartActionCounterRef: globalCompareActionCounterRef,
-  } = useChartsInfo()
+  const { addChartInfoData, removeChartInfoData, getGlobalChartActionCounter } =
+    useChartsInfo()
   const { sortFunction, reset } = sortingAlgorithm()
   const {
-    chartDataRef,
-    chartActionRef: compareActionRef,
-    chartActionCounterRef: compareActionCounterRef,
-    chartCompareCounterRef: highlightCounterRef,
-    maxChartActionCounterRef: maxCompareActionCounterRef,
-    maxChartCompareCounterRef: maxHighlightCounterRef,
-    setMaxChartActionCounter: setMaxCompareActionCounter,
+    getChartData,
+    getChartActionCounter,
+    getChartCompareCounter,
+    getMaxChartActionCounter,
+    getMaxChartCompareCounter,
+    chartActionRef,
+    setMaxChartActionCounter,
+    setMaxChartCompareCounter,
   } = useChartState()
 
   const controlData = useRef<ChartInfoData>({
     sortFunction,
     reset,
-    maxChartActionCounterRef: maxCompareActionCounterRef,
-    maxChartCompareCounterRef: maxHighlightCounterRef,
-    chartDataRef,
-    chartActionRef: compareActionRef,
-    chartActionCounterRef: compareActionCounterRef,
-    chartCompareCounterRef: highlightCounterRef,
+    getChartData,
+    getChartActionCounter,
+    getChartCompareCounter,
+    getMaxChartActionCounter,
+    getMaxChartCompareCounter,
+    chartActionRef,
   })
 
   useEffect(() => {
-    while (compareActionRef.current !== CHART_ACTION.FINISHED) {
+    while (chartActionRef.current !== CHART_ACTION.FINISHED) {
       sortFunction()
     }
-    maxCompareActionCounterRef.current = compareActionCounterRef.current
-    maxHighlightCounterRef.current = highlightCounterRef.current
+    setMaxChartActionCounter(getChartActionCounter())
+    setMaxChartCompareCounter(getChartCompareCounter())
     reset()
 
     while (
-      compareActionCounterRef.current < globalCompareActionCounterRef.current &&
-      compareActionRef.current !== CHART_ACTION.FINISHED
+      getChartActionCounter() < getGlobalChartActionCounter() &&
+      chartActionRef.current !== CHART_ACTION.FINISHED
     ) {
       sortFunction()
     }
-
-    setMaxCompareActionCounter(maxCompareActionCounterRef.current)
 
     addChartInfoData(controlData)
 
@@ -135,16 +131,15 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     }
   }, [
     addChartInfoData,
-    compareActionCounterRef,
-    compareActionRef,
-    globalCompareActionCounterRef,
-    highlightCounterRef,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
+    chartActionRef,
     removeChartInfoData,
     reset,
-    setMaxCompareActionCounter,
     sortFunction,
+    getGlobalChartActionCounter,
+    setMaxChartActionCounter,
+    getChartActionCounter,
+    setMaxChartCompareCounter,
+    getChartCompareCounter,
   ])
 
   return {

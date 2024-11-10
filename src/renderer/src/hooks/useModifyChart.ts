@@ -80,111 +80,114 @@ function modifyChartFunction({
 }
 
 export default function useModifyChart() {
-  const { defaultChartData, directionForwardRef, durationRef } = useChartsInfo()
+  const { getDefaultChartData, directionForwardRef, durationRef } =
+    useChartsInfo()
   const {
-    chartDataRef,
-    chartCompareCounterRef,
-    chartActionCounterRef,
-    setChartActionCounter: setCompareActionCounter,
+    getChartData,
+    setChartData,
+    getChartCompareCounter,
+    setChartCompareCounter,
+    getChartActionCounter,
+    setChartActionCounter,
   } = useChartState()
 
   const modifyChart = useCallback(
     ({ chartData, first, second, compareAction }) => {
       if (compareAction !== CHART_ACTION.SWAP) {
-        chartActionCounterRef.current += 1
+        setChartActionCounter(getChartActionCounter() + 1)
       }
       if (compareAction === CHART_ACTION.COMPARE) {
-        chartCompareCounterRef.current += 1
+        setChartCompareCounter(getChartCompareCounter() + 1)
       }
       const duration = durationRef.current
       const isForward = directionForwardRef.current
 
-      chartDataRef.current = modifyChartFunction({
-        chartData,
-        first,
-        second,
-        chartAction: compareAction,
-        duration,
-        isForward,
-      })
-      setCompareActionCounter(chartActionCounterRef.current)
+      setChartData(
+        modifyChartFunction({
+          chartData,
+          first,
+          second,
+          chartAction: compareAction,
+          duration,
+          isForward,
+        }),
+      )
     },
     [
-      chartDataRef,
-      chartActionCounterRef,
-      directionForwardRef,
       durationRef,
-      chartCompareCounterRef,
-      setCompareActionCounter,
+      directionForwardRef,
+      setChartData,
+      setChartActionCounter,
+      getChartActionCounter,
+      setChartCompareCounter,
+      getChartCompareCounter,
     ],
   )
 
   const reset = useCallback(() => {
-    chartDataRef.current = defaultChartData
-    chartActionCounterRef.current = 0
-    chartCompareCounterRef.current = 0
-    setCompareActionCounter(chartActionCounterRef.current)
+    setChartData(getDefaultChartData())
+    setChartActionCounter(0)
+    setChartCompareCounter(0)
   }, [
-    chartDataRef,
-    chartActionCounterRef,
-    defaultChartData,
-    chartCompareCounterRef,
-    setCompareActionCounter,
+    setChartData,
+    getDefaultChartData,
+    setChartActionCounter,
+    setChartCompareCounter,
   ])
 
   const compare = useCallback(
     (first: number, second: number) =>
       modifyChart({
-        chartData: chartDataRef.current,
+        chartData: getChartData(),
         first,
         second,
         compareAction: CHART_ACTION.COMPARE,
       }),
-    [chartDataRef, modifyChart],
+    [getChartData, modifyChart],
   )
 
   const match = useCallback(
     (first: number, second: number) =>
       modifyChart({
-        chartData: chartDataRef.current,
+        chartData: getChartData(),
         first,
         second,
         compareAction: CHART_ACTION.MATCH,
       }),
-    [chartDataRef, modifyChart],
+    [getChartData, modifyChart],
   )
 
   const animateSwap = useCallback(
     (first: number, second: number) =>
       modifyChart({
-        chartData: chartDataRef.current,
+        chartData: getChartData(),
         first,
         second,
         compareAction: CHART_ACTION.ANIMATE_SWAP,
       }),
-    [chartDataRef, modifyChart],
+    [getChartData, modifyChart],
   )
 
   const swap = useCallback(
     (first: number, second: number) =>
       modifyChart({
-        chartData: chartDataRef.current,
+        chartData: getChartData(),
         first,
         second,
         compareAction: CHART_ACTION.SWAP,
       }),
-    [chartDataRef, modifyChart],
+    [getChartData, modifyChart],
   )
 
   const finish = useCallback(
     () =>
       modifyChart({
-        chartData: chartDataRef.current,
+        chartData: getChartData(),
         first: 0,
         second: 0,
         compareAction: CHART_ACTION.FINISHED,
       }),
-    [chartDataRef, modifyChart],
+    [getChartData, modifyChart],
   )
 
   return {

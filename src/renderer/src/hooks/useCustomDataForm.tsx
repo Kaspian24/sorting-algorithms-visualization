@@ -4,10 +4,10 @@ import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider
 import { z } from 'zod'
 
 export default function useCustomDataForm() {
-  const { defaultChartData, setDefaultChartData } = useChartsInfo()
+  const { getDefaultChartData, setDefaultChartData } = useChartsInfo()
 
-  const defaultValues = {
-    numbers: defaultChartData.map(({ number }) => ({ number })),
+  const values = {
+    numbers: getDefaultChartData().map(({ number }) => ({ number })),
   }
 
   const numberObj = z.object({
@@ -20,7 +20,7 @@ export default function useCustomDataForm() {
 
   const form = useForm<z.infer<typeof CustomDataSchema>>({
     resolver: zodResolver(CustomDataSchema),
-    defaultValues,
+    values,
     mode: 'onChange',
   })
 

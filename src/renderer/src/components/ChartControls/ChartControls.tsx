@@ -22,8 +22,9 @@ import {
 
 export default function ChartControls() {
   const {
-    globalChartActionCounterRef: globalCompareActionCounterRef,
-    globalMaxChartActionCounterRef: globalMaxCompareActionCounterRef,
+    getGlobalChartActionCounter,
+    globalChartActionCounterState,
+    globalMaxChartActionCounterState,
   } = useChartsInfo()
   const {
     handleStart,
@@ -32,21 +33,21 @@ export default function ChartControls() {
     handleReset,
     handleSetStep,
     handleDurationChange,
-    isRunningState,
+    isRunningRef,
   } = useChartControls()
 
-  const allHidden = globalMaxCompareActionCounterRef.current ? false : true
+  const allHidden = globalMaxChartActionCounterState ? false : true
 
   return (
     <>
       <Button
-        onClick={() => handleSetStep(globalCompareActionCounterRef.current - 1)}
+        onClick={() => handleSetStep(getGlobalChartActionCounter() - 1)}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
         <ChevronLeft />
       </Button>
-      {isRunningState ? (
+      {isRunningRef.current ? (
         <Button
           onClick={handleStop}
           variant="ghost"
@@ -78,7 +79,7 @@ export default function ChartControls() {
         <RotateCcw />
       </Button>
       <Button
-        onClick={() => handleSetStep(globalMaxCompareActionCounterRef.current)}
+        onClick={() => handleSetStep(globalMaxChartActionCounterState)}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -86,9 +87,9 @@ export default function ChartControls() {
       </Button>
       <Slider
         className={`w-1/2 ${allHidden && 'opacity-50'}`}
-        rangeClassName={`${globalCompareActionCounterRef.current === globalMaxCompareActionCounterRef.current && 'bg-red-400'}`}
-        value={[!allHidden ? globalCompareActionCounterRef.current : 0]}
-        max={globalMaxCompareActionCounterRef.current}
+        rangeClassName={`${globalChartActionCounterState === globalMaxChartActionCounterState && 'bg-red-400'}`}
+        value={[!allHidden ? globalChartActionCounterState : 0]}
+        max={globalMaxChartActionCounterState}
         onValueChange={(value) => handleSetStep(value[0])}
         step={1}
       />

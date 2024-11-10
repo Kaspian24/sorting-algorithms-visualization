@@ -4,7 +4,7 @@ import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
 export const useSelectionSort: UseSort = () => {
-  const { chartDataRef, chartActionRef } = useChartState()
+  const { getChartData, chartActionRef } = useChartState()
   const { compare, match, animateSwap, swap, finish, reset } = useModifyChart()
 
   const iRef = useRef(0)
@@ -16,7 +16,8 @@ export const useSelectionSort: UseSort = () => {
     let j = jRef.current
     let minIndex = minIndexRef.current
     let compareAction = chartActionRef.current
-    const arr = chartDataRef.current
+
+    const arr = getChartData()
     const n = arr.length
 
     function selectionSortFunction() {
@@ -55,13 +56,13 @@ export const useSelectionSort: UseSort = () => {
       compareAction = CHART_ACTION.FINISHED
       return
     }
-
     selectionSortFunction()
+
     iRef.current = i
     jRef.current = j
     minIndexRef.current = minIndex
     chartActionRef.current = compareAction
-  }, [animateSwap, chartDataRef, chartActionRef, finish, compare, match, swap])
+  }, [chartActionRef, getChartData, finish, animateSwap, swap, match, compare])
 
   const selectionSortReset = useCallback(() => {
     iRef.current = 0

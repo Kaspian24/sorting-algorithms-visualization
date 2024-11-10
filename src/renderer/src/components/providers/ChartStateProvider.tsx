@@ -7,15 +7,22 @@ import {
 } from '@renderer/types/types'
 
 interface ChartStateContextType {
-  chartDataRef: React.MutableRefObject<ChartDataField[]>
-  chartActionCounterRef: React.MutableRefObject<number>
-  chartCompareCounterRef: React.MutableRefObject<number>
   chartActionRef: React.MutableRefObject<ChartAction>
-  maxChartActionCounterRef: React.MutableRefObject<number>
-  maxChartCompareCounterRef: React.MutableRefObject<number>
-  setMaxChartActionCounter: React.Dispatch<React.SetStateAction<number>>
+  getMaxChartActionCounter: () => number
+  setMaxChartActionCounter: (value: number) => void
+  maxChartActionCounterState: number
+  getMaxChartCompareCounter: () => number
+  setMaxChartCompareCounter: (value: number) => void
+  maxChartCompareCounterState: number
+  getChartData: () => ChartDataField[]
+  setChartData: (value: ChartDataField[]) => void
+  chartDataState: ChartDataField[]
+  getChartActionCounter: () => number
+  setChartActionCounter: (value: number) => void
   chartActionCounterState: number
-  setChartActionCounter: React.Dispatch<React.SetStateAction<number>>
+  getChartCompareCounter: () => number
+  setChartCompareCounter: (value: number) => void
+  chartCompareCounterState: number
 }
 
 const ChartStateContext = createContext<ChartStateContextType | undefined>(
@@ -27,27 +34,82 @@ interface ChartStateProviderProps {
 }
 
 export function ChartStateProvider({ children }: ChartStateProviderProps) {
-  const { defaultChartData } = useChartsInfo()
-  const maxChartActionCounterRef = useRef<number>(0)
-  const maxChartCompareCounterRef = useRef<number>(0)
-  const chartDataRef = useRef<ChartDataField[]>(defaultChartData)
+  const { getDefaultChartData } = useChartsInfo()
   const chartActionRef = useRef<ChartAction>(CHART_ACTION.COMPARE)
-  const chartActionCounterRef = useRef<number>(0)
-  const chartCompareCounterRef = useRef<number>(0)
 
-  const [chartActionCounterState, setChartActionCounter] = useState<number>(0)
-  const [, setMaxChartActionCounter] = useState<number>(0)
+  const maxChartActionCounterRef = useRef<number>(0)
+  const [maxChartActionCounterState, setMaxChartActionCounterState] =
+    useState<number>(0)
+  function getMaxChartActionCounter() {
+    return maxChartActionCounterRef.current
+  }
+  function setMaxChartActionCounter(value: number) {
+    maxChartActionCounterRef.current = value
+    setMaxChartActionCounterState(value)
+  }
+
+  const maxChartCompareCounterRef = useRef<number>(0)
+  const [maxChartCompareCounterState, setMaxChartCompareCounterState] =
+    useState<number>(0)
+  function getMaxChartCompareCounter() {
+    return maxChartCompareCounterRef.current
+  }
+  function setMaxChartCompareCounter(value: number) {
+    maxChartCompareCounterRef.current = value
+    setMaxChartCompareCounterState(value)
+  }
+
+  const chartDataRef = useRef<ChartDataField[]>(getDefaultChartData())
+  const [chartDataState, setChartDataState] = useState<ChartDataField[]>(() =>
+    getDefaultChartData(),
+  )
+  function getChartData() {
+    return chartDataRef.current
+  }
+  function setChartData(value: ChartDataField[]) {
+    chartDataRef.current = value
+    setChartDataState(value)
+  }
+
+  const chartActionCounterRef = useRef<number>(0)
+  const [chartActionCounterState, setChartActionCounterState] =
+    useState<number>(0)
+  function getChartActionCounter() {
+    return chartActionCounterRef.current
+  }
+  function setChartActionCounter(value: number) {
+    chartActionCounterRef.current = value
+    setChartActionCounterState(value)
+  }
+
+  const chartCompareCounterRef = useRef<number>(0)
+  const [chartCompareCounterState, setChartCompareCounterState] =
+    useState<number>(0)
+  function getChartCompareCounter() {
+    return chartCompareCounterRef.current
+  }
+  function setChartCompareCounter(value: number) {
+    chartCompareCounterRef.current = value
+    setChartCompareCounterState(value)
+  }
 
   const value: ChartStateContextType = {
-    chartDataRef,
-    chartCompareCounterRef,
-    chartActionCounterRef,
     chartActionRef,
-    maxChartActionCounterRef,
-    maxChartCompareCounterRef,
+    getMaxChartActionCounter,
     setMaxChartActionCounter,
-    chartActionCounterState,
+    maxChartActionCounterState,
+    getMaxChartCompareCounter,
+    setMaxChartCompareCounter,
+    maxChartCompareCounterState,
+    getChartData,
+    setChartData,
+    chartDataState,
+    getChartActionCounter,
     setChartActionCounter,
+    chartActionCounterState,
+    getChartCompareCounter,
+    setChartCompareCounter,
+    chartCompareCounterState,
   }
 
   return (
