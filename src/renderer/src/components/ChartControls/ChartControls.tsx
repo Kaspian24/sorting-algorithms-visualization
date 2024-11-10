@@ -33,7 +33,7 @@ export default function ChartControls() {
     handleReset,
     handleSetStep,
     handleDurationChange,
-    isRunningRef,
+    isRunningState,
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true
@@ -47,7 +47,7 @@ export default function ChartControls() {
       >
         <ChevronLeft />
       </Button>
-      {isRunningRef.current ? (
+      {isRunningState ? (
         <Button
           onClick={handleStop}
           variant="ghost"

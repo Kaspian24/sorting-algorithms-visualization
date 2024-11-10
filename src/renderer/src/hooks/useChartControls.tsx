@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { CHART_ACTION } from '@renderer/types/types'
 
@@ -13,6 +13,7 @@ export default function useChartControls() {
   } = useChartsInfo()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
+  const [isRunningState, setIsRunningState] = useState<boolean>(false)
 
   /** returns `areAllSorted` */
   function sortAll() {
@@ -41,6 +42,7 @@ export default function useChartControls() {
     directionForwardRef.current = true
     handleStop()
     isRunningRef.current = true
+    setIsRunningState(isRunningRef.current)
     sortAll()
     continueSort()
   }
@@ -48,6 +50,7 @@ export default function useChartControls() {
   function continueSort() {
     intervalRef.current = setTimeout(() => {
       isRunningRef.current = true
+      setIsRunningState(isRunningRef.current)
       const areAllSorted = sortAll()
       if (areAllSorted) {
         handleStop()
@@ -59,6 +62,7 @@ export default function useChartControls() {
   function handleStop() {
     if (intervalRef.current) {
       isRunningRef.current = false
+      setIsRunningState(isRunningRef.current)
       clearTimeout(intervalRef.current)
     }
   }
@@ -103,6 +107,6 @@ export default function useChartControls() {
     handleReset,
     handleSetStep,
     handleDurationChange,
-    isRunningRef,
+    isRunningState,
   }
 }
