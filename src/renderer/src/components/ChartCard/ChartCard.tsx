@@ -44,10 +44,10 @@ function ChartCard({
   const { chartConfig, renderCustomizedLabel } = useChartCard(sortingAlgorithm)
   const {
     chartDataRef,
-    compareActionCounterState,
-    highlightCounterRef,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
+    chartActionCounterState: compareActionCounterState,
+    chartCompareCounterRef: highlightCounterRef,
+    maxChartActionCounterRef: maxCompareActionCounterRef,
+    maxChartCompareCounterRef: maxHighlightCounterRef,
   } = useChartState()
   const {
     setAlgorithmVisibility,

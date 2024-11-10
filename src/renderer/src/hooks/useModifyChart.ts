@@ -2,45 +2,45 @@ import { useCallback } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import {
+  CHART_ACTION,
+  ChartAction,
   ChartDataField,
-  COMPARE_ACTION,
-  CompareAction,
 } from '@renderer/types/types'
 
 interface CompareParams {
   chartData: ChartDataField[]
   first: number
   second: number
-  compareAction: CompareAction
+  chartAction: ChartAction
   duration: number
   isForward: boolean
 }
 
-function compareFunction({
+function modifyChartFunction({
   chartData,
   first,
   second,
-  compareAction,
+  chartAction,
   duration,
   isForward,
 }: CompareParams) {
   const distance = (Math.abs(first - second) / chartData.length) * 100
 
   const transitionProperty =
-    (compareAction === COMPARE_ACTION.ANIMATE_SWAP && isForward === true) ||
-    (compareAction === COMPARE_ACTION.MATCH && isForward === false)
+    (chartAction === CHART_ACTION.ANIMATE_SWAP && isForward === true) ||
+    (chartAction === CHART_ACTION.MATCH && isForward === false)
       ? 'transform'
       : 'none'
 
   const colorFirst =
-    compareAction === COMPARE_ACTION.MATCH ||
-    compareAction === COMPARE_ACTION.ANIMATE_SWAP
+    chartAction === CHART_ACTION.MATCH ||
+    chartAction === CHART_ACTION.ANIMATE_SWAP
       ? 'var(--color-swap)'
       : 'var(--color-first)'
 
   const colorSecond =
-    compareAction === COMPARE_ACTION.MATCH ||
-    compareAction === COMPARE_ACTION.ANIMATE_SWAP
+    chartAction === CHART_ACTION.MATCH ||
+    chartAction === CHART_ACTION.ANIMATE_SWAP
       ? 'var(--color-swap)'
       : 'var(--color-second)'
 
@@ -48,7 +48,7 @@ function compareFunction({
     return {
       ...data,
       fill:
-        compareAction === COMPARE_ACTION.FINISHED
+        chartAction === CHART_ACTION.FINISHED
           ? 'var(--color-finished)'
           : index === first
             ? colorFirst
@@ -60,7 +60,7 @@ function compareFunction({
         transitionProperty,
         transitionDuration: `${duration}ms`,
         transform:
-          compareAction === COMPARE_ACTION.ANIMATE_SWAP
+          chartAction === CHART_ACTION.ANIMATE_SWAP
             ? index === first
               ? `translateX(${distance}%)`
               : index === second
@@ -70,7 +70,7 @@ function compareFunction({
       },
     }
   })
-  if (compareAction === COMPARE_ACTION.SWAP) {
+  if (chartAction === CHART_ACTION.SWAP) {
     ;[newChartData[first], newChartData[second]] = [
       newChartData[second],
       newChartData[first],
@@ -79,116 +79,116 @@ function compareFunction({
   return newChartData
 }
 
-export default function useCompare() {
+export default function useModifyChart() {
   const { defaultChartData, directionForwardRef, durationRef } = useChartsInfo()
   const {
     chartDataRef,
-    highlightCounterRef,
-    compareActionCounterRef,
-    setCompareActionCounter,
+    chartCompareCounterRef,
+    chartActionCounterRef,
+    setChartActionCounter: setCompareActionCounter,
   } = useChartState()
 
-  const compare = useCallback(
+  const modifyChart = useCallback(
     ({ chartData, first, second, compareAction }) => {
-      if (compareAction !== COMPARE_ACTION.SWAP) {
-        compareActionCounterRef.current += 1
+      if (compareAction !== CHART_ACTION.SWAP) {
+        chartActionCounterRef.current += 1
       }
-      if (compareAction === COMPARE_ACTION.HIGHLIGHT) {
-        highlightCounterRef.current += 1
+      if (compareAction === CHART_ACTION.COMPARE) {
+        chartCompareCounterRef.current += 1
       }
       const duration = durationRef.current
       const isForward = directionForwardRef.current
 
-      chartDataRef.current = compareFunction({
+      chartDataRef.current = modifyChartFunction({
         chartData,
         first,
         second,
-        compareAction,
+        chartAction: compareAction,
         duration,
         isForward,
       })
-      setCompareActionCounter(compareActionCounterRef.current)
+      setCompareActionCounter(chartActionCounterRef.current)
     },
     [
       chartDataRef,
-      compareActionCounterRef,
+      chartActionCounterRef,
       directionForwardRef,
       durationRef,
-      highlightCounterRef,
+      chartCompareCounterRef,
       setCompareActionCounter,
     ],
   )
 
   const reset = useCallback(() => {
     chartDataRef.current = defaultChartData
-    compareActionCounterRef.current = 0
-    highlightCounterRef.current = 0
-    setCompareActionCounter(compareActionCounterRef.current)
+    chartActionCounterRef.current = 0
+    chartCompareCounterRef.current = 0
+    setCompareActionCounter(chartActionCounterRef.current)
   }, [
     chartDataRef,
-    compareActionCounterRef,
+    chartActionCounterRef,
     defaultChartData,
-    highlightCounterRef,
+    chartCompareCounterRef,
     setCompareActionCounter,
   ])
 
-  const highlight = useCallback(
+  const compare = useCallback(
     (first: number, second: number) =>
-      compare({
+      modifyChart({
         chartData: chartDataRef.current,
         first,
         second,
-        compareAction: COMPARE_ACTION.HIGHLIGHT,
+        compareAction: CHART_ACTION.COMPARE,
       }),
-    [chartDataRef, compare],
+    [chartDataRef, modifyChart],
   )
 
   const match = useCallback(
     (first: number, second: number) =>
-      compare({
+      modifyChart({
         chartData: chartDataRef.current,
         first,
         second,
-        compareAction: COMPARE_ACTION.MATCH,
+        compareAction: CHART_ACTION.MATCH,
       }),
-    [chartDataRef, compare],
+    [chartDataRef, modifyChart],
   )
 
   const animateSwap = useCallback(
     (first: number, second: number) =>
-      compare({
+      modifyChart({
         chartData: chartDataRef.current,
         first,
         second,
-        compareAction: COMPARE_ACTION.ANIMATE_SWAP,
+        compareAction: CHART_ACTION.ANIMATE_SWAP,
       }),
-    [chartDataRef, compare],
+    [chartDataRef, modifyChart],
   )
 
   const swap = useCallback(
     (first: number, second: number) =>
-      compare({
+      modifyChart({
         chartData: chartDataRef.current,
         first,
         second,
-        compareAction: COMPARE_ACTION.SWAP,
+        compareAction: CHART_ACTION.SWAP,
       }),
-    [chartDataRef, compare],
+    [chartDataRef, modifyChart],
   )
 
   const finish = useCallback(
     () =>
-      compare({
+      modifyChart({
         chartData: chartDataRef.current,
         first: 0,
         second: 0,
-        compareAction: COMPARE_ACTION.FINISHED,
+        compareAction: CHART_ACTION.FINISHED,
       }),
-    [chartDataRef, compare],
+    [chartDataRef, modifyChart],
   )
 
   return {
-    highlight,
+    compare,
     match,
     animateSwap,
     swap,

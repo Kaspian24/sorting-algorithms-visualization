@@ -1,43 +1,43 @@
 import { useRef, useState } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
-import { COMPARE_ACTION } from '@renderer/types/types'
+import { CHART_ACTION } from '@renderer/types/types'
 
 export default function useChartControls() {
   const {
-    chartInfoData: controlData,
+    chartInfoData,
     durationRef,
-    globalCompareActionCounterRef,
-    globalMaxCompareActionCounterRef,
+    globalChartActionCounterRef,
+    globalMaxChartActionCounterRef,
     directionForwardRef,
   } = useChartsInfo()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
 
-  const [, setCompareActionCounter] = useState(0) // trigger re-render
+  const [, setChartActionCounter] = useState(0) // trigger re-render
   const [isRunningState, setIsRunningState] = useState(false)
 
   /** returns `areAllSorted` */
   function sortAll() {
     let areAllSorted = true
-    controlData.current.forEach((data) => {
+    chartInfoData.current.forEach((data) => {
       data.current.sortFunction()
-      if (data.current.compareActionRef.current !== COMPARE_ACTION.FINISHED) {
+      if (data.current.chartActionRef.current !== CHART_ACTION.FINISHED) {
         areAllSorted = false
       }
     })
-    globalCompareActionCounterRef.current += 1
+    globalChartActionCounterRef.current += 1
     if (areAllSorted) {
-      globalCompareActionCounterRef.current =
-        globalMaxCompareActionCounterRef.current
+      globalChartActionCounterRef.current =
+        globalMaxChartActionCounterRef.current
     }
-    setCompareActionCounter(globalCompareActionCounterRef.current)
+    setChartActionCounter(globalChartActionCounterRef.current)
     return areAllSorted
   }
 
   function resetAll() {
-    globalCompareActionCounterRef.current = 0
-    setCompareActionCounter(globalCompareActionCounterRef.current)
-    controlData.current.forEach((data) => {
+    globalChartActionCounterRef.current = 0
+    setChartActionCounter(globalChartActionCounterRef.current)
+    chartInfoData.current.forEach((data) => {
       data.current.reset()
     })
   }
@@ -84,11 +84,11 @@ export default function useChartControls() {
 
   function handleSetStep(step: number) {
     handleStop()
-    directionForwardRef.current = globalCompareActionCounterRef.current < step
+    directionForwardRef.current = globalChartActionCounterRef.current < step
     if (!directionForwardRef.current) {
       handleReset()
     }
-    while (globalCompareActionCounterRef.current < step) {
+    while (globalChartActionCounterRef.current < step) {
       const areAllSorted = sortAll()
       if (areAllSorted) {
         break

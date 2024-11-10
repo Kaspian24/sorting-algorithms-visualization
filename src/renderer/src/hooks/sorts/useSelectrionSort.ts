@@ -1,11 +1,11 @@
 import { useCallback, useRef } from 'react'
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
-import useCompare from '@renderer/hooks/useCompare'
-import { COMPARE_ACTION, UseSort } from '@renderer/types/types'
+import useModifyChart from '@renderer/hooks/useModifyChart'
+import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
 export const useSelectionSort: UseSort = () => {
-  const { chartDataRef, compareActionRef } = useChartState()
-  const { highlight, match, animateSwap, swap, finish, reset } = useCompare()
+  const { chartDataRef, chartActionRef } = useChartState()
+  const { compare, match, animateSwap, swap, finish, reset } = useModifyChart()
 
   const iRef = useRef(0)
   const jRef = useRef(1)
@@ -15,24 +15,24 @@ export const useSelectionSort: UseSort = () => {
     let i = iRef.current
     let j = jRef.current
     let minIndex = minIndexRef.current
-    let compareAction = compareActionRef.current
+    let compareAction = chartActionRef.current
     const arr = chartDataRef.current
     const n = arr.length
 
     function selectionSortFunction() {
-      if (compareAction === COMPARE_ACTION.FINISHED) {
+      if (compareAction === CHART_ACTION.FINISHED) {
         return
       }
 
-      if (compareAction === COMPARE_ACTION.ANIMATE_SWAP) {
+      if (compareAction === CHART_ACTION.ANIMATE_SWAP) {
         animateSwap(i, minIndex)
-        compareAction = COMPARE_ACTION.SWAP
+        compareAction = CHART_ACTION.SWAP
         return
       }
 
-      if (compareAction === COMPARE_ACTION.SWAP) {
+      if (compareAction === CHART_ACTION.SWAP) {
         swap(i, minIndex)
-        compareAction = COMPARE_ACTION.HIGHLIGHT
+        compareAction = CHART_ACTION.COMPARE
         i++
         j = i + 1
         minIndex = i
@@ -40,7 +40,7 @@ export const useSelectionSort: UseSort = () => {
 
       for (; i < n - 1; ) {
         for (; j < n; ) {
-          highlight(j, minIndex)
+          compare(j, minIndex)
           if (arr[j].number < arr[minIndex].number) {
             minIndex = j
           }
@@ -48,11 +48,11 @@ export const useSelectionSort: UseSort = () => {
           return
         }
         match(i, minIndex)
-        compareAction = COMPARE_ACTION.ANIMATE_SWAP
+        compareAction = CHART_ACTION.ANIMATE_SWAP
         return
       }
       finish()
-      compareAction = COMPARE_ACTION.FINISHED
+      compareAction = CHART_ACTION.FINISHED
       return
     }
 
@@ -60,24 +60,16 @@ export const useSelectionSort: UseSort = () => {
     iRef.current = i
     jRef.current = j
     minIndexRef.current = minIndex
-    compareActionRef.current = compareAction
-  }, [
-    animateSwap,
-    chartDataRef,
-    compareActionRef,
-    finish,
-    highlight,
-    match,
-    swap,
-  ])
+    chartActionRef.current = compareAction
+  }, [animateSwap, chartDataRef, chartActionRef, finish, compare, match, swap])
 
   const selectionSortReset = useCallback(() => {
     iRef.current = 0
     jRef.current = 1
     minIndexRef.current = 0
-    compareActionRef.current = COMPARE_ACTION.HIGHLIGHT
+    chartActionRef.current = CHART_ACTION.COMPARE
     reset()
-  }, [compareActionRef, reset])
+  }, [chartActionRef, reset])
 
   return {
     sortFunction: selectionSort,

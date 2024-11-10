@@ -3,8 +3,8 @@ import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import { ChartConfig } from '@renderer/components/ui/Chart'
 import {
+  CHART_ACTION,
   ChartInfoData,
-  COMPARE_ACTION,
   SortingAlgorithm,
 } from '@renderer/types/types'
 import { LabelProps } from 'recharts'
@@ -87,32 +87,32 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   const {
     addChartInfoData,
     removeChartInfoData,
-    globalCompareActionCounterRef,
+    globalChartActionCounterRef: globalCompareActionCounterRef,
   } = useChartsInfo()
   const { sortFunction, reset } = sortingAlgorithm()
   const {
     chartDataRef,
-    compareActionRef,
-    compareActionCounterRef,
-    highlightCounterRef,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
-    setMaxCompareActionCounter,
+    chartActionRef: compareActionRef,
+    chartActionCounterRef: compareActionCounterRef,
+    chartCompareCounterRef: highlightCounterRef,
+    maxChartActionCounterRef: maxCompareActionCounterRef,
+    maxChartCompareCounterRef: maxHighlightCounterRef,
+    setMaxChartActionCounter: setMaxCompareActionCounter,
   } = useChartState()
 
   const controlData = useRef<ChartInfoData>({
     sortFunction,
     reset,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
+    maxChartActionCounterRef: maxCompareActionCounterRef,
+    maxChartCompareCounterRef: maxHighlightCounterRef,
     chartDataRef,
-    compareActionRef,
-    compareActionCounterRef,
-    highlightCounterRef,
+    chartActionRef: compareActionRef,
+    chartActionCounterRef: compareActionCounterRef,
+    chartCompareCounterRef: highlightCounterRef,
   })
 
   useEffect(() => {
-    while (compareActionRef.current !== COMPARE_ACTION.FINISHED) {
+    while (compareActionRef.current !== CHART_ACTION.FINISHED) {
       sortFunction()
     }
     maxCompareActionCounterRef.current = compareActionCounterRef.current
@@ -121,7 +121,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
     while (
       compareActionCounterRef.current < globalCompareActionCounterRef.current &&
-      compareActionRef.current !== COMPARE_ACTION.FINISHED
+      compareActionRef.current !== CHART_ACTION.FINISHED
     ) {
       sortFunction()
     }

@@ -21,8 +21,10 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const { globalCompareActionCounterRef, globalMaxCompareActionCounterRef } =
-    useChartsInfo()
+  const {
+    globalChartActionCounterRef: globalCompareActionCounterRef,
+    globalMaxChartActionCounterRef: globalMaxCompareActionCounterRef,
+  } = useChartsInfo()
   const {
     handleStart,
     handleStop,

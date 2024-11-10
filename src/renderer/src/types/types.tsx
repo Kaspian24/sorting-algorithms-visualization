@@ -1,14 +1,14 @@
 import { useSelectionSort } from '@renderer/hooks/sorts/useSelectrionSort'
 
-export const COMPARE_ACTION = {
-  HIGHLIGHT: 'HIGHLIGHT',
+export const CHART_ACTION = {
+  COMPARE: 'COMPARE',
   MATCH: 'MATCH',
   ANIMATE_SWAP: 'ANIMATE_SWAP',
   SWAP: 'SWAP',
   FINISHED: 'FINISHED',
 } as const
 
-export type CompareAction = (typeof COMPARE_ACTION)[keyof typeof COMPARE_ACTION]
+export type ChartAction = (typeof CHART_ACTION)[keyof typeof CHART_ACTION]
 
 export interface UseSort {
   (): {
@@ -46,12 +46,12 @@ export interface ChartDataField {
 export interface ChartInfoData {
   sortFunction: () => void
   reset: () => void
-  maxCompareActionCounterRef: React.MutableRefObject<number>
-  maxHighlightCounterRef: React.MutableRefObject<number>
+  maxChartActionCounterRef: React.MutableRefObject<number>
+  maxChartCompareCounterRef: React.MutableRefObject<number>
   chartDataRef: React.MutableRefObject<ChartDataField[]>
-  compareActionCounterRef: React.MutableRefObject<number>
-  highlightCounterRef: React.MutableRefObject<number>
-  compareActionRef: React.MutableRefObject<CompareAction>
+  chartActionCounterRef: React.MutableRefObject<number>
+  chartCompareCounterRef: React.MutableRefObject<number>
+  chartActionRef: React.MutableRefObject<ChartAction>
 }
 
 export const DRAG_ITEM_TYPE = {

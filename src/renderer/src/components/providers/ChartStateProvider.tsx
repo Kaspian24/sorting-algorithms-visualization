@@ -1,21 +1,21 @@
 import { createContext, ReactNode, useContext, useRef, useState } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import {
+  CHART_ACTION,
+  ChartAction,
   ChartDataField,
-  COMPARE_ACTION,
-  CompareAction,
 } from '@renderer/types/types'
 
 interface ChartStateContextType {
   chartDataRef: React.MutableRefObject<ChartDataField[]>
-  compareActionCounterRef: React.MutableRefObject<number>
-  highlightCounterRef: React.MutableRefObject<number>
-  compareActionRef: React.MutableRefObject<CompareAction>
-  maxCompareActionCounterRef: React.MutableRefObject<number>
-  maxHighlightCounterRef: React.MutableRefObject<number>
-  setMaxCompareActionCounter: React.Dispatch<React.SetStateAction<number>>
-  compareActionCounterState: number
-  setCompareActionCounter: React.Dispatch<React.SetStateAction<number>>
+  chartActionCounterRef: React.MutableRefObject<number>
+  chartCompareCounterRef: React.MutableRefObject<number>
+  chartActionRef: React.MutableRefObject<ChartAction>
+  maxChartActionCounterRef: React.MutableRefObject<number>
+  maxChartCompareCounterRef: React.MutableRefObject<number>
+  setMaxChartActionCounter: React.Dispatch<React.SetStateAction<number>>
+  chartActionCounterState: number
+  setChartActionCounter: React.Dispatch<React.SetStateAction<number>>
 }
 
 const ChartStateContext = createContext<ChartStateContextType | undefined>(
@@ -28,27 +28,26 @@ interface ChartStateProviderProps {
 
 export function ChartStateProvider({ children }: ChartStateProviderProps) {
   const { defaultChartData } = useChartsInfo()
-  const maxCompareActionCounterRef = useRef<number>(0)
-  const maxHighlightCounterRef = useRef<number>(0)
+  const maxChartActionCounterRef = useRef<number>(0)
+  const maxChartCompareCounterRef = useRef<number>(0)
   const chartDataRef = useRef<ChartDataField[]>(defaultChartData)
-  const compareActionRef = useRef<CompareAction>(COMPARE_ACTION.HIGHLIGHT)
-  const compareActionCounterRef = useRef<number>(0)
-  const highlightCounterRef = useRef<number>(0)
+  const chartActionRef = useRef<ChartAction>(CHART_ACTION.COMPARE)
+  const chartActionCounterRef = useRef<number>(0)
+  const chartCompareCounterRef = useRef<number>(0)
 
-  const [compareActionCounterState, setCompareActionCounter] =
-    useState<number>(0)
-  const [, setMaxCompareActionCounter] = useState<number>(0)
+  const [chartActionCounterState, setChartActionCounter] = useState<number>(0)
+  const [, setMaxChartActionCounter] = useState<number>(0)
 
   const value: ChartStateContextType = {
     chartDataRef,
-    highlightCounterRef,
-    compareActionCounterRef,
-    compareActionRef,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
-    setMaxCompareActionCounter,
-    compareActionCounterState,
-    setCompareActionCounter,
+    chartCompareCounterRef,
+    chartActionCounterRef,
+    chartActionRef,
+    maxChartActionCounterRef,
+    maxChartCompareCounterRef,
+    setMaxChartActionCounter,
+    chartActionCounterState,
+    setChartActionCounter,
   }
 
   return (
