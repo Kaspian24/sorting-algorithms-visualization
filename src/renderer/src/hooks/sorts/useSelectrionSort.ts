@@ -17,7 +17,7 @@ export const useSelectionSort: UseSort = () => {
     let minIndex = minIndexRef.current
     let compareAction = chartActionRef.current
 
-    const arr = getChartData()
+    let arr = getChartData()
     const n = arr.length
 
     function selectionSortFunction() {
@@ -33,6 +33,7 @@ export const useSelectionSort: UseSort = () => {
 
       if (compareAction === CHART_ACTION.SWAP) {
         swap(i, minIndex)
+        arr = getChartData()
         compareAction = CHART_ACTION.COMPARE
         i++
         j = i + 1
