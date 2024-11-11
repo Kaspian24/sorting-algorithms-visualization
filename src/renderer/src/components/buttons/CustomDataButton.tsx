@@ -29,7 +29,7 @@ export default function CustomDataButton() {
         <Button variant="outline">Custom Data</Button>
       </DialogTrigger>
       <DialogContent
-        className="flex h-3/6 min-h-64 w-1/6 min-w-fit flex-col"
+        className="flex h-3/6 min-h-64 w-96 min-w-fit flex-col"
         onOpenAutoFocus={() => form.reset()}
       >
         <DialogHeader>
@@ -50,40 +50,60 @@ export default function CustomDataButton() {
                     name={`numbers.${index}.number`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormControl>
+                        <div className="flex justify-between gap-2">
+                          <div className="flex items-end gap-2">
+                            <p className="w-8">{index + 1}.</p>
+                            <FormControl>
+                              <Input
+                                className="w-16 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                type="number"
+                                placeholder="number"
+                                {...field}
+                              />
+                            </FormControl>
+                          </div>
+                          <FormMessage />
                           <div className="flex justify-center gap-2">
-                            <Input
-                              className="w-2/3 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                              type="number"
-                              placeholder="number"
-                              {...field}
-                            />
                             <Button
                               asChild
                               variant="outline"
                               className="p-0"
-                              onClick={() => insert(index + 1, { number: 0 })}
+                              onClick={() =>
+                                insert(index + 1, {
+                                  number: Math.floor(Math.random() * 51 + 1),
+                                })
+                              }
                             >
                               <Plus />
                             </Button>
-                            <Button
-                              asChild
-                              variant="outline"
-                              className="p-0"
-                              onClick={() => fields.length > 5 && remove(index)}
-                            >
-                              <X />
-                            </Button>
+                            {fields.length > 1 && (
+                              <Button
+                                asChild
+                                variant="outline"
+                                className="p-0"
+                                onClick={() =>
+                                  fields.length > 1 && remove(index)
+                                }
+                              >
+                                <X />
+                              </Button>
+                            )}
                           </div>
-                        </FormControl>
-                        <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
                 ))}
               </div>
             </ScrollArea>
-            <DialogFooter className="pt-2">
+            <DialogFooter className="pt-2 sm:justify-between">
+              <FormField
+                control={form.control}
+                name={`numbers`}
+                render={() => (
+                  <FormItem>{fields.length < 5 && <FormMessage />}</FormItem>
+                )}
+              />
               <Button type="submit">Save changes</Button>
             </DialogFooter>
           </form>

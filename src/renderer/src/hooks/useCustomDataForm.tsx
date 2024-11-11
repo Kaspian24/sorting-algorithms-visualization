@@ -11,11 +11,16 @@ export default function useCustomDataForm() {
   }
 
   const numberObj = z.object({
-    number: z.coerce.number().int().nonnegative(),
+    number: z.coerce
+      .number()
+      .int({ message: 'Number must be an integer' })
+      .positive({ message: 'Number must be positive' }),
   })
 
   const CustomDataSchema = z.object({
-    numbers: z.array(numberObj).min(5),
+    numbers: numberObj
+      .array()
+      .min(5, { message: 'There must be at least 5 numbers' }),
   })
 
   const form = useForm<z.infer<typeof CustomDataSchema>>({
@@ -27,7 +32,6 @@ export default function useCustomDataForm() {
   const { fields, remove, insert } = useFieldArray({
     control: form.control,
     name: 'numbers',
-    rules: { minLength: 5 },
   })
 
   const onSubmit = (values: z.infer<typeof CustomDataSchema>) => {
