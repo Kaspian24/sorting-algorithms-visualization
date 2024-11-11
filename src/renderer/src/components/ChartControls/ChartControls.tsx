@@ -21,8 +21,11 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const { globalCompareActionCounterRef, globalMaxCompareActionCounterRef } =
-    useChartsInfo()
+  const {
+    getGlobalChartActionCounter,
+    globalChartActionCounterState,
+    globalMaxChartActionCounterState,
+  } = useChartsInfo()
   const {
     handleStart,
     handleStop,
@@ -31,14 +34,15 @@ export default function ChartControls() {
     handleSetStep,
     handleDurationChange,
     isRunningState,
+    setTempStep,
   } = useChartControls()
 
-  const allHidden = globalMaxCompareActionCounterRef.current ? false : true
+  const allHidden = globalMaxChartActionCounterState ? false : true
 
   return (
     <>
       <Button
-        onClick={() => handleSetStep(globalCompareActionCounterRef.current - 1)}
+        onClick={() => handleSetStep(getGlobalChartActionCounter() - 1)}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -76,7 +80,7 @@ export default function ChartControls() {
         <RotateCcw />
       </Button>
       <Button
-        onClick={() => handleSetStep(globalMaxCompareActionCounterRef.current)}
+        onClick={() => handleSetStep(globalMaxChartActionCounterState)}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -84,10 +88,10 @@ export default function ChartControls() {
       </Button>
       <Slider
         className={`w-1/2 ${allHidden && 'opacity-50'}`}
-        rangeClassName={`${globalCompareActionCounterRef.current === globalMaxCompareActionCounterRef.current && 'bg-red-400'}`}
-        value={[!allHidden ? globalCompareActionCounterRef.current : 0]}
-        max={globalMaxCompareActionCounterRef.current}
-        onValueChange={(value) => handleSetStep(value[0])}
+        rangeClassName={`${globalChartActionCounterState === globalMaxChartActionCounterState && 'bg-red-400'}`}
+        value={[!allHidden ? globalChartActionCounterState : 0]}
+        max={globalMaxChartActionCounterState}
+        onValueChange={(value) => setTempStep(value[0])}
         step={1}
       />
       <Select onValueChange={(value) => handleDurationChange(Number(value))}>

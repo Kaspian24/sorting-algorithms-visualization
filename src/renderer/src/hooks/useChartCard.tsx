@@ -3,8 +3,8 @@ import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import { ChartConfig } from '@renderer/components/ui/Chart'
 import {
+  CHART_ACTION,
   ChartInfoData,
-  COMPARE_ACTION,
   SortingAlgorithm,
 } from '@renderer/types/types'
 import { LabelProps } from 'recharts'
@@ -87,64 +87,70 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   const {
     addChartInfoData,
     removeChartInfoData,
-    globalCompareActionCounterRef,
+    getGlobalChartActionCounter,
+    getDefaultChartData,
+    defaultChartDataState,
   } = useChartsInfo()
   const { sortFunction, reset } = sortingAlgorithm()
   const {
-    chartDataRef,
-    compareActionRef,
-    compareActionCounterRef,
-    highlightCounterRef,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
-    setMaxCompareActionCounter,
+    getChartData,
+    setChartData,
+    getChartActionCounter,
+    getChartCompareCounter,
+    getMaxChartActionCounter,
+    getMaxChartCompareCounter,
+    chartActionRef,
+    setMaxChartActionCounter,
+    setMaxChartCompareCounter,
   } = useChartState()
 
   const controlData = useRef<ChartInfoData>({
     sortFunction,
     reset,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
-    chartDataRef,
-    compareActionRef,
-    compareActionCounterRef,
-    highlightCounterRef,
+    getChartData,
+    getChartActionCounter,
+    getChartCompareCounter,
+    getMaxChartActionCounter,
+    getMaxChartCompareCounter,
+    chartActionRef,
   })
 
   useEffect(() => {
-    while (compareActionRef.current !== COMPARE_ACTION.FINISHED) {
+    while (chartActionRef.current !== CHART_ACTION.FINISHED) {
       sortFunction()
     }
-    maxCompareActionCounterRef.current = compareActionCounterRef.current
-    maxHighlightCounterRef.current = highlightCounterRef.current
+    setMaxChartActionCounter(getChartActionCounter())
+    setMaxChartCompareCounter(getChartCompareCounter())
     reset()
 
     while (
-      compareActionCounterRef.current < globalCompareActionCounterRef.current &&
-      compareActionRef.current !== COMPARE_ACTION.FINISHED
+      getChartActionCounter() < getGlobalChartActionCounter() &&
+      chartActionRef.current !== CHART_ACTION.FINISHED
     ) {
       sortFunction()
     }
-
-    setMaxCompareActionCounter(maxCompareActionCounterRef.current)
 
     addChartInfoData(controlData)
 
     return () => {
       removeChartInfoData(controlData)
+      setChartData(getDefaultChartData())
+      reset()
     }
   }, [
     addChartInfoData,
-    compareActionCounterRef,
-    compareActionRef,
-    globalCompareActionCounterRef,
-    highlightCounterRef,
-    maxCompareActionCounterRef,
-    maxHighlightCounterRef,
+    chartActionRef,
     removeChartInfoData,
     reset,
-    setMaxCompareActionCounter,
     sortFunction,
+    getGlobalChartActionCounter,
+    setMaxChartActionCounter,
+    getChartActionCounter,
+    setMaxChartCompareCounter,
+    getChartCompareCounter,
+    defaultChartDataState,
+    setChartData,
+    getDefaultChartData,
   ])
 
   return {

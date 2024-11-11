@@ -23,10 +23,15 @@ interface ChartsInfoContextType {
     removedData: React.MutableRefObject<ChartInfoData>,
   ) => void
   durationRef: React.MutableRefObject<number>
-  globalCompareActionCounterRef: React.MutableRefObject<number>
-  globalMaxCompareActionCounterRef: React.MutableRefObject<number>
-  defaultChartData: ChartDataField[]
-  setDefaultChartData: React.Dispatch<React.SetStateAction<ChartDataField[]>>
+  getGlobalChartActionCounter: () => number
+  setGlobalChartActionCounter: (value: number) => void
+  globalChartActionCounterState: number
+  getGlobalMaxChartActionCounter: () => number
+  setGlobalMaxChartActionCounter: (value: number) => void
+  globalMaxChartActionCounterState: number
+  getDefaultChartData: () => ChartDataField[]
+  setDefaultChartData: (numbers: number[]) => void
+  defaultChartDataState: ChartDataField[]
   directionForwardRef: React.MutableRefObject<boolean>
   algorithmsVisibilityData: AlgorithmVisibilityData[]
   setAlgorithmVisibility: (
@@ -56,11 +61,7 @@ interface ChartsInfoProviderProps {
   children: ReactNode
 }
 
-function generateStarterDefaultChartData(): ChartDataField[] {
-  const numbers = [
-    40, 37, 35, 34, 33, 31, 5, 6, 7, 10, 11, 12, 13, 14, 15, 20, 25, 30,
-  ]
-
+function numbersToChartDataFieldArray(numbers: number[]): ChartDataField[] {
   return numbers.map((number) => ({
     number: number,
     fill: 'var(--color-default)',
@@ -73,48 +74,93 @@ function generateStarterDefaultChartData(): ChartDataField[] {
   }))
 }
 
-function generateStarterAlgorithmsVisibility(): AlgorithmVisibilityData[] {
+function generateInitialDefaultChartData(): ChartDataField[] {
+  const numbers = [
+    40, 37, 35, 34, 33, 31, 5, 6, 7, 10, 11, 12, 13, 14, 15, 20, 25, 30,
+  ]
+
+  return numbersToChartDataFieldArray(numbers)
+}
+
+const initialDefaultChartData = generateInitialDefaultChartData()
+
+function generateInitialAlgorithmsVisibility(): AlgorithmVisibilityData[] {
   return Object.keys(SORTING_ALGORITHM).map((algorithm) => ({
     algorithm: algorithm as keyof typeof SORTING_ALGORITHM,
     visible: false,
   }))
 }
 
-function generateStarterIsTransitioningRef(): DraggablesTransitionState {
+const initialAlgorithmsVisibility = generateInitialAlgorithmsVisibility()
+
+function generateInitialDraggablesTransitionStateRef(): DraggablesTransitionState {
   return Object.values(DRAG_ITEM_TYPE).reduce((acc, key) => {
     acc[key as DragItemType] = false
     return acc
   }, {} as DraggablesTransitionState)
 }
 
+const initialDraggablesTransitionState =
+  generateInitialDraggablesTransitionStateRef()
+
 export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   const chartInfoData = useRef<React.MutableRefObject<ChartInfoData>[]>([])
   const durationRef = useRef<number>(250)
-  const globalCompareActionCounterRef = useRef<number>(0)
-  const globalMaxCompareActionCounterRef = useRef<number>(0)
   const directionForwardRef = useRef<boolean>(true)
   const [algorithmsVisibilityData, setAlgorithmsVisibilityData] = useState<
     AlgorithmVisibilityData[]
-  >(generateStarterAlgorithmsVisibility())
+  >(initialAlgorithmsVisibility)
   const draggablesTransitionStateRef = useRef<DraggablesTransitionState>(
-    generateStarterIsTransitioningRef(),
+    initialDraggablesTransitionState,
   )
 
-  const [, setglobalMaxCompareActionCounter] = useState<number>(0)
-  const [defaultChartData, setDefaultChartData] = useState<ChartDataField[]>(
-    generateStarterDefaultChartData(),
-  )
+  const defaultChartDataRef = useRef<ChartDataField[]>(initialDefaultChartData)
+  const [defaultChartDataState, setDefaultChartDataState] = useState<
+    ChartDataField[]
+  >(initialDefaultChartData)
+  const getDefaultChartData = useCallback(() => {
+    return defaultChartDataRef.current
+  }, [])
+  const setDefaultChartData = useCallback((numbers: number[]) => {
+    defaultChartDataRef.current = numbersToChartDataFieldArray(numbers)
+    setDefaultChartDataState(defaultChartDataRef.current)
+  }, [])
+
+  const globalChartActionCounterRef = useRef<number>(0)
+  const [globalChartActionCounterState, setGlobalChartActionCounterState] =
+    useState<number>(0)
+  const getGlobalChartActionCounter = useCallback(() => {
+    return globalChartActionCounterRef.current
+  }, [])
+  const setGlobalChartActionCounter = useCallback((value: number) => {
+    globalChartActionCounterRef.current = value
+    setGlobalChartActionCounterState(value)
+  }, [])
+
+  const globalMaxChartActionCounterRef = useRef<number>(0)
+  const [
+    globalMaxChartActionCounterState,
+    setGlobalMaxChartActionCounterState,
+  ] = useState<number>(0)
+  const getGlobalMaxChartActionCounter = useCallback(() => {
+    return globalMaxChartActionCounterRef.current
+  }, [])
+  const setGlobalMaxChartActionCounter = useCallback((value: number) => {
+    globalMaxChartActionCounterRef.current = value
+    setGlobalMaxChartActionCounterState(value)
+  }, [])
 
   const addChartInfoData = useCallback(
     (addedData: React.MutableRefObject<ChartInfoData>) => {
       chartInfoData.current.push(addedData)
-      globalMaxCompareActionCounterRef.current = Math.max(
-        globalMaxCompareActionCounterRef.current,
-        addedData.current.maxCompareActionCounterRef.current,
+      setGlobalMaxChartActionCounter(
+        Math.max(
+          globalMaxChartActionCounterRef.current,
+          addedData.current.getMaxChartActionCounter(),
+        ),
       )
-      setglobalMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
     },
-    [],
+    [setGlobalMaxChartActionCounter],
   )
 
   const removeChartInfoData = useCallback(
@@ -122,14 +168,14 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
       chartInfoData.current = chartInfoData.current.filter(
         (data) => data !== removedData,
       )
-      globalMaxCompareActionCounterRef.current = chartInfoData.current.reduce(
-        (acc, data) =>
-          Math.max(acc, data.current.maxCompareActionCounterRef.current),
-        0,
+      setGlobalMaxChartActionCounter(
+        chartInfoData.current.reduce(
+          (acc, data) => Math.max(acc, data.current.getMaxChartActionCounter()),
+          0,
+        ),
       )
-      setglobalMaxCompareActionCounter(globalMaxCompareActionCounterRef.current)
     },
-    [],
+    [setGlobalMaxChartActionCounter],
   )
 
   const setAlgorithmVisibility = useCallback(
@@ -235,10 +281,15 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     addChartInfoData,
     removeChartInfoData,
     durationRef,
-    globalCompareActionCounterRef,
-    globalMaxCompareActionCounterRef,
-    defaultChartData,
+    getGlobalChartActionCounter,
+    setGlobalChartActionCounter,
+    globalChartActionCounterState,
+    getGlobalMaxChartActionCounter,
+    setGlobalMaxChartActionCounter,
+    globalMaxChartActionCounterState,
+    getDefaultChartData,
     setDefaultChartData,
+    defaultChartDataState,
     directionForwardRef,
     algorithmsVisibilityData,
     setAlgorithmVisibility,
