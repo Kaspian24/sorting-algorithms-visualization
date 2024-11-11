@@ -34,6 +34,7 @@ export default function ChartControls() {
     handleSetStep,
     handleDurationChange,
     isRunningState,
+    setTempStep,
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true
@@ -90,7 +91,7 @@ export default function ChartControls() {
         rangeClassName={`${globalChartActionCounterState === globalMaxChartActionCounterState && 'bg-red-400'}`}
         value={[!allHidden ? globalChartActionCounterState : 0]}
         max={globalMaxChartActionCounterState}
-        onValueChange={(value) => handleSetStep(value[0])}
+        onValueChange={(value) => setTempStep(value[0])}
         step={1}
       />
       <Select onValueChange={(value) => handleDurationChange(Number(value))}>

@@ -122,6 +122,12 @@ export default function useChartControls() {
     handleReset()
   }, [defaultChartDataState, handleReset])
 
+  const [tempStep, setTempStep] = useState(0)
+
+  useEffect(() => {
+    handleSetStep(tempStep)
+  }, [handleSetStep, tempStep])
+
   return {
     handleStart,
     handleStop,
@@ -130,5 +136,6 @@ export default function useChartControls() {
     handleSetStep,
     handleDurationChange,
     isRunningState,
+    setTempStep,
   }
 }
