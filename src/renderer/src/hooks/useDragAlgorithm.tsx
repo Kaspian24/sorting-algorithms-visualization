@@ -24,7 +24,7 @@ export default function useDragAlgorithm(
   const { swapAlgorithmsPosition, draggablesTransitionStateRef } =
     useChartsInfo()
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: ITEM_TYPE,
     item: () => ({ algorithm }),
     collect: (monitor) => ({
@@ -75,14 +75,16 @@ export default function useDragAlgorithm(
       const isCursorNearCenterY = hoverClientY > minY && hoverClientY < maxY
 
       if (
-        containerLayout !== DRAG_CONTAINER_LAYOUT.VERTICAL &&
+        (containerLayout === DRAG_CONTAINER_LAYOUT.HORIZONTAL ||
+          containerLayout === DRAG_CONTAINER_LAYOUT.GRID) &&
         !isCursorNearCenterX
       ) {
         return
       }
 
       if (
-        containerLayout !== DRAG_CONTAINER_LAYOUT.HORIZONTAL &&
+        (containerLayout === DRAG_CONTAINER_LAYOUT.VERTICAL ||
+          containerLayout === DRAG_CONTAINER_LAYOUT.GRID) &&
         !isCursorNearCenterY
       ) {
         return
@@ -93,5 +95,5 @@ export default function useDragAlgorithm(
   })
   drag(drop(ref))
 
-  return { isDragging, ref, handlerId }
+  return { isDragging, ref, handlerId, preview }
 }
