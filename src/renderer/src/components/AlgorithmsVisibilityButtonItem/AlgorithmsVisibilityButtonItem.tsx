@@ -9,6 +9,7 @@ import {
   SORTING_ALGORITHM,
 } from '@renderer/types/types'
 import constantToTitleCase from '@renderer/utils/constantToTitleCase'
+import { GripVertical } from 'lucide-react'
 
 export interface AlgorithmsVisibilityButtonItemProps {
   algorithm: keyof typeof SORTING_ALGORITHM
@@ -52,7 +53,9 @@ export default function AlgorithmsVisibilityButtonItem({
           {constantToTitleCase(algorithm)}
         </Label>
       </div>
-      <div ref={ref} className="h-4 w-4 bg-red-500"></div>
+      <div ref={ref}>
+        <GripVertical />
+      </div>
     </div>
   )
 }
