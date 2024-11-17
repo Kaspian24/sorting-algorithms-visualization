@@ -3,6 +3,7 @@ import {
   ChartStateProvider,
   useChartState,
 } from '@renderer/components/providers/ChartStateProvider'
+import { Button } from '@renderer/components/ui/Button'
 import {
   Card,
   CardContent,
@@ -28,6 +29,7 @@ import {
   SortingAlgorithm,
 } from '@renderer/types/types'
 import constantToTitleCase from '@renderer/utils/constantToTitleCase'
+import { X } from 'lucide-react'
 import { Bar, BarChart, LabelList } from 'recharts'
 
 export interface ChartCardProps {
@@ -68,8 +70,20 @@ function ChartCard({
     >
       <ContextMenu>
         <ContextMenuTrigger className="contents">
-          <CardHeader className="text-center">
-            <CardTitle>{constantToTitleCase(algorithm)}</CardTitle>
+          <CardHeader className="flex flex-row justify-between space-y-0 p-0 text-center">
+            <div className="flex-1" />
+            <div className="py-6">
+              <CardTitle>{constantToTitleCase(algorithm)}</CardTitle>
+            </div>
+            <div className="flex flex-1 justify-end pr-1 pt-1">
+              <Button
+                className="h-fit w-fit rounded-full p-1"
+                variant="outline"
+                onClick={() => setAlgorithmVisibility(algorithm, false)}
+              >
+                <X />
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="flex grow flex-col justify-center p-6 pt-0">
             <ChartContainer config={chartConfig} className="h-0 flex-auto">

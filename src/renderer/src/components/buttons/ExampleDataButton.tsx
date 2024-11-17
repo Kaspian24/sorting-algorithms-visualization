@@ -18,6 +18,12 @@ export default function ExampleDataButton() {
     setSmallReversed,
     setSmallDuplicates,
 
+    setMediumUnsorted,
+    setMediumPartiallySorted,
+    setMediumSorted,
+    setMediumReversed,
+    setMediumDuplicates,
+
     setLargeUnsorted,
     setLargePartiallySorted,
     setLargeSorted,
@@ -62,6 +68,29 @@ export default function ExampleDataButton() {
             </div>
             <div className="flex flex-col space-y-2">
               <p>30 numbers</p>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" onClick={() => setMediumUnsorted()}>
+                  Unsorted
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setMediumPartiallySorted()}
+                >
+                  Partially sorted
+                </Button>
+                <Button variant="outline" onClick={() => setMediumSorted()}>
+                  Sorted
+                </Button>
+                <Button variant="outline" onClick={() => setMediumReversed()}>
+                  Reversed
+                </Button>
+                <Button variant="outline" onClick={() => setMediumDuplicates()}>
+                  Multiple duplicates
+                </Button>
+              </div>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <p>100 numbers</p>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" onClick={() => setLargeUnsorted()}>
                   Unsorted
