@@ -76,7 +76,8 @@ function numbersToChartDataFieldArray(numbers: number[]): ChartDataField[] {
 
 function generateInitialDefaultChartData(): ChartDataField[] {
   const numbers = [
-    40, 37, 35, 34, 33, 31, 5, 6, 7, 10, 11, 12, 13, 14, 15, 20, 25, 30,
+    14, 28, 2, 22, 5, 17, 23, 8, 4, 12, 29, 7, 20, 10, 15, 26, 1, 9, 3, 18, 25,
+    11, 16, 30, 6, 19, 21, 24, 13, 27,
   ]
 
   return numbersToChartDataFieldArray(numbers)

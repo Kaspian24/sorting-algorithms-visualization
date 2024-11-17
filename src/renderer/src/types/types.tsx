@@ -67,6 +67,7 @@ export const DRAG_CONTAINER_LAYOUT = {
   HORIZONTAL: 'HORIZONTAL',
   VERTICAL: 'VERTICAL',
   GRID: 'GRID',
+  HANDLE: 'HANDLE',
 } as const
 
 export type DragContainerLayout =
