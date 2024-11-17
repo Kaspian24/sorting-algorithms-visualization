@@ -11,6 +11,7 @@ export default function useChartControls() {
     getGlobalMaxChartActionCounter,
     directionForwardRef,
     defaultChartDataState,
+    algorithmsVisibilityData,
   } = useChartsInfo()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
@@ -127,6 +128,12 @@ export default function useChartControls() {
   useEffect(() => {
     handleSetStep(tempStep)
   }, [handleSetStep, tempStep])
+
+  useEffect(() => {
+    if (algorithmsVisibilityData.every(({ visible }) => visible === false)) {
+      handleStop()
+    }
+  }, [algorithmsVisibilityData, handleStop])
 
   return {
     handleStart,
