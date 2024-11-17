@@ -79,6 +79,13 @@ function modifyChartFunction({
   return newChartData
 }
 
+interface ModifyChartParams {
+  chartData: ChartDataField[]
+  first: number
+  second: number
+  chartAction: ChartAction
+}
+
 export default function useModifyChart() {
   const { getDefaultChartData, directionForwardRef, durationRef } =
     useChartsInfo()
@@ -92,11 +99,11 @@ export default function useModifyChart() {
   } = useChartState()
 
   const modifyChart = useCallback(
-    ({ chartData, first, second, compareAction }) => {
-      if (compareAction !== CHART_ACTION.SWAP) {
+    ({ chartData, first, second, chartAction }: ModifyChartParams) => {
+      if (chartAction !== CHART_ACTION.SWAP) {
         setChartActionCounter(getChartActionCounter() + 1)
       }
-      if (compareAction === CHART_ACTION.COMPARE) {
+      if (chartAction === CHART_ACTION.COMPARE) {
         setChartCompareCounter(getChartCompareCounter() + 1)
       }
       const duration = durationRef.current
@@ -107,7 +114,7 @@ export default function useModifyChart() {
           chartData,
           first,
           second,
-          chartAction: compareAction,
+          chartAction,
           duration,
           isForward,
         }),
@@ -141,7 +148,7 @@ export default function useModifyChart() {
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.COMPARE,
+        chartAction: CHART_ACTION.COMPARE,
       }),
     [getChartData, modifyChart],
   )
@@ -152,7 +159,7 @@ export default function useModifyChart() {
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.MATCH,
+        chartAction: CHART_ACTION.MATCH,
       }),
     [getChartData, modifyChart],
   )
@@ -163,7 +170,7 @@ export default function useModifyChart() {
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.ANIMATE_SWAP,
+        chartAction: CHART_ACTION.ANIMATE_SWAP,
       }),
     [getChartData, modifyChart],
   )
@@ -174,7 +181,7 @@ export default function useModifyChart() {
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.SWAP,
+        chartAction: CHART_ACTION.SWAP,
       }),
     [getChartData, modifyChart],
   )
@@ -185,7 +192,7 @@ export default function useModifyChart() {
         chartData: getChartData(),
         first: 0,
         second: 0,
-        compareAction: CHART_ACTION.FINISHED,
+        chartAction: CHART_ACTION.FINISHED,
       }),
     [getChartData, modifyChart],
   )
