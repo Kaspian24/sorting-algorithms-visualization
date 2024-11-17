@@ -5,10 +5,13 @@ import Footer from '@renderer/components/Footer/Footer'
 import Header from '@renderer/components/Header/Header'
 import { ChartsInfoProvider } from '@renderer/components/providers/ChartsInfoProvider'
 import { ThemeProvider } from '@renderer/components/providers/ThemeProvider'
+import { ScrollArea } from '@renderer/components/ui/ScrollArea'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 
+const enableTanStackRouterDevtools = false
+
 const TanStackRouterDevtools =
-  process.env.NODE_ENV === 'production'
+  process.env.NODE_ENV === 'production' || !enableTanStackRouterDevtools
     ? () => null
     : React.lazy(() =>
         import('@tanstack/router-devtools').then((res) => ({
@@ -23,9 +26,11 @@ export const Route = createRootRoute({
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <ChartsInfoProvider>
             <Header />
-            <main className="h-0 flex-auto">
-              <Outlet />
-            </main>
+            <ScrollArea className="h-0 flex-auto">
+              <main className="h-full w-full">
+                <Outlet />
+              </main>
+            </ScrollArea>
             <Footer />
           </ChartsInfoProvider>
         </ThemeProvider>

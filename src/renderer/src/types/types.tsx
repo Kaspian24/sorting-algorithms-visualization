@@ -22,6 +22,12 @@ export const SORTING_ALGORITHM = {
   TEST_ONE: useSelectionSort,
   TEST_TWO: useSelectionSort,
   TEST_THREE: useSelectionSort,
+  TEST_1: useSelectionSort,
+  TEST_2: useSelectionSort,
+  TEST_3: useSelectionSort,
+  TEST_4: useSelectionSort,
+  TEST_5: useSelectionSort,
+  TEST_6: useSelectionSort,
 } as const
 
 export type SortingAlgorithm =

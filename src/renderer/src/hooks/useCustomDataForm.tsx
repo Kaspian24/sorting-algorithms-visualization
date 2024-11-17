@@ -14,13 +14,15 @@ export default function useCustomDataForm() {
     number: z.coerce
       .number()
       .int({ message: 'Number must be an integer' })
-      .positive({ message: 'Number must be positive' }),
+      .positive({ message: 'Number must be positive' })
+      .max(100, { message: 'Number cannot be higher than 100' }),
   })
 
   const CustomDataSchema = z.object({
     numbers: numberObj
       .array()
-      .min(5, { message: 'There must be at least 5 numbers' }),
+      .min(5, { message: 'There must be at least 5 numbers' })
+      .max(100, { message: 'There can be maximum of 100 numbers' }),
   })
 
   const form = useForm<z.infer<typeof CustomDataSchema>>({

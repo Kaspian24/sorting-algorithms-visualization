@@ -28,14 +28,14 @@ export default function ExampleDataButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Example data</Button>
+        <Button variant="outline">Example Data</Button>
       </DialogTrigger>
-      <DialogContent className="flex h-3/6 min-h-64 w-96 min-w-fit flex-col">
+      <DialogContent className="flex h-3/6 min-h-64 w-96 flex-col">
         <DialogHeader>
-          <DialogTitle>Example data</DialogTitle>
+          <DialogTitle>Example Data</DialogTitle>
           <DialogDescription>Choose example data.</DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-0 max-w-96 flex-auto">
+        <ScrollArea className="h-0 flex-auto">
           <div className="flex flex-col gap-y-2 pr-5">
             <div className="flex flex-col space-y-2">
               <p>10 numbers</p>
