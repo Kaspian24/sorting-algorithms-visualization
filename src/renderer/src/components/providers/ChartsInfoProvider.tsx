@@ -25,7 +25,7 @@ interface ChartsInfoContextType {
   durationRef: React.MutableRefObject<number>
   getGlobalChartActionCounter: () => number
   setGlobalChartActionCounter: (value: number) => void
-  globalChartActionCounterState: number
+  linkGlobalChartActionCounterSetState: (f: (value: number) => void) => void
   getGlobalMaxChartActionCounter: () => number
   setGlobalMaxChartActionCounter: (value: number) => void
   globalMaxChartActionCounterState: number
@@ -128,14 +128,21 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   }, [])
 
   const globalChartActionCounterRef = useRef<number>(0)
-  const [globalChartActionCounterState, setGlobalChartActionCounterState] =
-    useState<number>(0)
+  const globalChartActionCounterSetState = useRef<(value: number) => void>(
+    () => {},
+  )
+  const linkGlobalChartActionCounterSetState = useCallback(
+    (f: (value: number) => void) => {
+      globalChartActionCounterSetState.current = f
+    },
+    [],
+  )
   const getGlobalChartActionCounter = useCallback(() => {
     return globalChartActionCounterRef.current
   }, [])
   const setGlobalChartActionCounter = useCallback((value: number) => {
     globalChartActionCounterRef.current = value
-    setGlobalChartActionCounterState(value)
+    globalChartActionCounterSetState.current(value)
   }, [])
 
   const globalMaxChartActionCounterRef = useRef<number>(0)
@@ -284,7 +291,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     durationRef,
     getGlobalChartActionCounter,
     setGlobalChartActionCounter,
-    globalChartActionCounterState,
+    linkGlobalChartActionCounterSetState,
     getGlobalMaxChartActionCounter,
     setGlobalMaxChartActionCounter,
     globalMaxChartActionCounterState,

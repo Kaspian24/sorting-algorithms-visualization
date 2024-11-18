@@ -1,17 +1,14 @@
+import ChartBarChart from '@renderer/components/ChartCard/ChartBarChart'
+import ChartCardFooter from '@renderer/components/ChartCard/ChartCardFooter'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
-import {
-  ChartStateProvider,
-  useChartState,
-} from '@renderer/components/providers/ChartStateProvider'
+import { ChartStateProvider } from '@renderer/components/providers/ChartStateProvider'
 import { Button } from '@renderer/components/ui/Button'
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@renderer/components/ui/Card'
-import { ChartContainer } from '@renderer/components/ui/Chart'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -20,8 +17,6 @@ import {
   ContextMenuLabel,
   ContextMenuTrigger,
 } from '@renderer/components/ui/ContextMenu'
-import { Progress } from '@renderer/components/ui/Progress'
-import useChartCard from '@renderer/hooks/useChartCard'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
 import {
   DRAG_ITEM_TYPE,
@@ -30,7 +25,6 @@ import {
 } from '@renderer/types/types'
 import constantToTitleCase from '@renderer/utils/constantToTitleCase'
 import { X } from 'lucide-react'
-import { Bar, BarChart, LabelList } from 'recharts'
 
 export interface ChartCardProps {
   algorithm: keyof typeof SORTING_ALGORITHM
@@ -43,14 +37,6 @@ function ChartCard({
   sortingAlgorithm,
   flippedProps,
 }: ChartCardProps) {
-  const { chartConfig, renderCustomizedLabel } = useChartCard(sortingAlgorithm)
-  const {
-    chartDataState,
-    chartActionCounterState,
-    chartCompareCounterState,
-    maxChartActionCounterState,
-    maxChartCompareCounterState,
-  } = useChartState()
   const {
     setAlgorithmVisibility,
     moveAlgorithmPositionLeft,
@@ -63,7 +49,7 @@ function ChartCard({
 
   return (
     <Card
-      className={`min-w-115 flex min-h-64 flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      className={`flex min-h-64 min-w-115 flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       ref={ref}
       data-handler-id={handlerId}
       {...flippedProps}
@@ -86,36 +72,9 @@ function ChartCard({
             </div>
           </CardHeader>
           <CardContent className="flex grow flex-col justify-center p-6 pt-0">
-            <ChartContainer config={chartConfig} className="h-0 flex-auto">
-              <BarChart
-                accessibilityLayer
-                data={chartDataState}
-                margin={{
-                  top: 20,
-                }}
-              >
-                <Bar dataKey="number" radius={8} isAnimationActive={false}>
-                  <LabelList
-                    position="inside"
-                    offset={12}
-                    fontSize={12}
-                    content={renderCustomizedLabel}
-                  />
-                </Bar>
-              </BarChart>
-            </ChartContainer>
+            <ChartBarChart sortingAlgorithm={sortingAlgorithm} />
           </CardContent>
-          <CardFooter className="justify-center gap-4">
-            <p>{chartCompareCounterState}</p>
-            <Progress
-              value={
-                (chartActionCounterState / maxChartActionCounterState) * 100
-              }
-              className="w-3/4"
-              indicatorClassName={`${chartActionCounterState === maxChartActionCounterState ? 'bg-red-400' : ''}`}
-            />
-            <p>{maxChartCompareCounterState}</p>
-          </CardFooter>
+          <ChartCardFooter />
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem

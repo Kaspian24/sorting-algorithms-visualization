@@ -21,11 +21,8 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const {
-    getGlobalChartActionCounter,
-    globalChartActionCounterState,
-    globalMaxChartActionCounterState,
-  } = useChartsInfo()
+  const { getGlobalChartActionCounter, globalMaxChartActionCounterState } =
+    useChartsInfo()
   const {
     handleStart,
     handleStop,
@@ -35,6 +32,7 @@ export default function ChartControls() {
     handleDurationChange,
     isRunningState,
     setTempStep,
+    globalChartActionCounterState,
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true

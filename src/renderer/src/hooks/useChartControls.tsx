@@ -8,11 +8,14 @@ export default function useChartControls() {
     durationRef,
     getGlobalChartActionCounter,
     setGlobalChartActionCounter,
+    linkGlobalChartActionCounterSetState,
     getGlobalMaxChartActionCounter,
     directionForwardRef,
     defaultChartDataState,
     algorithmsVisibilityData,
   } = useChartsInfo()
+  const [globalChartActionCounterState, setGlobalChartActionCounterState] =
+    useState<number>(() => getGlobalChartActionCounter())
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
   const [isRunningState, setIsRunningState] = useState<boolean>(false)
@@ -135,6 +138,10 @@ export default function useChartControls() {
     }
   }, [algorithmsVisibilityData, handleStop])
 
+  useEffect(() => {
+    linkGlobalChartActionCounterSetState(setGlobalChartActionCounterState)
+  }, [linkGlobalChartActionCounterSetState])
+
   return {
     handleStart,
     handleStop,
@@ -144,5 +151,6 @@ export default function useChartControls() {
     handleDurationChange,
     isRunningState,
     setTempStep,
+    globalChartActionCounterState,
   }
 }
