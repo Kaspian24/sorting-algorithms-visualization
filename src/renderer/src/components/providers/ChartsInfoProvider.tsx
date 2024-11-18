@@ -62,9 +62,10 @@ interface ChartsInfoProviderProps {
 }
 
 function numbersToChartDataFieldArray(numbers: number[]): ChartDataField[] {
-  return numbers.map((number) => ({
+  return numbers.map((number, index) => ({
+    key: `bar${index}`,
     number: number,
-    fill: 'var(--color-default)',
+    fill: 'hsl(var(--chart-1))',
     className: '',
     style: {
       transform: 'translateX(0)',

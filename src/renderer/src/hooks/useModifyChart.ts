@@ -7,7 +7,7 @@ import {
   ChartDataField,
 } from '@renderer/types/types'
 
-interface CompareParams {
+interface ModifyChartFunctionParams {
   chartData: ChartDataField[]
   first: number
   second: number
@@ -23,7 +23,7 @@ function modifyChartFunction({
   chartAction,
   duration,
   isForward,
-}: CompareParams) {
+}: ModifyChartFunctionParams) {
   const distance = (Math.abs(first - second) / chartData.length) * 100
 
   const transitionProperty =
@@ -35,26 +35,26 @@ function modifyChartFunction({
   const colorFirst =
     chartAction === CHART_ACTION.MATCH ||
     chartAction === CHART_ACTION.ANIMATE_SWAP
-      ? 'var(--color-swap)'
-      : 'var(--color-first)'
+      ? 'hsl(var(--chart-4))'
+      : 'hsl(var(--chart-2))'
 
   const colorSecond =
     chartAction === CHART_ACTION.MATCH ||
     chartAction === CHART_ACTION.ANIMATE_SWAP
-      ? 'var(--color-swap)'
-      : 'var(--color-second)'
+      ? 'hsl(var(--chart-4))'
+      : 'hsl(var(--chart-3))'
 
   const newChartData = chartData.map((data, index) => {
     return {
       ...data,
       fill:
         chartAction === CHART_ACTION.FINISHED
-          ? 'var(--color-finished)'
+          ? 'hsl(var(--chart-5))'
           : index === first
             ? colorFirst
             : index === second
               ? colorSecond
-              : 'var(--color-default)',
+              : 'hsl(var(--chart-1))',
       style: {
         ...data.style,
         transitionProperty,

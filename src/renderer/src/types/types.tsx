@@ -39,6 +39,7 @@ export type AlgorithmVisibilityData = {
 }
 
 export interface ChartDataField {
+  key: string
   number: number
   fill: string
   className: string
