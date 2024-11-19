@@ -75,7 +75,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
     return () => {
       removeChartInfoData(controlData)
-      setChartData(getDefaultChartData())
+      setChartData([...getDefaultChartData()])
       reset()
     }
   }, [

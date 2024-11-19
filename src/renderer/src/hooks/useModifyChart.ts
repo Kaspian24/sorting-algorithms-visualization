@@ -114,8 +114,8 @@ export default function useModifyChart() {
       const duration = durationRef.current
       const isForward = directionForwardRef.current
 
-      setChartData(
-        modifyChartFunction({
+      setChartData([
+        ...modifyChartFunction({
           chartData,
           first,
           second,
@@ -124,7 +124,7 @@ export default function useModifyChart() {
           isForward,
           dryRun,
         }),
-      )
+      ])
     },
     [
       durationRef,
