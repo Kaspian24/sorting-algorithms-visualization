@@ -21,14 +21,11 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const { getGlobalChartActionCounter, globalMaxChartActionCounterState } =
-    useChartsInfo()
+  const { globalMaxChartActionCounterState } = useChartsInfo()
   const {
     handleStart,
     handleStop,
-    handleNext,
     handleReset,
-    handleSetStep,
     handleDurationChange,
     isRunningState,
     setTempStep,
@@ -40,7 +37,7 @@ export default function ChartControls() {
   return (
     <>
       <Button
-        onClick={() => handleSetStep(getGlobalChartActionCounter() - 1)}
+        onClick={() => setTempStep((prev) => Math.max(prev - 1, 0))}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -64,7 +61,11 @@ export default function ChartControls() {
         </Button>
       )}
       <Button
-        onClick={handleNext}
+        onClick={() =>
+          setTempStep((prev) =>
+            Math.min(prev + 1, globalMaxChartActionCounterState),
+          )
+        }
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -78,7 +79,7 @@ export default function ChartControls() {
         <RotateCcw />
       </Button>
       <Button
-        onClick={() => handleSetStep(globalMaxChartActionCounterState)}
+        onClick={() => setTempStep(globalMaxChartActionCounterState)}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >

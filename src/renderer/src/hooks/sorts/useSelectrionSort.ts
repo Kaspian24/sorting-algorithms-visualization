@@ -11,59 +11,62 @@ export const useSelectionSort: UseSort = () => {
   const jRef = useRef(1)
   const minIndexRef = useRef(0)
 
-  const selectionSort = useCallback(() => {
-    let i = iRef.current
-    let j = jRef.current
-    let minIndex = minIndexRef.current
-    let compareAction = chartActionRef.current
+  const selectionSort = useCallback(
+    (dryRun: boolean = false) => {
+      let i = iRef.current
+      let j = jRef.current
+      let minIndex = minIndexRef.current
+      let compareAction = chartActionRef.current
 
-    let arr = getChartData()
-    const n = arr.length
+      let arr = getChartData()
+      const n = arr.length
 
-    function selectionSortFunction() {
-      if (compareAction === CHART_ACTION.FINISHED) {
-        return
-      }
-
-      if (compareAction === CHART_ACTION.ANIMATE_SWAP) {
-        animateSwap(i, minIndex)
-        compareAction = CHART_ACTION.SWAP
-        return
-      }
-
-      if (compareAction === CHART_ACTION.SWAP) {
-        swap(i, minIndex)
-        arr = getChartData()
-        compareAction = CHART_ACTION.COMPARE
-        i++
-        j = i + 1
-        minIndex = i
-      }
-
-      for (; i < n - 1; ) {
-        for (; j < n; ) {
-          compare(j, minIndex)
-          if (arr[j].number < arr[minIndex].number) {
-            minIndex = j
-          }
-          j++
+      function selectionSortFunction() {
+        if (compareAction === CHART_ACTION.FINISHED) {
           return
         }
-        match(i, minIndex)
-        compareAction = CHART_ACTION.ANIMATE_SWAP
+
+        if (compareAction === CHART_ACTION.ANIMATE_SWAP) {
+          animateSwap(i, minIndex, dryRun)
+          compareAction = CHART_ACTION.SWAP
+          return
+        }
+
+        if (compareAction === CHART_ACTION.SWAP) {
+          swap(i, minIndex, dryRun)
+          arr = getChartData()
+          compareAction = CHART_ACTION.COMPARE
+          i++
+          j = i + 1
+          minIndex = i
+        }
+
+        for (; i < n - 1; ) {
+          for (; j < n; ) {
+            compare(j, minIndex, dryRun)
+            if (arr[j].number < arr[minIndex].number) {
+              minIndex = j
+            }
+            j++
+            return
+          }
+          match(i, minIndex, dryRun)
+          compareAction = CHART_ACTION.ANIMATE_SWAP
+          return
+        }
+        finish(dryRun)
+        compareAction = CHART_ACTION.FINISHED
         return
       }
-      finish()
-      compareAction = CHART_ACTION.FINISHED
-      return
-    }
-    selectionSortFunction()
+      selectionSortFunction()
 
-    iRef.current = i
-    jRef.current = j
-    minIndexRef.current = minIndex
-    chartActionRef.current = compareAction
-  }, [chartActionRef, getChartData, finish, animateSwap, swap, match, compare])
+      iRef.current = i
+      jRef.current = j
+      minIndexRef.current = minIndex
+      chartActionRef.current = compareAction
+    },
+    [chartActionRef, getChartData, finish, animateSwap, swap, match, compare],
+  )
 
   const selectionSortReset = useCallback(() => {
     iRef.current = 0

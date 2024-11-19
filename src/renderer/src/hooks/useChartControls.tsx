@@ -21,25 +21,36 @@ export default function useChartControls() {
   const [isRunningState, setIsRunningState] = useState<boolean>(false)
 
   /** returns `areAllSorted` */
-  const sortAll = useCallback(() => {
-    let areAllSorted = true
-    chartInfoData.current.forEach((data) => {
-      data.current.sortFunction()
-      if (data.current.chartActionRef.current !== CHART_ACTION.FINISHED) {
-        areAllSorted = false
+  const sortAll = useCallback(
+    (dryRun: boolean = false) => {
+      let areAllSorted = true
+      chartInfoData.current.forEach((data) => {
+        if (
+          data.current.getChartActionCounter() ===
+            data.current.getMaxChartActionCounter() - 1 &&
+          dryRun
+        ) {
+          data.current.sortFunction()
+        } else {
+          data.current.sortFunction(dryRun)
+        }
+        if (data.current.chartActionRef.current !== CHART_ACTION.FINISHED) {
+          areAllSorted = false
+        }
+      })
+      setGlobalChartActionCounter(getGlobalChartActionCounter() + 1)
+      if (areAllSorted) {
+        setGlobalChartActionCounter(getGlobalMaxChartActionCounter())
       }
-    })
-    setGlobalChartActionCounter(getGlobalChartActionCounter() + 1)
-    if (areAllSorted) {
-      setGlobalChartActionCounter(getGlobalMaxChartActionCounter())
-    }
-    return areAllSorted
-  }, [
-    chartInfoData,
-    getGlobalChartActionCounter,
-    getGlobalMaxChartActionCounter,
-    setGlobalChartActionCounter,
-  ])
+      return areAllSorted
+    },
+    [
+      chartInfoData,
+      getGlobalChartActionCounter,
+      getGlobalMaxChartActionCounter,
+      setGlobalChartActionCounter,
+    ],
+  )
 
   const resetAll = useCallback(() => {
     setGlobalChartActionCounter(0)
@@ -94,6 +105,12 @@ export default function useChartControls() {
       directionForwardRef.current = getGlobalChartActionCounter() < step
       if (!directionForwardRef.current) {
         handleReset()
+      }
+      while (getGlobalChartActionCounter() < step - 1) {
+        const areAllSorted = sortAll(true)
+        if (areAllSorted) {
+          break
+        }
       }
       while (getGlobalChartActionCounter() < step) {
         const areAllSorted = sortAll()

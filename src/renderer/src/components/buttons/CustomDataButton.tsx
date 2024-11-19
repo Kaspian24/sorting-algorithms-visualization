@@ -102,8 +102,9 @@ export default function CustomDataButton() {
                 name={`numbers`}
                 render={() => (
                   <FormItem>
-                    {fields.length < 5 ||
-                      (fields.length > 100 && <FormMessage />)}
+                    {(fields.length < 5 || fields.length > 100) && (
+                      <FormMessage />
+                    )}
                   </FormItem>
                 )}
               />

@@ -12,7 +12,7 @@ export type ChartAction = (typeof CHART_ACTION)[keyof typeof CHART_ACTION]
 
 export interface UseSort {
   (): {
-    sortFunction: () => void
+    sortFunction: (dryRun?: boolean) => void
     reset: () => void
   }
 }
@@ -51,7 +51,7 @@ export interface ChartDataField {
 }
 
 export interface ChartInfoData {
-  sortFunction: () => void
+  sortFunction: (dryRun?: boolean) => void
   reset: () => void
   getMaxChartActionCounter: () => number
   getMaxChartCompareCounter: () => number

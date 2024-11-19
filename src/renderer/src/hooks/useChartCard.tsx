@@ -51,7 +51,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
   useEffect(() => {
     while (chartActionRef.current !== CHART_ACTION.FINISHED) {
-      sortFunction()
+      sortFunction(true)
     }
     setMaxChartActionCounter(getChartActionCounter())
     setMaxChartCompareCounter(getChartCompareCounter())
@@ -61,7 +61,14 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
       getChartActionCounter() < getGlobalChartActionCounter() &&
       chartActionRef.current !== CHART_ACTION.FINISHED
     ) {
-      sortFunction()
+      if (
+        getChartActionCounter() === getMaxChartActionCounter() - 1 ||
+        getChartActionCounter() === getGlobalChartActionCounter() - 1
+      ) {
+        sortFunction()
+      } else {
+        sortFunction(true)
+      }
     }
 
     addChartInfoData(controlData)
@@ -85,6 +92,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     defaultChartDataState,
     setChartData,
     getDefaultChartData,
+    getMaxChartActionCounter,
   ])
 
   return {
