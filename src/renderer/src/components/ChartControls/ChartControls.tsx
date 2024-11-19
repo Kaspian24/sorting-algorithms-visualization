@@ -86,7 +86,7 @@ export default function ChartControls() {
         <SkipForward />
       </Button>
       <Slider
-        className={`w-1/2 ${allHidden && 'opacity-50'}`}
+        className={`h-4 w-1/2 ${allHidden && 'opacity-50'}`}
         rangeClassName={`${globalChartActionCounterState === globalMaxChartActionCounterState && 'bg-red-400'}`}
         value={[!allHidden ? globalChartActionCounterState : 0]}
         max={globalMaxChartActionCounterState}
