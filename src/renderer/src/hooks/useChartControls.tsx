@@ -92,6 +92,7 @@ export default function useChartControls() {
   const handleReset = useCallback(() => {
     handleStop()
     resetAll()
+    setTempStep(0)
   }, [handleStop, resetAll])
 
   const goToCheckpointAll = useCallback(
