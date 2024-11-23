@@ -7,13 +7,14 @@ import {
   ChartDataField,
 } from '@renderer/types/types'
 
-interface CompareParams {
+interface ModifyChartFunctionParams {
   chartData: ChartDataField[]
   first: number
   second: number
   chartAction: ChartAction
   duration: number
   isForward: boolean
+  dryRun: boolean
 }
 
 function modifyChartFunction({
@@ -23,7 +24,8 @@ function modifyChartFunction({
   chartAction,
   duration,
   isForward,
-}: CompareParams) {
+  dryRun,
+}: ModifyChartFunctionParams) {
   const distance = (Math.abs(first - second) / chartData.length) * 100
 
   const transitionProperty =
@@ -35,41 +37,43 @@ function modifyChartFunction({
   const colorFirst =
     chartAction === CHART_ACTION.MATCH ||
     chartAction === CHART_ACTION.ANIMATE_SWAP
-      ? 'var(--color-swap)'
-      : 'var(--color-first)'
+      ? 'hsl(var(--chart-4))'
+      : 'hsl(var(--chart-2))'
 
   const colorSecond =
     chartAction === CHART_ACTION.MATCH ||
     chartAction === CHART_ACTION.ANIMATE_SWAP
-      ? 'var(--color-swap)'
-      : 'var(--color-second)'
+      ? 'hsl(var(--chart-4))'
+      : 'hsl(var(--chart-3))'
 
-  const newChartData = chartData.map((data, index) => {
-    return {
-      ...data,
-      fill:
-        chartAction === CHART_ACTION.FINISHED
-          ? 'var(--color-finished)'
-          : index === first
-            ? colorFirst
-            : index === second
-              ? colorSecond
-              : 'var(--color-default)',
-      style: {
-        ...data.style,
-        transitionProperty,
-        transitionDuration: `${duration}ms`,
-        transform:
-          chartAction === CHART_ACTION.ANIMATE_SWAP
-            ? index === first
-              ? `translateX(${distance}%)`
-              : index === second
-                ? `translateX(-${distance}%)`
-                : 'translateX(0%)'
-            : 'translateX(0%)',
-      },
-    }
-  })
+  const newChartData = !dryRun
+    ? chartData.map((data, index) => {
+        return {
+          ...data,
+          fill:
+            chartAction === CHART_ACTION.FINISHED
+              ? 'hsl(var(--chart-5))'
+              : index === first
+                ? colorFirst
+                : index === second
+                  ? colorSecond
+                  : 'hsl(var(--chart-1))',
+          style: {
+            ...data.style,
+            transitionProperty,
+            transitionDuration: `${duration}ms`,
+            transform:
+              chartAction === CHART_ACTION.ANIMATE_SWAP
+                ? index === first
+                  ? `translateX(${distance}%)`
+                  : index === second
+                    ? `translateX(-${distance}%)`
+                    : 'translateX(0%)'
+                : 'translateX(0%)',
+          },
+        }
+      })
+    : chartData
   if (chartAction === CHART_ACTION.SWAP) {
     ;[newChartData[first], newChartData[second]] = [
       newChartData[second],
@@ -77,6 +81,14 @@ function modifyChartFunction({
     ]
   }
   return newChartData
+}
+
+interface ModifyChartParams {
+  chartData: ChartDataField[]
+  first: number
+  second: number
+  chartAction: ChartAction
+  dryRun: boolean
 }
 
 export default function useModifyChart() {
@@ -92,26 +104,27 @@ export default function useModifyChart() {
   } = useChartState()
 
   const modifyChart = useCallback(
-    ({ chartData, first, second, compareAction }) => {
-      if (compareAction !== CHART_ACTION.SWAP) {
+    ({ chartData, first, second, chartAction, dryRun }: ModifyChartParams) => {
+      if (chartAction !== CHART_ACTION.SWAP) {
         setChartActionCounter(getChartActionCounter() + 1)
       }
-      if (compareAction === CHART_ACTION.COMPARE) {
+      if (chartAction === CHART_ACTION.COMPARE) {
         setChartCompareCounter(getChartCompareCounter() + 1)
       }
       const duration = durationRef.current
       const isForward = directionForwardRef.current
 
-      setChartData(
-        modifyChartFunction({
+      setChartData([
+        ...modifyChartFunction({
           chartData,
           first,
           second,
-          chartAction: compareAction,
+          chartAction,
           duration,
           isForward,
+          dryRun,
         }),
-      )
+      ])
     },
     [
       durationRef,
@@ -125,7 +138,7 @@ export default function useModifyChart() {
   )
 
   const reset = useCallback(() => {
-    setChartData(getDefaultChartData())
+    setChartData([...getDefaultChartData()])
     setChartActionCounter(0)
     setChartCompareCounter(0)
   }, [
@@ -136,56 +149,61 @@ export default function useModifyChart() {
   ])
 
   const compare = useCallback(
-    (first: number, second: number) =>
+    (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.COMPARE,
+        chartAction: CHART_ACTION.COMPARE,
+        dryRun,
       }),
     [getChartData, modifyChart],
   )
 
   const match = useCallback(
-    (first: number, second: number) =>
+    (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.MATCH,
+        chartAction: CHART_ACTION.MATCH,
+        dryRun,
       }),
     [getChartData, modifyChart],
   )
 
   const animateSwap = useCallback(
-    (first: number, second: number) =>
+    (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.ANIMATE_SWAP,
+        chartAction: CHART_ACTION.ANIMATE_SWAP,
+        dryRun,
       }),
     [getChartData, modifyChart],
   )
 
   const swap = useCallback(
-    (first: number, second: number) =>
+    (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
         chartData: getChartData(),
         first,
         second,
-        compareAction: CHART_ACTION.SWAP,
+        chartAction: CHART_ACTION.SWAP,
+        dryRun,
       }),
     [getChartData, modifyChart],
   )
 
   const finish = useCallback(
-    () =>
+    (dryRun: boolean = false) =>
       modifyChart({
         chartData: getChartData(),
         first: 0,
         second: 0,
-        compareAction: CHART_ACTION.FINISHED,
+        chartAction: CHART_ACTION.FINISHED,
+        dryRun,
       }),
     [getChartData, modifyChart],
   )

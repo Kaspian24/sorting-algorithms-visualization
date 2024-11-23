@@ -21,20 +21,17 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const {
-    getGlobalChartActionCounter,
-    globalChartActionCounterState,
-    globalMaxChartActionCounterState,
-  } = useChartsInfo()
+  const { globalMaxChartActionCounterState } = useChartsInfo()
   const {
     handleStart,
     handleStop,
-    handleNext,
     handleReset,
-    handleSetStep,
     handleDurationChange,
     isRunningState,
     setTempStep,
+    globalChartActionCounterState,
+    handlePrevious,
+    handleNext,
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true
@@ -42,7 +39,7 @@ export default function ChartControls() {
   return (
     <>
       <Button
-        onClick={() => handleSetStep(getGlobalChartActionCounter() - 1)}
+        onClick={() => handlePrevious()}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -66,7 +63,7 @@ export default function ChartControls() {
         </Button>
       )}
       <Button
-        onClick={handleNext}
+        onClick={() => handleNext()}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -80,14 +77,14 @@ export default function ChartControls() {
         <RotateCcw />
       </Button>
       <Button
-        onClick={() => handleSetStep(globalMaxChartActionCounterState)}
+        onClick={() => setTempStep(globalMaxChartActionCounterState)}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
         <SkipForward />
       </Button>
       <Slider
-        className={`w-1/2 ${allHidden && 'opacity-50'}`}
+        className={`h-4 w-1/2 ${allHidden && 'opacity-50'}`}
         rangeClassName={`${globalChartActionCounterState === globalMaxChartActionCounterState && 'bg-red-400'}`}
         value={[!allHidden ? globalChartActionCounterState : 0]}
         max={globalMaxChartActionCounterState}

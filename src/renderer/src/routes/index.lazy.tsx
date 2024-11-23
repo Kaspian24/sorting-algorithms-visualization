@@ -2,6 +2,7 @@ import { Flipped, Flipper } from 'react-flip-toolkit'
 import AlgorithmContextMenuCheckboxItem from '@renderer/components/AlgorithmContextMenuCheckboxItem/AlgorithmContextMenuCheckboxItem'
 import { ChartCard } from '@renderer/components/ChartCard/ChartCard'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import StartCard from '@renderer/components/StartCard/StartCard'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -51,6 +52,9 @@ function Index() {
                   )}
                 </Flipped>
               ))}
+            {algorithmsVisibilityData.every(
+              ({ visible }) => visible === false,
+            ) && <StartCard />}
           </Flipper>
         </div>
       </ContextMenuTrigger>

@@ -18,6 +18,12 @@ export default function ExampleDataButton() {
     setSmallReversed,
     setSmallDuplicates,
 
+    setMediumUnsorted,
+    setMediumPartiallySorted,
+    setMediumSorted,
+    setMediumReversed,
+    setMediumDuplicates,
+
     setLargeUnsorted,
     setLargePartiallySorted,
     setLargeSorted,
@@ -28,14 +34,14 @@ export default function ExampleDataButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Example data</Button>
+        <Button variant="outline">Example Data</Button>
       </DialogTrigger>
-      <DialogContent className="flex h-3/6 min-h-64 w-96 min-w-fit flex-col">
+      <DialogContent className="flex h-3/6 min-h-64 w-96 flex-col">
         <DialogHeader>
-          <DialogTitle>Example data</DialogTitle>
+          <DialogTitle>Example Data</DialogTitle>
           <DialogDescription>Choose example data.</DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-0 max-w-96 flex-auto">
+        <ScrollArea className="h-0 flex-auto">
           <div className="flex flex-col gap-y-2 pr-5">
             <div className="flex flex-col space-y-2">
               <p>10 numbers</p>
@@ -62,6 +68,29 @@ export default function ExampleDataButton() {
             </div>
             <div className="flex flex-col space-y-2">
               <p>30 numbers</p>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" onClick={() => setMediumUnsorted()}>
+                  Unsorted
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setMediumPartiallySorted()}
+                >
+                  Partially sorted
+                </Button>
+                <Button variant="outline" onClick={() => setMediumSorted()}>
+                  Sorted
+                </Button>
+                <Button variant="outline" onClick={() => setMediumReversed()}>
+                  Reversed
+                </Button>
+                <Button variant="outline" onClick={() => setMediumDuplicates()}>
+                  Multiple duplicates
+                </Button>
+              </div>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <p>100 numbers</p>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" onClick={() => setLargeUnsorted()}>
                   Unsorted

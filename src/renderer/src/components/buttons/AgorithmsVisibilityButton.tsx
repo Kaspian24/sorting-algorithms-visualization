@@ -22,7 +22,7 @@ export default function AlgorithmsVisibilityButton() {
       <DialogTrigger asChild>
         <Button variant="outline">Algorithms visibility</Button>
       </DialogTrigger>
-      <DialogContent className="flex h-3/6 min-h-64 w-96 min-w-fit flex-col">
+      <DialogContent className="flex h-3/6 min-h-64 w-96 flex-col">
         <DialogHeader>
           <DialogTitle>Algorithms visibility</DialogTitle>
           <DialogDescription>Change Algorithms visibility.</DialogDescription>

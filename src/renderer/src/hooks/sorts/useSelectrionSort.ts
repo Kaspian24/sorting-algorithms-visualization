@@ -1,77 +1,94 @@
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
 export const useSelectionSort: UseSort = () => {
-  const { getChartData, chartActionRef } = useChartState()
+  const { getChartData, chartActionRef, sortVariablesRef } = useChartState()
   const { compare, match, animateSwap, swap, finish, reset } = useModifyChart()
 
-  const iRef = useRef(0)
-  const jRef = useRef(1)
-  const minIndexRef = useRef(0)
-
-  const selectionSort = useCallback(() => {
-    let i = iRef.current
-    let j = jRef.current
-    let minIndex = minIndexRef.current
-    let compareAction = chartActionRef.current
-
-    let arr = getChartData()
-    const n = arr.length
-
-    function selectionSortFunction() {
-      if (compareAction === CHART_ACTION.FINISHED) {
-        return
+  const selectionSort = useCallback(
+    (dryRun: boolean = false) => {
+      if (Object.keys(sortVariablesRef.current).length === 0) {
+        sortVariablesRef.current = {
+          i: 0,
+          j: 1,
+          minIndex: 0,
+        }
       }
-
-      if (compareAction === CHART_ACTION.ANIMATE_SWAP) {
-        animateSwap(i, minIndex)
-        compareAction = CHART_ACTION.SWAP
-        return
+      let { i, j, minIndex } = sortVariablesRef.current as {
+        i: number
+        j: number
+        minIndex: number
       }
+      let compareAction = chartActionRef.current
 
-      if (compareAction === CHART_ACTION.SWAP) {
-        swap(i, minIndex)
-        arr = getChartData()
-        compareAction = CHART_ACTION.COMPARE
-        i++
-        j = i + 1
-        minIndex = i
-      }
+      let arr = getChartData()
+      const n = arr.length
 
-      for (; i < n - 1; ) {
-        for (; j < n; ) {
-          compare(j, minIndex)
-          if (arr[j].number < arr[minIndex].number) {
-            minIndex = j
-          }
-          j++
+      function selectionSortFunction() {
+        if (compareAction === CHART_ACTION.FINISHED) {
           return
         }
-        match(i, minIndex)
-        compareAction = CHART_ACTION.ANIMATE_SWAP
+
+        if (compareAction === CHART_ACTION.ANIMATE_SWAP) {
+          animateSwap(i, minIndex, dryRun)
+          compareAction = CHART_ACTION.SWAP
+          return
+        }
+
+        if (compareAction === CHART_ACTION.SWAP) {
+          swap(i, minIndex, dryRun)
+          arr = getChartData()
+          compareAction = CHART_ACTION.COMPARE
+          i++
+          j = i + 1
+          minIndex = i
+        }
+
+        for (; i < n - 1; ) {
+          for (; j < n; ) {
+            compare(j, minIndex, dryRun)
+            if (arr[j].number < arr[minIndex].number) {
+              minIndex = j
+            }
+            j++
+            return
+          }
+          match(i, minIndex, dryRun)
+          compareAction = CHART_ACTION.ANIMATE_SWAP
+          return
+        }
+        finish(dryRun)
+        compareAction = CHART_ACTION.FINISHED
         return
       }
-      finish()
-      compareAction = CHART_ACTION.FINISHED
-      return
-    }
-    selectionSortFunction()
+      selectionSortFunction()
 
-    iRef.current = i
-    jRef.current = j
-    minIndexRef.current = minIndex
-    chartActionRef.current = compareAction
-  }, [chartActionRef, getChartData, finish, animateSwap, swap, match, compare])
+      sortVariablesRef.current = { i, j, minIndex }
+      chartActionRef.current = compareAction
+    },
+    [
+      sortVariablesRef,
+      chartActionRef,
+      getChartData,
+      finish,
+      animateSwap,
+      swap,
+      match,
+      compare,
+    ],
+  )
 
   const selectionSortReset = useCallback(() => {
-    iRef.current = 0
-    jRef.current = 1
-    minIndexRef.current = 0
+    sortVariablesRef.current = {
+      i: 0,
+      j: 1,
+      minIndex: 0,
+    }
     chartActionRef.current = CHART_ACTION.COMPARE
     reset()
-  }, [chartActionRef, reset])
+  }, [chartActionRef, reset, sortVariablesRef])
 
   return {
     sortFunction: selectionSort,

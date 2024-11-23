@@ -9,7 +9,7 @@ export default function Header() {
       <div className="flex flex-1">
         <ModeToggle />
       </div>
-      <div>
+      <div className="flex gap-x-2">
         <CustomDataButton />
         <ExampleDataButton />
       </div>

@@ -12,7 +12,7 @@ export type ChartAction = (typeof CHART_ACTION)[keyof typeof CHART_ACTION]
 
 export interface UseSort {
   (): {
-    sortFunction: () => void
+    sortFunction: (dryRun?: boolean) => void
     reset: () => void
   }
 }
@@ -22,6 +22,12 @@ export const SORTING_ALGORITHM = {
   TEST_ONE: useSelectionSort,
   TEST_TWO: useSelectionSort,
   TEST_THREE: useSelectionSort,
+  TEST_1: useSelectionSort,
+  TEST_2: useSelectionSort,
+  TEST_3: useSelectionSort,
+  TEST_4: useSelectionSort,
+  TEST_5: useSelectionSort,
+  TEST_6: useSelectionSort,
 } as const
 
 export type SortingAlgorithm =
@@ -33,6 +39,7 @@ export type AlgorithmVisibilityData = {
 }
 
 export interface ChartDataField {
+  key: string
   number: number
   fill: string
   className: string
@@ -44,7 +51,7 @@ export interface ChartDataField {
 }
 
 export interface ChartInfoData {
-  sortFunction: () => void
+  sortFunction: (dryRun?: boolean) => void
   reset: () => void
   getMaxChartActionCounter: () => number
   getMaxChartCompareCounter: () => number
@@ -52,6 +59,7 @@ export interface ChartInfoData {
   getChartActionCounter: () => number
   getChartCompareCounter: () => number
   chartActionRef: React.MutableRefObject<ChartAction>
+  goToCheckpoint: (checkpoint: number) => void
 }
 
 export const DRAG_ITEM_TYPE = {
@@ -72,3 +80,12 @@ export const DRAG_CONTAINER_LAYOUT = {
 
 export type DragContainerLayout =
   (typeof DRAG_CONTAINER_LAYOUT)[keyof typeof DRAG_CONTAINER_LAYOUT]
+
+export type ChartCheckpoint = {
+  checkpoint: number
+  data: ChartDataField[]
+  sortVariables: object
+  chartActionCounter: number
+  chartCompareCounter: number
+  chartAction: ChartAction
+}

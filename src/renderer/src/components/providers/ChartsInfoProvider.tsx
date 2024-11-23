@@ -25,7 +25,7 @@ interface ChartsInfoContextType {
   durationRef: React.MutableRefObject<number>
   getGlobalChartActionCounter: () => number
   setGlobalChartActionCounter: (value: number) => void
-  globalChartActionCounterState: number
+  linkGlobalChartActionCounterSetState: (f: (value: number) => void) => void
   getGlobalMaxChartActionCounter: () => number
   setGlobalMaxChartActionCounter: (value: number) => void
   globalMaxChartActionCounterState: number
@@ -51,6 +51,7 @@ interface ChartsInfoContextType {
     b: keyof typeof SORTING_ALGORITHM,
   ) => void
   draggablesTransitionStateRef: React.MutableRefObject<DraggablesTransitionState>
+  checkpointStepRef: React.MutableRefObject<number>
 }
 
 const ChartsInfoContext = createContext<ChartsInfoContextType | undefined>(
@@ -62,9 +63,10 @@ interface ChartsInfoProviderProps {
 }
 
 function numbersToChartDataFieldArray(numbers: number[]): ChartDataField[] {
-  return numbers.map((number) => ({
+  return numbers.map((number, index) => ({
+    key: `bar${index}`,
     number: number,
-    fill: 'var(--color-default)',
+    fill: 'hsl(var(--chart-1))',
     className: '',
     style: {
       transform: 'translateX(0)',
@@ -128,14 +130,21 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   }, [])
 
   const globalChartActionCounterRef = useRef<number>(0)
-  const [globalChartActionCounterState, setGlobalChartActionCounterState] =
-    useState<number>(0)
+  const globalChartActionCounterSetState = useRef<(value: number) => void>(
+    () => {},
+  )
+  const linkGlobalChartActionCounterSetState = useCallback(
+    (f: (value: number) => void) => {
+      globalChartActionCounterSetState.current = f
+    },
+    [],
+  )
   const getGlobalChartActionCounter = useCallback(() => {
     return globalChartActionCounterRef.current
   }, [])
   const setGlobalChartActionCounter = useCallback((value: number) => {
     globalChartActionCounterRef.current = value
-    setGlobalChartActionCounterState(value)
+    globalChartActionCounterSetState.current(value)
   }, [])
 
   const globalMaxChartActionCounterRef = useRef<number>(0)
@@ -150,6 +159,8 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     globalMaxChartActionCounterRef.current = value
     setGlobalMaxChartActionCounterState(value)
   }, [])
+
+  const checkpointStepRef = useRef<number>(250)
 
   const addChartInfoData = useCallback(
     (addedData: React.MutableRefObject<ChartInfoData>) => {
@@ -284,7 +295,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     durationRef,
     getGlobalChartActionCounter,
     setGlobalChartActionCounter,
-    globalChartActionCounterState,
+    linkGlobalChartActionCounterSetState,
     getGlobalMaxChartActionCounter,
     setGlobalMaxChartActionCounter,
     globalMaxChartActionCounterState,
@@ -299,6 +310,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     moveAlgorithmPositionRight,
     swapAlgorithmsPosition,
     draggablesTransitionStateRef,
+    checkpointStepRef,
   }
 
   return (

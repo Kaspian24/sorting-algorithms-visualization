@@ -29,7 +29,7 @@ export default function CustomDataButton() {
         <Button variant="outline">Custom Data</Button>
       </DialogTrigger>
       <DialogContent
-        className="flex h-3/6 min-h-64 w-96 min-w-fit flex-col"
+        className="flex h-3/6 min-h-64 w-96 flex-col"
         onOpenAutoFocus={() => form.reset()}
       >
         <DialogHeader>
@@ -42,7 +42,7 @@ export default function CustomDataButton() {
             className="flex flex-auto flex-col"
           >
             <ScrollArea className="h-0 flex-auto">
-              <div className="flex flex-col space-y-2 pr-5">
+              <div className="flex flex-col space-y-2 p-1 pr-5">
                 {fields.map((field, index) => (
                   <FormField
                     key={field.id}
@@ -50,7 +50,7 @@ export default function CustomDataButton() {
                     name={`numbers.${index}.number`}
                     render={({ field }) => (
                       <FormItem>
-                        <div className="flex justify-between gap-2">
+                        <div className="flex min-h-10 items-center justify-between gap-2">
                           <div className="flex items-end gap-2">
                             <p className="w-8">{index + 1}.</p>
                             <FormControl>
@@ -101,10 +101,16 @@ export default function CustomDataButton() {
                 control={form.control}
                 name={`numbers`}
                 render={() => (
-                  <FormItem>{fields.length < 5 && <FormMessage />}</FormItem>
+                  <FormItem>
+                    {(fields.length < 5 || fields.length > 100) && (
+                      <FormMessage />
+                    )}
+                  </FormItem>
                 )}
               />
-              <Button type="submit">Save changes</Button>
+              <Button type="submit" variant="outline">
+                Save changes
+              </Button>
             </DialogFooter>
           </form>
         </Form>
