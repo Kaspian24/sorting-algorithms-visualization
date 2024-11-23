@@ -39,9 +39,10 @@ export default function useChartControls() {
           areAllSorted = false
         }
       })
-      setGlobalChartActionCounter(getGlobalChartActionCounter() + 1)
       if (areAllSorted) {
         setGlobalChartActionCounter(getGlobalMaxChartActionCounter())
+      } else {
+        setGlobalChartActionCounter(getGlobalChartActionCounter() + 1)
       }
       return areAllSorted
     },
@@ -161,15 +162,21 @@ export default function useChartControls() {
   const [tempStep, setTempStep] = useState(0)
 
   const handlePrevious = useCallback(() => {
-    if (isRunningRef.current) {
+    if (
+      isRunningRef.current ||
+      getGlobalChartActionCounter() === getGlobalMaxChartActionCounter()
+    ) {
       setTempStep(Math.max(getGlobalChartActionCounter() - 1, 0))
     } else {
       setTempStep((prev) => Math.max(prev - 1, 0))
     }
-  }, [getGlobalChartActionCounter])
+  }, [getGlobalChartActionCounter, getGlobalMaxChartActionCounter])
 
   const handleNext = useCallback(() => {
-    if (isRunningRef.current) {
+    if (
+      isRunningRef.current ||
+      getGlobalChartActionCounter() === getGlobalMaxChartActionCounter()
+    ) {
       setTempStep(
         Math.min(
           getGlobalChartActionCounter() + 1,
