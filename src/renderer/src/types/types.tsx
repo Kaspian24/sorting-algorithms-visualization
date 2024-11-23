@@ -59,6 +59,7 @@ export interface ChartInfoData {
   getChartActionCounter: () => number
   getChartCompareCounter: () => number
   chartActionRef: React.MutableRefObject<ChartAction>
+  goToCheckpoint: (checkpoint: number) => void
 }
 
 export const DRAG_ITEM_TYPE = {
@@ -79,3 +80,12 @@ export const DRAG_CONTAINER_LAYOUT = {
 
 export type DragContainerLayout =
   (typeof DRAG_CONTAINER_LAYOUT)[keyof typeof DRAG_CONTAINER_LAYOUT]
+
+export type ChartCheckpoint = {
+  checkpoint: number
+  data: ChartDataField[]
+  sortVariables: object
+  chartActionCounter: number
+  chartCompareCounter: number
+  chartAction: ChartAction
+}

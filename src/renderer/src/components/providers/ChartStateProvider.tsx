@@ -10,6 +10,7 @@ import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider
 import {
   CHART_ACTION,
   ChartAction,
+  ChartCheckpoint,
   ChartDataField,
 } from '@renderer/types/types'
 
@@ -30,6 +31,9 @@ interface ChartStateContextType {
   getChartCompareCounter: () => number
   setChartCompareCounter: (value: number) => void
   linkChartCompareCounterSetState: (f: (value: number) => void) => void
+  chartCheckpointsRef: React.MutableRefObject<ChartCheckpoint[]>
+  goToCheckpoint: (checkpoint: number) => void
+  sortVariablesRef: React.MutableRefObject<object>
 }
 
 const ChartStateContext = createContext<ChartStateContextType | undefined>(
@@ -114,6 +118,28 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
     chartCompareCounterSetState.current(value)
   }, [])
 
+  const chartCheckpointsRef = useRef<ChartCheckpoint[]>([])
+
+  const sortVariablesRef = useRef<object>({})
+
+  const goToCheckpoint = useCallback(
+    (checkpoint: number) => {
+      const {
+        data,
+        sortVariables,
+        chartActionCounter,
+        chartCompareCounter,
+        chartAction,
+      } = chartCheckpointsRef.current[checkpoint]
+      setChartData([...data])
+      sortVariablesRef.current = sortVariables
+      setChartActionCounter(chartActionCounter)
+      setChartCompareCounter(chartCompareCounter)
+      chartActionRef.current = chartAction
+    },
+    [setChartActionCounter, setChartCompareCounter, setChartData],
+  )
+
   const value: ChartStateContextType = {
     chartActionRef,
     getMaxChartActionCounter,
@@ -131,6 +157,9 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
     getChartCompareCounter,
     setChartCompareCounter,
     linkChartCompareCounterSetState,
+    chartCheckpointsRef,
+    goToCheckpoint,
+    sortVariablesRef,
   }
 
   return (

@@ -51,6 +51,7 @@ interface ChartsInfoContextType {
     b: keyof typeof SORTING_ALGORITHM,
   ) => void
   draggablesTransitionStateRef: React.MutableRefObject<DraggablesTransitionState>
+  checkpointStepRef: React.MutableRefObject<number>
 }
 
 const ChartsInfoContext = createContext<ChartsInfoContextType | undefined>(
@@ -158,6 +159,8 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     globalMaxChartActionCounterRef.current = value
     setGlobalMaxChartActionCounterState(value)
   }, [])
+
+  const checkpointStepRef = useRef<number>(250)
 
   const addChartInfoData = useCallback(
     (addedData: React.MutableRefObject<ChartInfoData>) => {
@@ -307,6 +310,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     moveAlgorithmPositionRight,
     swapAlgorithmsPosition,
     draggablesTransitionStateRef,
+    checkpointStepRef,
   }
 
   return (

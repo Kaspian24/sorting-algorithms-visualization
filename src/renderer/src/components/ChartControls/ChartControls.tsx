@@ -30,6 +30,8 @@ export default function ChartControls() {
     isRunningState,
     setTempStep,
     globalChartActionCounterState,
+    handlePrevious,
+    handleNext,
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true
@@ -37,7 +39,7 @@ export default function ChartControls() {
   return (
     <>
       <Button
-        onClick={() => setTempStep((prev) => Math.max(prev - 1, 0))}
+        onClick={() => handlePrevious()}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -61,11 +63,7 @@ export default function ChartControls() {
         </Button>
       )}
       <Button
-        onClick={() =>
-          setTempStep((prev) =>
-            Math.min(prev + 1, globalMaxChartActionCounterState),
-          )
-        }
+        onClick={() => handleNext()}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >

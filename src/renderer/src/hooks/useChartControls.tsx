@@ -13,6 +13,7 @@ export default function useChartControls() {
     directionForwardRef,
     defaultChartDataState,
     algorithmsVisibilityData,
+    checkpointStepRef,
   } = useChartsInfo()
   const [globalChartActionCounterState, setGlobalChartActionCounterState] =
     useState<number>(() => getGlobalChartActionCounter())
@@ -88,23 +89,34 @@ export default function useChartControls() {
     continueSort()
   }, [continueSort, directionForwardRef, handleStop, sortAll])
 
-  const handleNext = useCallback(() => {
-    directionForwardRef.current = true
-    handleStop()
-    sortAll()
-  }, [directionForwardRef, handleStop, sortAll])
-
   const handleReset = useCallback(() => {
     handleStop()
     resetAll()
   }, [handleStop, resetAll])
 
+  const goToCheckpointAll = useCallback(
+    (checkpoint: number) => {
+      chartInfoData.current.forEach((data) => {
+        data.current.goToCheckpoint(checkpoint)
+      })
+    },
+    [chartInfoData],
+  )
+
   const handleSetStep = useCallback(
     (step: number) => {
       handleStop()
+      const closestCheckpoint = Math.floor(step / checkpointStepRef.current)
       directionForwardRef.current = getGlobalChartActionCounter() < step
-      if (!directionForwardRef.current) {
-        handleReset()
+      if (
+        !directionForwardRef.current ||
+        getGlobalChartActionCounter() <
+          closestCheckpoint * checkpointStepRef.current
+      ) {
+        goToCheckpointAll(closestCheckpoint)
+        setGlobalChartActionCounter(
+          closestCheckpoint * checkpointStepRef.current,
+        )
       }
       while (getGlobalChartActionCounter() < step - 1) {
         const areAllSorted = sortAll(true)
@@ -120,10 +132,12 @@ export default function useChartControls() {
       }
     },
     [
+      checkpointStepRef,
       directionForwardRef,
       getGlobalChartActionCounter,
-      handleReset,
+      goToCheckpointAll,
       handleStop,
+      setGlobalChartActionCounter,
       sortAll,
     ],
   )
@@ -145,6 +159,29 @@ export default function useChartControls() {
 
   const [tempStep, setTempStep] = useState(0)
 
+  const handlePrevious = useCallback(() => {
+    if (isRunningRef.current) {
+      setTempStep(Math.max(getGlobalChartActionCounter() - 1, 0))
+    } else {
+      setTempStep((prev) => Math.max(prev - 1, 0))
+    }
+  }, [getGlobalChartActionCounter])
+
+  const handleNext = useCallback(() => {
+    if (isRunningRef.current) {
+      setTempStep(
+        Math.min(
+          getGlobalChartActionCounter() + 1,
+          getGlobalMaxChartActionCounter(),
+        ),
+      )
+    } else {
+      setTempStep((prev) =>
+        Math.min(prev + 1, getGlobalMaxChartActionCounter()),
+      )
+    }
+  }, [getGlobalChartActionCounter, getGlobalMaxChartActionCounter])
+
   useEffect(() => {
     handleSetStep(tempStep)
   }, [handleSetStep, tempStep])
@@ -162,12 +199,13 @@ export default function useChartControls() {
   return {
     handleStart,
     handleStop,
-    handleNext,
     handleReset,
     handleSetStep,
     handleDurationChange,
     isRunningState,
     setTempStep,
     globalChartActionCounterState,
+    handlePrevious,
+    handleNext,
   }
 }

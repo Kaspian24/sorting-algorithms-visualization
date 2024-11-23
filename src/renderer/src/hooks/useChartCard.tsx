@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import {
@@ -15,6 +15,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     getGlobalChartActionCounter,
     getDefaultChartData,
     defaultChartDataState,
+    checkpointStepRef,
   } = useChartsInfo()
   const { sortFunction, reset } = sortingAlgorithm()
   const {
@@ -28,6 +29,9 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     setMaxChartActionCounter,
     setMaxChartCompareCounter,
     linkChartDataSetState,
+    chartCheckpointsRef,
+    goToCheckpoint,
+    sortVariablesRef,
   } = useChartState()
 
   const [chartDataState, setChartDataState] = useState<ChartDataField[]>(() =>
@@ -47,12 +51,44 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     getMaxChartActionCounter,
     getMaxChartCompareCounter,
     chartActionRef,
+    goToCheckpoint,
   })
 
-  useEffect(() => {
-    while (chartActionRef.current !== CHART_ACTION.FINISHED) {
-      sortFunction(true)
+  const addCheckpoint = useCallback(() => {
+    if (getChartActionCounter() % checkpointStepRef.current === 0) {
+      chartCheckpointsRef.current.push({
+        checkpoint: getChartActionCounter() / checkpointStepRef.current,
+        data: getChartData(),
+        sortVariables: sortVariablesRef.current,
+        chartActionCounter: getChartActionCounter(),
+        chartCompareCounter: getChartCompareCounter(),
+        chartAction: chartActionRef.current,
+      })
     }
+  }, [
+    chartActionRef,
+    chartCheckpointsRef,
+    checkpointStepRef,
+    getChartActionCounter,
+    getChartCompareCounter,
+    getChartData,
+    sortVariablesRef,
+  ])
+
+  useEffect(() => {
+    chartCheckpointsRef.current = []
+    while (chartActionRef.current !== CHART_ACTION.FINISHED) {
+      addCheckpoint()
+      if (
+        getChartActionCounter() % checkpointStepRef.current ===
+        checkpointStepRef.current - 1
+      ) {
+        sortFunction()
+      } else {
+        sortFunction(true)
+      }
+    }
+    addCheckpoint()
     setMaxChartActionCounter(getChartActionCounter())
     setMaxChartCompareCounter(getChartCompareCounter())
     reset()
@@ -93,6 +129,11 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     setChartData,
     getDefaultChartData,
     getMaxChartActionCounter,
+    chartCheckpointsRef,
+    getChartData,
+    checkpointStepRef,
+    sortVariablesRef,
+    addCheckpoint,
   ])
 
   return {

@@ -1,21 +1,26 @@
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 import { useChartState } from '@renderer/components/providers/ChartStateProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
 export const useSelectionSort: UseSort = () => {
-  const { getChartData, chartActionRef } = useChartState()
+  const { getChartData, chartActionRef, sortVariablesRef } = useChartState()
   const { compare, match, animateSwap, swap, finish, reset } = useModifyChart()
-
-  const iRef = useRef(0)
-  const jRef = useRef(1)
-  const minIndexRef = useRef(0)
 
   const selectionSort = useCallback(
     (dryRun: boolean = false) => {
-      let i = iRef.current
-      let j = jRef.current
-      let minIndex = minIndexRef.current
+      if (Object.keys(sortVariablesRef.current).length === 0) {
+        sortVariablesRef.current = {
+          i: 0,
+          j: 1,
+          minIndex: 0,
+        }
+      }
+      let { i, j, minIndex } = sortVariablesRef.current as {
+        i: number
+        j: number
+        minIndex: number
+      }
       let compareAction = chartActionRef.current
 
       let arr = getChartData()
@@ -60,21 +65,30 @@ export const useSelectionSort: UseSort = () => {
       }
       selectionSortFunction()
 
-      iRef.current = i
-      jRef.current = j
-      minIndexRef.current = minIndex
+      sortVariablesRef.current = { i, j, minIndex }
       chartActionRef.current = compareAction
     },
-    [chartActionRef, getChartData, finish, animateSwap, swap, match, compare],
+    [
+      sortVariablesRef,
+      chartActionRef,
+      getChartData,
+      finish,
+      animateSwap,
+      swap,
+      match,
+      compare,
+    ],
   )
 
   const selectionSortReset = useCallback(() => {
-    iRef.current = 0
-    jRef.current = 1
-    minIndexRef.current = 0
+    sortVariablesRef.current = {
+      i: 0,
+      j: 1,
+      minIndex: 0,
+    }
     chartActionRef.current = CHART_ACTION.COMPARE
     reset()
-  }, [chartActionRef, reset])
+  }, [chartActionRef, reset, sortVariablesRef])
 
   return {
     sortFunction: selectionSort,
