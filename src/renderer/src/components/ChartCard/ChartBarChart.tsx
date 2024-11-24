@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
 import useChartCard from '@renderer/hooks/useChartCard'
 import { ChartDataField, SortingAlgorithm } from '@renderer/types/types'
 import * as d3 from 'd3'
@@ -10,6 +11,7 @@ export interface ChartBarChartProps {
 export default function ChartBarChart({
   sortingAlgorithm,
 }: ChartBarChartProps) {
+  const { defaultChartDataState } = useChartsInfo()
   const { chartDataState } = useChartCard(sortingAlgorithm)
 
   const svgRef = useRef<SVGSVGElement>(null)
@@ -27,7 +29,7 @@ export default function ChartBarChart({
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(chartDataState, (d) => d.number)!])
+      .domain([0, d3.max(defaultChartDataState, (d) => d.number)!])
       .range([height, 0])
 
     const bars = svg
@@ -45,6 +47,7 @@ export default function ChartBarChart({
       .attr('fill', (d) => d.fill)
       .style('transition-property', (d) => d.style.transitionProperty)
       .style('transition-duration', (d) => d.style.transitionDuration)
+      .style('transform-origin', 'bottom')
       .style('transform', (d) => d.style.transform)
 
     bars
@@ -55,10 +58,11 @@ export default function ChartBarChart({
       .attr('fill', (d) => d.fill)
       .style('transition-property', (d) => d.style.transitionProperty)
       .style('transition-duration', (d) => d.style.transitionDuration)
+      .style('transform-origin', 'bottom')
       .style('transform', (d) => d.style.transform)
 
     bars.exit().remove()
-  }, [chartDataState])
+  }, [chartDataState, defaultChartDataState])
 
   return (
     <div className="h-0 flex-auto">

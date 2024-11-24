@@ -16,6 +16,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     getDefaultChartData,
     defaultChartDataState,
     checkpointStepRef,
+    directionForwardRef,
   } = useChartsInfo()
   const { sortFunction, reset } = sortingAlgorithm()
   const {
@@ -118,6 +119,11 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
       step = getMaxChartActionCounter()
     }
     const closestCheckpoint = Math.floor(step / checkpointStepRef.current)
+    if (step < getChartActionCounter()) {
+      directionForwardRef.current = false
+    } else {
+      directionForwardRef.current = true
+    }
     if (
       step < closestCheckpoint * checkpointStepRef.current ||
       step < getChartActionCounter()
@@ -133,6 +139,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   }, [
     chartActionRef,
     checkpointStepRef,
+    directionForwardRef,
     getChartActionCounter,
     getGlobalChartActionCounter,
     getMaxChartActionCounter,

@@ -30,7 +30,7 @@ export default function CustomDataButton() {
       </DialogTrigger>
       <DialogContent
         className="flex h-3/6 min-h-64 w-96 flex-col"
-        onOpenAutoFocus={() => form.reset()}
+        onCloseAutoFocus={() => form.reset()}
       >
         <DialogHeader>
           <DialogTitle>Custom Data</DialogTitle>

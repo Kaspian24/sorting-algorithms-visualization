@@ -106,7 +106,7 @@ export const useMergeSort: UseSort = () => {
         }
 
         if (compareAction === CHART_ACTION.ANIMATE_REPLACE) {
-          animateReplace(tempFirst[tempIndex], dryRun)
+          animateReplace(tempFirst[tempIndex], tempSecond[tempIndex], dryRun)
           compareAction = CHART_ACTION.REPLACE
           return
         }
@@ -171,7 +171,7 @@ export const useMergeSort: UseSort = () => {
             k = l
 
             if (tempFirst.length > 0) {
-              animateReplace(tempFirst[0], dryRun)
+              animateReplace(tempFirst[0], tempSecond[0], dryRun)
               compareAction = CHART_ACTION.REPLACE
             }
             return

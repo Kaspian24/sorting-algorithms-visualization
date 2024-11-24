@@ -27,12 +27,15 @@ function modifyChartFunction({
   dryRun,
 }: ModifyChartFunctionParams) {
   const distance = (Math.abs(first - second) / chartData.length) * 100
+  const scale =
+    chartAction === CHART_ACTION.ANIMATE_REPLACE
+      ? 1 / (chartData[first].number / second)
+      : 1
 
-  const transitionProperty =
-    ((chartAction === CHART_ACTION.ANIMATE_SWAP ||
+  const transition =
+    (chartAction === CHART_ACTION.ANIMATE_SWAP ||
       chartAction === CHART_ACTION.ANIMATE_REPLACE) &&
-      isForward === true) ||
-    (chartAction === CHART_ACTION.COMPARE && isForward === false)
+    isForward
       ? 'transform'
       : 'none'
 
@@ -45,7 +48,9 @@ function modifyChartFunction({
   const colorSecond =
     chartAction === CHART_ACTION.ANIMATE_SWAP
       ? 'hsl(var(--chart-4))'
-      : 'hsl(var(--chart-3))'
+      : chartAction === CHART_ACTION.ANIMATE_REPLACE
+        ? 'hsl(var(--chart-1))'
+        : 'hsl(var(--chart-3))'
 
   const newChartData = !dryRun
     ? chartData.map((data, index) => {
@@ -61,16 +66,21 @@ function modifyChartFunction({
                   : 'hsl(var(--chart-1))',
           style: {
             ...data.style,
-            transitionProperty,
+            transitionProperty:
+              index === first || index === second ? transition : 'none',
             transitionDuration: `${duration}ms`,
             transform:
               chartAction === CHART_ACTION.ANIMATE_SWAP
                 ? index === first
                   ? `translateX(${distance}%)`
                   : index === second
-                    ? `translateX(-${distance}%)`
+                    ? `translateX(${-distance}%)`
                     : 'translateX(0%)'
-                : 'translateX(0%)',
+                : chartAction === CHART_ACTION.ANIMATE_REPLACE
+                  ? index === first
+                    ? `scaleY(${scale})`
+                    : 'scaleY(1)'
+                  : 'translateX(0%) scaleY(1)',
           },
         }
       })
@@ -192,11 +202,11 @@ export default function useModifyChart() {
   )
 
   const animateReplace = useCallback(
-    (first: number, dryRun: boolean = false) =>
+    (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
         chartData: getChartData(),
         first,
-        second: -1,
+        second,
         chartAction: CHART_ACTION.ANIMATE_REPLACE,
         dryRun,
       }),

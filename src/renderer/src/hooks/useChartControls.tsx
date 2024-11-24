@@ -10,7 +10,6 @@ export default function useChartControls() {
     setGlobalChartActionCounter,
     linkGlobalChartActionCounterSetState,
     getGlobalMaxChartActionCounter,
-    directionForwardRef,
     defaultChartDataState,
     algorithmsVisibilityData,
   } = useChartsInfo()
@@ -70,19 +69,12 @@ export default function useChartControls() {
   }, [durationRef, getGlobalChartActionCounter, handleStop, setStepAll])
 
   const handleStart = useCallback(() => {
-    directionForwardRef.current = true
     handleStop()
     isRunningRef.current = true
     setIsRunningState(isRunningRef.current)
     setStepAll(getGlobalChartActionCounter() + 1)
     continueSort()
-  }, [
-    continueSort,
-    directionForwardRef,
-    getGlobalChartActionCounter,
-    handleStop,
-    setStepAll,
-  ])
+  }, [continueSort, getGlobalChartActionCounter, handleStop, setStepAll])
 
   const handleReset = useCallback(() => {
     handleStop()
