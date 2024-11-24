@@ -28,10 +28,10 @@ export default function ChartControls() {
     handleReset,
     handleDurationChange,
     isRunningState,
-    setTempStep,
     globalChartActionCounterState,
     handlePrevious,
     handleNext,
+    handleSetStep,
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true
@@ -77,7 +77,7 @@ export default function ChartControls() {
         <RotateCcw />
       </Button>
       <Button
-        onClick={() => setTempStep(globalMaxChartActionCounterState)}
+        onClick={() => handleSetStep(globalMaxChartActionCounterState)}
         variant="ghost"
         className={`p-0 ${allHidden && 'opacity-50'}`}
       >
@@ -88,7 +88,7 @@ export default function ChartControls() {
         rangeClassName={`${globalChartActionCounterState === globalMaxChartActionCounterState && 'bg-red-400'}`}
         value={[!allHidden ? globalChartActionCounterState : 0]}
         max={globalMaxChartActionCounterState}
-        onValueChange={(value) => setTempStep(value[0])}
+        onValueChange={(value) => handleSetStep(value[0])}
         step={1}
       />
       <Select onValueChange={(value) => handleDurationChange(Number(value))}>

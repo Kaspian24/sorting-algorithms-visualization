@@ -171,8 +171,19 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
           addedData.current.getMaxChartActionCounter(),
         ),
       )
+      setGlobalChartActionCounter(
+        Math.min(
+          getGlobalMaxChartActionCounter(),
+          getGlobalChartActionCounter(),
+        ),
+      )
     },
-    [setGlobalMaxChartActionCounter],
+    [
+      getGlobalChartActionCounter,
+      getGlobalMaxChartActionCounter,
+      setGlobalChartActionCounter,
+      setGlobalMaxChartActionCounter,
+    ],
   )
 
   const removeChartInfoData = useCallback(
@@ -186,8 +197,19 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
           0,
         ),
       )
+      setGlobalChartActionCounter(
+        Math.min(
+          getGlobalMaxChartActionCounter(),
+          getGlobalChartActionCounter(),
+        ),
+      )
     },
-    [setGlobalMaxChartActionCounter],
+    [
+      getGlobalChartActionCounter,
+      getGlobalMaxChartActionCounter,
+      setGlobalChartActionCounter,
+      setGlobalMaxChartActionCounter,
+    ],
   )
 
   const setAlgorithmVisibility = useCallback(

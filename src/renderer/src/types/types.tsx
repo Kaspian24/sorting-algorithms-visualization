@@ -1,10 +1,12 @@
-import { useSelectionSort } from '@renderer/hooks/sorts/useSelectrionSort'
+import { useMergeSort } from '@renderer/hooks/sorts/useMergeSort'
+import { useSelectionSort } from '@renderer/hooks/sorts/useSelectionSort'
 
 export const CHART_ACTION = {
   COMPARE: 'COMPARE',
-  MATCH: 'MATCH',
   ANIMATE_SWAP: 'ANIMATE_SWAP',
   SWAP: 'SWAP',
+  ANIMATE_REPLACE: 'ANIMATE_REPLACE',
+  REPLACE: 'REPLACE',
   FINISHED: 'FINISHED',
 } as const
 
@@ -19,15 +21,17 @@ export interface UseSort {
 
 export const SORTING_ALGORITHM = {
   SELECTION_SORT: useSelectionSort,
-  TEST_ONE: useSelectionSort,
-  TEST_TWO: useSelectionSort,
-  TEST_THREE: useSelectionSort,
+  MERGE_SORT: useMergeSort,
   TEST_1: useSelectionSort,
   TEST_2: useSelectionSort,
   TEST_3: useSelectionSort,
   TEST_4: useSelectionSort,
   TEST_5: useSelectionSort,
-  TEST_6: useSelectionSort,
+  TEST_7: useSelectionSort,
+  TEST_8: useSelectionSort,
+  TEST_9: useSelectionSort,
+  TEST_10: useSelectionSort,
+  TEST_11: useSelectionSort,
 } as const
 
 export type SortingAlgorithm =
@@ -59,7 +63,8 @@ export interface ChartInfoData {
   getChartActionCounter: () => number
   getChartCompareCounter: () => number
   chartActionRef: React.MutableRefObject<ChartAction>
-  goToCheckpoint: (checkpoint: number) => void
+  goToCheckpoint: (checkpoint: number) => boolean
+  setStep: () => void
 }
 
 export const DRAG_ITEM_TYPE = {

@@ -32,7 +32,6 @@ interface ChartStateContextType {
   setChartCompareCounter: (value: number) => void
   linkChartCompareCounterSetState: (f: (value: number) => void) => void
   chartCheckpointsRef: React.MutableRefObject<ChartCheckpoint[]>
-  goToCheckpoint: (checkpoint: number) => void
   sortVariablesRef: React.MutableRefObject<object>
 }
 
@@ -82,8 +81,8 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
     return chartDataRef.current
   }, [])
   const setChartData = useCallback((value: ChartDataField[]) => {
-    chartDataRef.current = value
-    chartDataSetState.current(value)
+    chartDataRef.current = [...value]
+    chartDataSetState.current([...value])
   }, [])
 
   const chartActionCounterRef = useRef<number>(0)
@@ -122,24 +121,6 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
 
   const sortVariablesRef = useRef<object>({})
 
-  const goToCheckpoint = useCallback(
-    (checkpoint: number) => {
-      const {
-        data,
-        sortVariables,
-        chartActionCounter,
-        chartCompareCounter,
-        chartAction,
-      } = chartCheckpointsRef.current[checkpoint]
-      setChartData([...data])
-      sortVariablesRef.current = sortVariables
-      setChartActionCounter(chartActionCounter)
-      setChartCompareCounter(chartCompareCounter)
-      chartActionRef.current = chartAction
-    },
-    [setChartActionCounter, setChartCompareCounter, setChartData],
-  )
-
   const value: ChartStateContextType = {
     chartActionRef,
     getMaxChartActionCounter,
@@ -158,7 +139,6 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
     setChartCompareCounter,
     linkChartCompareCounterSetState,
     chartCheckpointsRef,
-    goToCheckpoint,
     sortVariablesRef,
   }
 
