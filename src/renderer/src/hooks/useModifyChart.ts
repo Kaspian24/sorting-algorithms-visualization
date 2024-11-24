@@ -29,19 +29,20 @@ function modifyChartFunction({
   const distance = (Math.abs(first - second) / chartData.length) * 100
 
   const transitionProperty =
-    (chartAction === CHART_ACTION.ANIMATE_SWAP && isForward === true) ||
-    (chartAction === CHART_ACTION.MATCH && isForward === false)
+    ((chartAction === CHART_ACTION.ANIMATE_SWAP ||
+      chartAction === CHART_ACTION.ANIMATE_REPLACE) &&
+      isForward === true) ||
+    (chartAction === CHART_ACTION.COMPARE && isForward === false)
       ? 'transform'
       : 'none'
 
   const colorFirst =
-    chartAction === CHART_ACTION.MATCH ||
-    chartAction === CHART_ACTION.ANIMATE_SWAP
+    chartAction === CHART_ACTION.ANIMATE_SWAP ||
+    chartAction === CHART_ACTION.ANIMATE_REPLACE
       ? 'hsl(var(--chart-4))'
       : 'hsl(var(--chart-2))'
 
   const colorSecond =
-    chartAction === CHART_ACTION.MATCH ||
     chartAction === CHART_ACTION.ANIMATE_SWAP
       ? 'hsl(var(--chart-4))'
       : 'hsl(var(--chart-3))'
@@ -80,6 +81,9 @@ function modifyChartFunction({
       newChartData[first],
     ]
   }
+  if (chartAction === CHART_ACTION.REPLACE) {
+    newChartData[first] = { ...newChartData[first], number: second }
+  }
   return newChartData
 }
 
@@ -105,7 +109,10 @@ export default function useModifyChart() {
 
   const modifyChart = useCallback(
     ({ chartData, first, second, chartAction, dryRun }: ModifyChartParams) => {
-      if (chartAction !== CHART_ACTION.SWAP) {
+      if (
+        chartAction !== CHART_ACTION.SWAP &&
+        chartAction !== CHART_ACTION.REPLACE
+      ) {
         setChartActionCounter(getChartActionCounter() + 1)
       }
       if (chartAction === CHART_ACTION.COMPARE) {
@@ -114,8 +121,8 @@ export default function useModifyChart() {
       const duration = durationRef.current
       const isForward = directionForwardRef.current
 
-      setChartData([
-        ...modifyChartFunction({
+      setChartData(
+        modifyChartFunction({
           chartData,
           first,
           second,
@@ -124,7 +131,7 @@ export default function useModifyChart() {
           isForward,
           dryRun,
         }),
-      ])
+      )
     },
     [
       durationRef,
@@ -138,7 +145,7 @@ export default function useModifyChart() {
   )
 
   const reset = useCallback(() => {
-    setChartData([...getDefaultChartData()])
+    setChartData(getDefaultChartData())
     setChartActionCounter(0)
     setChartCompareCounter(0)
   }, [
@@ -155,18 +162,6 @@ export default function useModifyChart() {
         first,
         second,
         chartAction: CHART_ACTION.COMPARE,
-        dryRun,
-      }),
-    [getChartData, modifyChart],
-  )
-
-  const match = useCallback(
-    (first: number, second: number, dryRun: boolean = false) =>
-      modifyChart({
-        chartData: getChartData(),
-        first,
-        second,
-        chartAction: CHART_ACTION.MATCH,
         dryRun,
       }),
     [getChartData, modifyChart],
@@ -196,12 +191,36 @@ export default function useModifyChart() {
     [getChartData, modifyChart],
   )
 
+  const animateReplace = useCallback(
+    (first: number, dryRun: boolean = false) =>
+      modifyChart({
+        chartData: getChartData(),
+        first,
+        second: -1,
+        chartAction: CHART_ACTION.ANIMATE_REPLACE,
+        dryRun,
+      }),
+    [getChartData, modifyChart],
+  )
+
+  const replace = useCallback(
+    (first: number, second: number, dryRun: boolean = false) =>
+      modifyChart({
+        chartData: getChartData(),
+        first,
+        second,
+        chartAction: CHART_ACTION.REPLACE,
+        dryRun,
+      }),
+    [getChartData, modifyChart],
+  )
+
   const finish = useCallback(
     (dryRun: boolean = false) =>
       modifyChart({
         chartData: getChartData(),
-        first: 0,
-        second: 0,
+        first: -1,
+        second: -1,
         chartAction: CHART_ACTION.FINISHED,
         dryRun,
       }),
@@ -210,9 +229,10 @@ export default function useModifyChart() {
 
   return {
     compare,
-    match,
     animateSwap,
     swap,
+    animateReplace,
+    replace,
     finish,
     reset,
   }

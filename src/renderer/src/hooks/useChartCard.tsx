@@ -30,7 +30,8 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     setMaxChartCompareCounter,
     linkChartDataSetState,
     chartCheckpointsRef,
-    goToCheckpoint,
+    setChartActionCounter,
+    setChartCompareCounter,
     sortVariablesRef,
   } = useChartState()
 
@@ -42,24 +43,12 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     linkChartDataSetState(setChartDataState)
   }, [linkChartDataSetState])
 
-  const controlData = useRef<ChartInfoData>({
-    sortFunction,
-    reset,
-    getChartData,
-    getChartActionCounter,
-    getChartCompareCounter,
-    getMaxChartActionCounter,
-    getMaxChartCompareCounter,
-    chartActionRef,
-    goToCheckpoint,
-  })
-
   const addCheckpoint = useCallback(() => {
     if (getChartActionCounter() % checkpointStepRef.current === 0) {
       chartCheckpointsRef.current.push({
         checkpoint: getChartActionCounter() / checkpointStepRef.current,
         data: getChartData(),
-        sortVariables: sortVariablesRef.current,
+        sortVariables: structuredClone(sortVariablesRef.current),
         chartActionCounter: getChartActionCounter(),
         chartCompareCounter: getChartCompareCounter(),
         chartAction: chartActionRef.current,
@@ -74,6 +63,95 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     getChartData,
     sortVariablesRef,
   ])
+
+  const goToCheckpoint = useCallback(
+    (checkpoint: number) => {
+      let realCheckpoint = checkpoint
+      if (checkpoint > chartCheckpointsRef.current.length - 1) {
+        realCheckpoint = chartCheckpointsRef.current.length - 1
+      }
+      const {
+        data,
+        sortVariables,
+        chartActionCounter,
+        chartCompareCounter,
+        chartAction,
+      } = chartCheckpointsRef.current[realCheckpoint]
+      setChartData(data)
+      sortVariablesRef.current = structuredClone(sortVariables)
+      setChartActionCounter(chartActionCounter)
+      setChartCompareCounter(chartCompareCounter)
+      chartActionRef.current = chartAction
+      return true
+    },
+    [
+      chartActionRef,
+      chartCheckpointsRef,
+      setChartActionCounter,
+      setChartCompareCounter,
+      setChartData,
+      sortVariablesRef,
+    ],
+  )
+
+  const nextStep = useCallback(
+    (step: number) => {
+      const currentStep = getChartActionCounter()
+      if (
+        step - 1 === currentStep ||
+        getMaxChartActionCounter() - 1 === getChartActionCounter()
+      ) {
+        sortFunction()
+      } else {
+        sortFunction(true)
+      }
+    },
+    [getChartActionCounter, getMaxChartActionCounter, sortFunction],
+  )
+
+  const setStep = useCallback(() => {
+    let step = getGlobalChartActionCounter()
+    if (step > getMaxChartActionCounter()) {
+      if (chartActionRef.current === CHART_ACTION.FINISHED) {
+        return
+      }
+      step = getMaxChartActionCounter()
+    }
+    const closestCheckpoint = Math.floor(step / checkpointStepRef.current)
+    if (
+      step < closestCheckpoint * checkpointStepRef.current ||
+      step < getChartActionCounter()
+    ) {
+      goToCheckpoint(closestCheckpoint)
+    }
+    while (
+      step > getChartActionCounter() &&
+      chartActionRef.current !== CHART_ACTION.FINISHED
+    ) {
+      nextStep(step)
+    }
+  }, [
+    chartActionRef,
+    checkpointStepRef,
+    getChartActionCounter,
+    getGlobalChartActionCounter,
+    getMaxChartActionCounter,
+    goToCheckpoint,
+    nextStep,
+  ])
+
+  const controlData = useRef<ChartInfoData>({
+    sortFunction,
+    reset,
+    getChartData,
+    getChartActionCounter,
+    getChartCompareCounter,
+    getMaxChartActionCounter,
+    getMaxChartCompareCounter,
+    chartActionRef,
+    goToCheckpoint,
+    setStep,
+  })
 
   useEffect(() => {
     chartCheckpointsRef.current = []
@@ -111,7 +189,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
     return () => {
       removeChartInfoData(controlData)
-      setChartData([...getDefaultChartData()])
+      setChartData(getDefaultChartData())
       reset()
     }
   }, [
