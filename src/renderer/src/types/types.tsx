@@ -1,3 +1,4 @@
+import { useInsertionSort } from '@renderer/hooks/sorts/useInsertionSort'
 import { useMergeSort } from '@renderer/hooks/sorts/useMergeSort'
 import { useSelectionSort } from '@renderer/hooks/sorts/useSelectionSort'
 
@@ -22,11 +23,13 @@ export interface UseSort {
 export const SORTING_ALGORITHM = {
   SELECTION_SORT: useSelectionSort,
   MERGE_SORT: useMergeSort,
+  INSERTION_SORT: useInsertionSort,
   TEST_1: useSelectionSort,
   TEST_2: useSelectionSort,
   TEST_3: useSelectionSort,
   TEST_4: useSelectionSort,
   TEST_5: useSelectionSort,
+  TEST_6: useSelectionSort,
   TEST_7: useSelectionSort,
   TEST_8: useSelectionSort,
   TEST_9: useSelectionSort,
