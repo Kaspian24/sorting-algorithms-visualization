@@ -49,7 +49,7 @@ export const useSelectionSort: UseSort = () => {
 
         while (i < n - 1) {
           while (j < n) {
-            compare(j, min_idx, dryRun)
+            compare(min_idx, j, dryRun)
             if (arr[j].number < arr[min_idx].number) {
               min_idx = j
             }

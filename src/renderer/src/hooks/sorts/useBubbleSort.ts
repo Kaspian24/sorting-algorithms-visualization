@@ -3,24 +3,22 @@ import { useChartState } from '@renderer/components/providers/ChartStateProvider
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
-interface InsertionSortVariables {
+interface BubbleSortVariables {
   i: number
   j: number
-  key: number
-  initialized: boolean
+  swapped: boolean
 }
 
 const getStarterVariables = () => {
-  const starterVariables: InsertionSortVariables = {
-    i: 1,
+  const starterVariables: BubbleSortVariables = {
+    i: 0,
     j: 0,
-    key: 0,
-    initialized: false,
+    swapped: false,
   }
   return starterVariables
 }
 
-export const useInsertionSort: UseSort = () => {
+export const useBubbleSort: UseSort = () => {
   const { getChartData, chartActionRef, sortVariablesRef } = useChartState()
   const { compare, animateSwap, swap, finish, reset } = useModifyChart()
 
@@ -28,58 +26,60 @@ export const useInsertionSort: UseSort = () => {
     sortVariablesRef.current = getStarterVariables()
   }
 
-  const insertionSort = useCallback(
+  const bubbleSort = useCallback(
     (dryRun: boolean = false) => {
-      let { i, j, key, initialized } =
-        sortVariablesRef.current as InsertionSortVariables
+      let { i, j, swapped } = sortVariablesRef.current as BubbleSortVariables
       let compareAction = chartActionRef.current
       let arr = getChartData()
       const n = arr.length
 
-      if (!initialized) {
-        key = arr[i].number
-
-        initialized = true
-      }
-
-      function insertionSortFunction() {
+      function bubbleSortFunction() {
         if (compareAction === CHART_ACTION.FINISHED) {
           return
         }
 
         if (compareAction === CHART_ACTION.SWAP) {
-          swap(j + 1, j, dryRun)
+          swap(j, j + 1, dryRun)
           arr = getChartData()
-          j = j - 1
           compareAction = CHART_ACTION.COMPARE
+          j++
         }
 
-        while (i < n) {
-          if (j >= 0 && compareAction === CHART_ACTION.COMPARE) {
-            compare(j, j + 1, dryRun)
-            compareAction = CHART_ACTION.ANIMATE_SWAP
-            return
+        while (i < n - 1) {
+          while (j < n - i - 1) {
+            if (compareAction === CHART_ACTION.COMPARE) {
+              compare(j, j + 1, dryRun)
+              if (arr[j].number > arr[j + 1].number) {
+                compareAction = CHART_ACTION.ANIMATE_SWAP
+                swapped = true
+              } else {
+                j++
+              }
+              return
+            }
+            if (compareAction === CHART_ACTION.ANIMATE_SWAP) {
+              animateSwap(j, j + 1, dryRun)
+              compareAction = CHART_ACTION.SWAP
+              return
+            }
           }
-          while (j >= 0 && arr[j].number > key) {
-            animateSwap(j, j + 1, dryRun)
-            compareAction = CHART_ACTION.SWAP
-            return
+          j = 0
+
+          if (swapped === false) {
+            break
           }
           i++
-          if (i < n) {
-            key = arr[i].number
-            j = i - 1
-          }
-          compareAction = CHART_ACTION.COMPARE
+          swapped = false
         }
+        i = 0
 
         finish(dryRun)
         compareAction = CHART_ACTION.FINISHED
         return
       }
 
-      insertionSortFunction()
-      sortVariablesRef.current = { i, j, key, initialized }
+      bubbleSortFunction()
+      sortVariablesRef.current = { i, j, swapped }
       chartActionRef.current = compareAction
     },
     [
@@ -93,14 +93,14 @@ export const useInsertionSort: UseSort = () => {
     ],
   )
 
-  const insertionSortReset = useCallback(() => {
+  const bubbleSortReset = useCallback(() => {
     sortVariablesRef.current = getStarterVariables()
     chartActionRef.current = CHART_ACTION.COMPARE
     reset()
   }, [chartActionRef, reset, sortVariablesRef])
 
   return {
-    sortFunction: insertionSort,
-    reset: insertionSortReset,
+    sortFunction: bubbleSort,
+    reset: bubbleSortReset,
   }
 }
