@@ -84,11 +84,11 @@ function modifyChartFunction({
           },
         }
       })
-    : chartData
+    : [...chartData]
   if (chartAction === CHART_ACTION.SWAP) {
     ;[newChartData[first], newChartData[second]] = [
-      newChartData[second],
-      newChartData[first],
+      { ...newChartData[first], number: newChartData[second].number },
+      { ...newChartData[second], number: newChartData[first].number },
     ]
   }
   if (chartAction === CHART_ACTION.REPLACE) {
