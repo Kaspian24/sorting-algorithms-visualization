@@ -71,7 +71,6 @@ export const useBubbleSort: UseSort = () => {
           i++
           swapped = false
         }
-        i = 0
 
         finish(dryRun)
         compareAction = CHART_ACTION.FINISHED

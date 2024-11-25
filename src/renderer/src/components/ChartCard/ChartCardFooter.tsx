@@ -45,13 +45,6 @@ export default function ChartCardFooter() {
           Comparisons: {chartCompareCounterState} /{' '}
           {maxChartCompareCounterState}
         </p>
-        <p>
-          Swaps:{' '}
-          {(chartActionCounterState === maxChartActionCounterState
-            ? chartActionCounterState - 1
-            : chartActionCounterState) - chartCompareCounterState}{' '}
-          / {maxChartActionCounterState - maxChartCompareCounterState - 1}
-        </p>
       </div>
     </CardFooter>
   )
