@@ -81,8 +81,8 @@ export function ChartStateProvider({ children }: ChartStateProviderProps) {
     return chartDataRef.current
   }, [])
   const setChartData = useCallback((value: ChartDataField[]) => {
-    chartDataRef.current = [...value]
-    chartDataSetState.current([...value])
+    chartDataRef.current = value
+    chartDataSetState.current(value)
   }, [])
 
   const chartActionCounterRef = useRef<number>(0)
