@@ -46,11 +46,12 @@ export const useMergeSort: UseSort = () => {
   const { getChartData, chartActionRef, sortVariablesRef } = useChartState()
   const { compare, animateReplace, replace, finish, reset } = useModifyChart()
 
+  if (Object.keys(sortVariablesRef.current).length === 0) {
+    sortVariablesRef.current = getStarterVariables()
+  }
+
   const mergeSort = useCallback(
     (dryRun: boolean = false) => {
-      if (Object.keys(sortVariablesRef.current).length === 0) {
-        sortVariablesRef.current = getStarterVariables()
-      }
       let {
         curr_size,
         l,

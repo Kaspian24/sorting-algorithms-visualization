@@ -42,7 +42,8 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
   useEffect(() => {
     linkChartDataSetState(setChartDataState)
-  }, [linkChartDataSetState])
+    setChartDataState(getChartData())
+  }, [getChartData, linkChartDataSetState])
 
   const addCheckpoint = useCallback(() => {
     if (getChartActionCounter() % checkpointStepRef.current === 0) {

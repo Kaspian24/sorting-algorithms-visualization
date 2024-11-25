@@ -98,7 +98,8 @@ export default function ChartControls() {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Speed</SelectLabel>
-            <SelectItem value="10">10x</SelectItem>
+            <SelectItem value="50">50x</SelectItem>
+            <SelectItem value="10">25x</SelectItem>
             <SelectItem value="5">5x</SelectItem>
             <SelectItem value="1">1x</SelectItem>
             <SelectItem value="0.5">0.5x</SelectItem>

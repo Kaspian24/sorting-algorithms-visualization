@@ -122,7 +122,8 @@ export default function useChartControls() {
 
   useEffect(() => {
     linkGlobalChartActionCounterSetState(setGlobalChartActionCounterState)
-  }, [linkGlobalChartActionCounterSetState])
+    setGlobalChartActionCounterState(getGlobalChartActionCounter())
+  }, [getGlobalChartActionCounter, linkGlobalChartActionCounterSetState])
 
   return {
     handleStart,
