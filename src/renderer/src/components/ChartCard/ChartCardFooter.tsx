@@ -31,15 +31,27 @@ export default function ChartCardFooter() {
 
   return (
     <CardFooter className="flex flex-col justify-center">
-      <p>Comparisons:</p>
       <div className="flex w-full items-center justify-center gap-4">
-        <p>{chartCompareCounterState}</p>
+        <p>{chartActionCounterState}</p>
         <Progress
           value={(chartActionCounterState / maxChartActionCounterState) * 100}
           className="w-3/4"
           indicatorClassName={`${chartActionCounterState === maxChartActionCounterState ? 'bg-red-400' : ''}`}
         />
-        <p>{maxChartCompareCounterState}</p>
+        <p>{maxChartActionCounterState}</p>
+      </div>
+      <div className="flex w-full items-center justify-center gap-4">
+        <p>
+          Comparisons: {chartCompareCounterState} /{' '}
+          {maxChartCompareCounterState}
+        </p>
+        <p>
+          Swaps:{' '}
+          {(chartActionCounterState === maxChartActionCounterState
+            ? chartActionCounterState - 1
+            : chartActionCounterState) - chartCompareCounterState}{' '}
+          / {maxChartActionCounterState - maxChartCompareCounterState - 1}
+        </p>
       </div>
     </CardFooter>
   )
