@@ -7,10 +7,12 @@ import {
   useState,
 } from 'react'
 import {
+  initialAlgorithmsVisibility,
+  initialDraggablesTransitionState,
+} from '@renderer/components/providers/AlgorithmsVisibilityProvider/utils'
+import {
   AlgorithmVisibilityData as AlgorithmsVisibilityData,
-  DRAG_ITEM_TYPE,
   DraggablesTransitionState,
-  DragItemType,
   SORTING_ALGORITHM,
 } from '@renderer/types/types'
 
@@ -34,25 +36,6 @@ interface AlgorithmsVisibilityContextType {
   ) => void
   draggablesTransitionStateRef: React.MutableRefObject<DraggablesTransitionState>
 }
-
-function generateInitialAlgorithmsVisibility(): AlgorithmsVisibilityData[] {
-  return Object.keys(SORTING_ALGORITHM).map((algorithm) => ({
-    algorithm: algorithm as keyof typeof SORTING_ALGORITHM,
-    visible: false,
-  }))
-}
-
-const initialAlgorithmsVisibility = generateInitialAlgorithmsVisibility()
-
-function generateInitialDraggablesTransitionState(): DraggablesTransitionState {
-  return Object.values(DRAG_ITEM_TYPE).reduce((acc, key) => {
-    acc[key as DragItemType] = false
-    return acc
-  }, {} as DraggablesTransitionState)
-}
-
-const initialDraggablesTransitionState =
-  generateInitialDraggablesTransitionState()
 
 const AlgorithmsVisibilityContext = createContext<
   AlgorithmsVisibilityContextType | undefined

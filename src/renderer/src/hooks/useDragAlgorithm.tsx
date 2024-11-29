@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import {
   DRAG_CONTAINER_LAYOUT,
   DragContainerLayout,

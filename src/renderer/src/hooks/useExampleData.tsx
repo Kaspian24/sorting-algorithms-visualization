@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 
 const smallUnsorted = [4, 8, 10, 7, 2, 3, 1, 9, 5, 6]
 const smallPartiallySorted = [1, 2, 3, 5, 4, 6, 7, 9, 8, 10]

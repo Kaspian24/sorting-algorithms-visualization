@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useRef } from 'react'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import {
   CHART_ACTION,
   ChartAction,
@@ -27,12 +27,12 @@ interface ChartInfoProviderProps {
 }
 
 export function ChartInfoProvider({ children }: ChartInfoProviderProps) {
-  const { getDefaultChartData } = useGlobalChartsInfo()
+  const { defaultChartDataRef } = useGlobalChartsInfo()
 
   const chartActionRef = useRef<ChartAction>(CHART_ACTION.COMPARE)
   const maxChartActionCounterRef = useRef<number>(0)
   const maxChartCompareCounterRef = useRef<number>(0)
-  const chartDataRef = useRef<ChartDataField[]>(getDefaultChartData())
+  const chartDataRef = useRef<ChartDataField[]>(defaultChartDataRef.current)
   const chartActionCounterRef = useRef<number>(0)
   const chartCompareCounterRef = useRef<number>(0)
   const chartCheckpointsRef = useRef<ChartCheckpoint[]>([])

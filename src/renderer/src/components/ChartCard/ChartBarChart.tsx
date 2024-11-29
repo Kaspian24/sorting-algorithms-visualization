@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { ChartDataField } from '@renderer/types/types'
 import * as d3 from 'd3'
 

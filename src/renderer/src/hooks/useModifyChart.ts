@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import {
   CHART_ACTION,
   ChartAction,
@@ -106,7 +106,7 @@ interface ModifyChartParams {
 }
 
 export default function useModifyChart() {
-  const { getDefaultChartData, directionForwardRef, durationRef } =
+  const { defaultChartDataRef, directionForwardRef, durationRef } =
     useGlobalChartsInfo()
   const { chartDataRef, chartCompareCounterRef, chartActionCounterRef } =
     useChartInfo()
@@ -145,12 +145,12 @@ export default function useModifyChart() {
   )
 
   const reset = useCallback(() => {
-    chartDataRef.current = getDefaultChartData()
+    chartDataRef.current = defaultChartDataRef.current
     chartActionCounterRef.current = 0
     chartCompareCounterRef.current = 0
   }, [
     chartDataRef,
-    getDefaultChartData,
+    defaultChartDataRef,
     chartActionCounterRef,
     chartCompareCounterRef,
   ])

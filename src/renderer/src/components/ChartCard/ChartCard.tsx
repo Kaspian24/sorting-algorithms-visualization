@@ -1,6 +1,6 @@
 import ChartCardVisualization from '@renderer/components/ChartCard/ChartCardVisualization'
-import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
-import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
+import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
 import { Card, CardHeader, CardTitle } from '@renderer/components/ui/Card'
 import {

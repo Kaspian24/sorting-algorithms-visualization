@@ -1,4 +1,4 @@
-import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { ContextMenuCheckboxItem } from '@renderer/components/ui/ContextMenu'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
 import {

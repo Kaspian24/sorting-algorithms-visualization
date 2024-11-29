@@ -1,32 +1,33 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { CHART_ACTION } from '@renderer/types/types'
 
 export default function useChartControls() {
   const {
-    chartInfoData,
+    globalChartsInfoDataRef,
     durationRef,
-    getGlobalChartActionCounter,
-    setGlobalChartActionCounter,
-    linkGlobalChartActionCounterSetState,
-    getGlobalMaxChartActionCounter,
+    globalChartActionCounterRef,
+    globalMaxChartActionCounterRef,
     defaultChartDataState,
   } = useGlobalChartsInfo()
   const { algorithmsVisibilityData } = useAlgorithmsVisibility()
   const [globalChartActionCounterState, setGlobalChartActionCounterState] =
-    useState<number>(() => getGlobalChartActionCounter())
+    useState<number>(() => globalChartActionCounterRef.current)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
   const [isRunningState, setIsRunningState] = useState<boolean>(false)
 
   const setStepAll = useCallback(
     (step: number) => {
-      setGlobalChartActionCounter(
-        Math.max(0, Math.min(step, getGlobalMaxChartActionCounter())),
+      const newGlobalChartActionCounter = Math.max(
+        0,
+        Math.min(step, globalMaxChartActionCounterRef.current),
       )
+      globalChartActionCounterRef.current = newGlobalChartActionCounter
+      setGlobalChartActionCounterState(newGlobalChartActionCounter)
       let areAllSorted = true
-      chartInfoData.current.forEach((data) => {
+      globalChartsInfoDataRef.current.forEach((data) => {
         data.current.setStep()
         if (data.current.chartActionRef.current !== CHART_ACTION.FINISHED) {
           areAllSorted = false
@@ -35,18 +36,19 @@ export default function useChartControls() {
       return areAllSorted
     },
     [
-      chartInfoData,
-      getGlobalMaxChartActionCounter,
-      setGlobalChartActionCounter,
+      globalChartsInfoDataRef,
+      globalMaxChartActionCounterRef,
+      globalChartActionCounterRef,
     ],
   )
 
   const resetAll = useCallback(() => {
-    setGlobalChartActionCounter(0)
-    chartInfoData.current.forEach((data) => {
+    globalChartActionCounterRef.current = 0
+    setGlobalChartActionCounterState(0)
+    globalChartsInfoDataRef.current.forEach((data) => {
       data.current.reset()
     })
-  }, [chartInfoData, setGlobalChartActionCounter])
+  }, [globalChartsInfoDataRef, globalChartActionCounterRef])
 
   const handleStop = useCallback(() => {
     if (intervalRef.current) {
@@ -60,22 +62,22 @@ export default function useChartControls() {
     intervalRef.current = setTimeout(() => {
       isRunningRef.current = true
       setIsRunningState(isRunningRef.current)
-      const areAllSorted = setStepAll(getGlobalChartActionCounter() + 1)
+      const areAllSorted = setStepAll(globalChartActionCounterRef.current + 1)
       if (areAllSorted) {
         handleStop()
       } else {
         continueSort()
       }
     }, durationRef.current)
-  }, [durationRef, getGlobalChartActionCounter, handleStop, setStepAll])
+  }, [durationRef, globalChartActionCounterRef, handleStop, setStepAll])
 
   const handleStart = useCallback(() => {
     handleStop()
     isRunningRef.current = true
     setIsRunningState(isRunningRef.current)
-    setStepAll(getGlobalChartActionCounter() + 1)
+    setStepAll(globalChartActionCounterRef.current + 1)
     continueSort()
-  }, [continueSort, getGlobalChartActionCounter, handleStop, setStepAll])
+  }, [continueSort, globalChartActionCounterRef, handleStop, setStepAll])
 
   const handleReset = useCallback(() => {
     handleStop()
@@ -101,30 +103,26 @@ export default function useChartControls() {
     [continueSort, durationRef, handleStop],
   )
 
-  useEffect(() => {
-    handleReset()
-  }, [defaultChartDataState, handleReset])
-
   const handlePrevious = useCallback(() => {
     handleStop()
-    setStepAll(getGlobalChartActionCounter() - 1)
-  }, [getGlobalChartActionCounter, handleStop, setStepAll])
+    setStepAll(globalChartActionCounterRef.current - 1)
+  }, [globalChartActionCounterRef, handleStop, setStepAll])
 
   const handleNext = useCallback(() => {
     handleStop()
-    setStepAll(getGlobalChartActionCounter() + 1)
-  }, [getGlobalChartActionCounter, handleStop, setStepAll])
+    setStepAll(globalChartActionCounterRef.current + 1)
+  }, [globalChartActionCounterRef, handleStop, setStepAll])
+
+  useEffect(() => {
+    handleReset()
+  }, [defaultChartDataState, handleReset])
 
   useEffect(() => {
     if (algorithmsVisibilityData.every(({ visible }) => visible === false)) {
       handleStop()
     }
-  }, [algorithmsVisibilityData, handleStop])
-
-  useEffect(() => {
-    linkGlobalChartActionCounterSetState(setGlobalChartActionCounterState)
-    setGlobalChartActionCounterState(getGlobalChartActionCounter())
-  }, [getGlobalChartActionCounter, linkGlobalChartActionCounterSetState])
+    setGlobalChartActionCounterState(globalChartActionCounterRef.current)
+  }, [algorithmsVisibilityData, globalChartActionCounterRef, handleStop])
 
   return {
     handleStart,

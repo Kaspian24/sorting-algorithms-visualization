@@ -1,13 +1,13 @@
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { z } from 'zod'
 
 export default function useCustomDataForm() {
-  const { getDefaultChartData, setDefaultChartData } = useGlobalChartsInfo()
+  const { defaultChartDataRef, setDefaultChartData } = useGlobalChartsInfo()
 
   const values = {
-    numbers: getDefaultChartData().map(({ number }) => ({ number })),
+    numbers: defaultChartDataRef.current.map(({ number }) => ({ number })),
   }
 
   const numberObj = z.object({

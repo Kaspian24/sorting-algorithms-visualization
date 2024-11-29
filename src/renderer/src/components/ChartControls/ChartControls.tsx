@@ -1,4 +1,4 @@
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
 import {
   Select,

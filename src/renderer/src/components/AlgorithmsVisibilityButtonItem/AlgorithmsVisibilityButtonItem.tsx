@@ -1,5 +1,5 @@
 import { useId } from 'react'
-import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { Checkbox } from '@renderer/components/ui/Checkbox'
 import { Label } from '@renderer/components/ui/Label'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'

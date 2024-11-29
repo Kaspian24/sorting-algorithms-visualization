@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider'
+import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 

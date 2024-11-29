@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import {
   CHART_ACTION,
   ChartDataField,
@@ -12,8 +12,8 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   const {
     addChartInfoData,
     removeChartInfoData,
-    getGlobalChartActionCounter,
-    getDefaultChartData,
+    globalChartActionCounterRef,
+    defaultChartDataRef,
     defaultChartDataState,
     checkpointStepRef,
     directionForwardRef,
@@ -116,7 +116,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   )
 
   const setStep = useCallback(() => {
-    let step = getGlobalChartActionCounter()
+    let step = globalChartActionCounterRef.current
     if (step > maxChartActionCounterRef.current) {
       if (chartActionRef.current === CHART_ACTION.FINISHED) {
         return
@@ -144,15 +144,15 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
     updateStates()
   }, [
-    getGlobalChartActionCounter,
-    maxChartActionCounterRef,
-    checkpointStepRef,
     chartActionCounterRef,
     chartActionRef,
-    updateStates,
+    checkpointStepRef,
     directionForwardRef,
+    globalChartActionCounterRef,
     goToCheckpoint,
+    maxChartActionCounterRef,
     nextStep,
+    updateStates,
   ])
 
   const controlData = useRef<ChartInfoData>({
@@ -187,13 +187,14 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     reset()
 
     while (
-      chartActionCounterRef.current < getGlobalChartActionCounter() &&
+      chartActionCounterRef.current < globalChartActionCounterRef.current &&
       chartActionRef.current !== CHART_ACTION.FINISHED
     ) {
       if (
         chartActionCounterRef.current ===
           maxChartActionCounterRef.current - 1 ||
-        chartActionCounterRef.current === getGlobalChartActionCounter() - 1
+        chartActionCounterRef.current ===
+          globalChartActionCounterRef.current - 1
       ) {
         sortFunction()
       } else {
@@ -209,27 +210,27 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
 
     return () => {
       removeChartInfoData(controlData)
-      chartDataRef.current = getDefaultChartData()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      chartDataRef.current = defaultChartDataRef.current
       reset()
     }
   }, [
     defaultChartDataState,
     addChartInfoData,
+    addCheckpoint,
+    chartActionCounterRef,
     chartActionRef,
+    chartCheckpointsRef,
+    chartCompareCounterRef,
+    chartDataRef,
+    checkpointStepRef,
+    defaultChartDataRef,
+    globalChartActionCounterRef,
+    maxChartActionCounterRef,
+    maxChartCompareCounterRef,
     removeChartInfoData,
     reset,
     sortFunction,
-    getGlobalChartActionCounter,
-    maxChartActionCounterRef,
-    chartActionCounterRef,
-    maxChartCompareCounterRef,
-    chartCompareCounterRef,
-    chartDataRef,
-    getDefaultChartData,
-    chartCheckpointsRef,
-    checkpointStepRef,
-    sortVariablesRef,
-    addCheckpoint,
     updateStates,
   ])
 

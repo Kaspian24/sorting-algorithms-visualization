@@ -1,7 +1,7 @@
 import { Flipped, Flipper } from 'react-flip-toolkit'
 import AlgorithmContextMenuCheckboxItem from '@renderer/components/AlgorithmContextMenuCheckboxItem/AlgorithmContextMenuCheckboxItem'
 import { ChartCard } from '@renderer/components/ChartCard/ChartCard'
-import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import StartCard from '@renderer/components/StartCard/StartCard'
 import {
   ContextMenu,

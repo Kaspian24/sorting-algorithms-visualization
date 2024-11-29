@@ -1,6 +1,6 @@
 import { Flipped, Flipper } from 'react-flip-toolkit'
 import AlgorithmsVisibilityButtonItem from '@renderer/components/AlgorithmsVisibilityButtonItem/AlgorithmsVisibilityButtonItem'
-import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { Button } from '@renderer/components/ui/Button'
 import {
   Dialog,
