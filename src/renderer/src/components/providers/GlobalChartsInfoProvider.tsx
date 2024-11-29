@@ -6,15 +6,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import {
-  AlgorithmVisibilityData,
-  ChartDataField,
-  ChartInfoData,
-  DRAG_ITEM_TYPE,
-  DraggablesTransitionState,
-  DragItemType,
-  SORTING_ALGORITHM,
-} from '@renderer/types/types'
+import { ChartDataField, ChartInfoData } from '@renderer/types/types'
 
 interface GlobalChartsInfoContextType {
   chartInfoData: React.MutableRefObject<React.MutableRefObject<ChartInfoData>[]>
@@ -33,24 +25,6 @@ interface GlobalChartsInfoContextType {
   setDefaultChartData: (numbers: number[]) => void
   defaultChartDataState: ChartDataField[]
   directionForwardRef: React.MutableRefObject<boolean>
-  algorithmsVisibilityData: AlgorithmVisibilityData[]
-  setAlgorithmVisibility: (
-    algorithm: keyof typeof SORTING_ALGORITHM,
-    state: boolean,
-  ) => void
-  setAlgorithmPosition: (
-    algorithm: keyof typeof SORTING_ALGORITHM,
-    position: number,
-  ) => void
-  moveAlgorithmPositionLeft: (algorithm: keyof typeof SORTING_ALGORITHM) => void
-  moveAlgorithmPositionRight: (
-    algorithm: keyof typeof SORTING_ALGORITHM,
-  ) => void
-  swapAlgorithmsPosition: (
-    a: keyof typeof SORTING_ALGORITHM,
-    b: keyof typeof SORTING_ALGORITHM,
-  ) => void
-  draggablesTransitionStateRef: React.MutableRefObject<DraggablesTransitionState>
   checkpointStepRef: React.MutableRefObject<number>
 }
 
@@ -87,37 +61,12 @@ function generateInitialDefaultChartData(): ChartDataField[] {
 
 const initialDefaultChartData = generateInitialDefaultChartData()
 
-function generateInitialAlgorithmsVisibility(): AlgorithmVisibilityData[] {
-  return Object.keys(SORTING_ALGORITHM).map((algorithm) => ({
-    algorithm: algorithm as keyof typeof SORTING_ALGORITHM,
-    visible: false,
-  }))
-}
-
-const initialAlgorithmsVisibility = generateInitialAlgorithmsVisibility()
-
-function generateInitialDraggablesTransitionStateRef(): DraggablesTransitionState {
-  return Object.values(DRAG_ITEM_TYPE).reduce((acc, key) => {
-    acc[key as DragItemType] = false
-    return acc
-  }, {} as DraggablesTransitionState)
-}
-
-const initialDraggablesTransitionState =
-  generateInitialDraggablesTransitionStateRef()
-
 export function GlobalChartsInfoProvider({
   children,
 }: GlobalChartsInfoProviderProps) {
   const chartInfoData = useRef<React.MutableRefObject<ChartInfoData>[]>([])
   const durationRef = useRef<number>(250)
   const directionForwardRef = useRef<boolean>(true)
-  const [algorithmsVisibilityData, setAlgorithmsVisibilityData] = useState<
-    AlgorithmVisibilityData[]
-  >(initialAlgorithmsVisibility)
-  const draggablesTransitionStateRef = useRef<DraggablesTransitionState>(
-    initialDraggablesTransitionState,
-  )
 
   const defaultChartDataRef = useRef<ChartDataField[]>(initialDefaultChartData)
   const [defaultChartDataState, setDefaultChartDataState] = useState<
@@ -215,104 +164,6 @@ export function GlobalChartsInfoProvider({
     ],
   )
 
-  const setAlgorithmVisibility = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM, state: boolean) =>
-      setAlgorithmsVisibilityData((prev) => {
-        const position = prev.findIndex((data) => data.algorithm === algorithm)
-        if (position < 0) {
-          return prev
-        }
-        return prev.map((data, index) =>
-          index === position ? { ...data, visible: state } : data,
-        )
-      }),
-    [],
-  )
-
-  const setAlgorithmPosition = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM, newPosition: number) =>
-      setAlgorithmsVisibilityData((prev) => {
-        const position = prev.findIndex((data) => data.algorithm === algorithm)
-        if (position < 0 || position === newPosition) {
-          return prev
-        }
-        return prev.map((data, index) =>
-          index === position
-            ? { ...prev[newPosition] }
-            : index === newPosition
-              ? { ...prev[position] }
-              : data,
-        )
-      }),
-    [],
-  )
-
-  const moveAlgorithmPositionLeft = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM) =>
-      setAlgorithmsVisibilityData((prev) => {
-        const position = prev.findIndex((data) => data.algorithm === algorithm)
-        let newPosition = -1
-        for (let i = position - 1; i >= 0; i--) {
-          if (prev[i].visible === true) {
-            newPosition = i
-            break
-          }
-        }
-        if (newPosition < 0) {
-          return prev
-        }
-        return prev.map((data, index) =>
-          index === position
-            ? { ...prev[newPosition] }
-            : index === newPosition
-              ? { ...prev[position] }
-              : data,
-        )
-      }),
-    [],
-  )
-
-  const moveAlgorithmPositionRight = useCallback(
-    (algorithm: keyof typeof SORTING_ALGORITHM) =>
-      setAlgorithmsVisibilityData((prev) => {
-        const position = prev.findIndex((data) => data.algorithm === algorithm)
-        let newPosition = -1
-        for (let i = position + 1; i < prev.length; i++) {
-          if (prev[i].visible === true) {
-            newPosition = i
-            break
-          }
-        }
-        if (newPosition < 0) {
-          return prev
-        }
-        return prev.map((data, index) =>
-          index === position
-            ? { ...prev[newPosition] }
-            : index === newPosition
-              ? { ...prev[position] }
-              : data,
-        )
-      }),
-    [],
-  )
-
-  const swapAlgorithmsPosition = useCallback(
-    (a: keyof typeof SORTING_ALGORITHM, b: keyof typeof SORTING_ALGORITHM) =>
-      setAlgorithmsVisibilityData((prev) => {
-        const aIndex = prev.findIndex((data) => data.algorithm === a)
-        const bIndex = prev.findIndex((data) => data.algorithm === b)
-        return prev.map((data, index) =>
-          index == aIndex
-            ? { ...prev[bIndex] }
-            : index === bIndex
-              ? { ...prev[aIndex] }
-              : data,
-        )
-      }),
-    [],
-  )
-
   const value: GlobalChartsInfoContextType = {
     chartInfoData,
     addChartInfoData,
@@ -328,13 +179,6 @@ export function GlobalChartsInfoProvider({
     setDefaultChartData,
     defaultChartDataState,
     directionForwardRef,
-    algorithmsVisibilityData,
-    setAlgorithmVisibility,
-    setAlgorithmPosition,
-    moveAlgorithmPositionLeft,
-    moveAlgorithmPositionRight,
-    swapAlgorithmsPosition,
-    draggablesTransitionStateRef,
     checkpointStepRef,
   }
 

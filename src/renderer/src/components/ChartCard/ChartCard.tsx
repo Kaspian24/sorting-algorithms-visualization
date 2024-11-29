@@ -1,6 +1,6 @@
 import ChartCardVisualization from '@renderer/components/ChartCard/ChartCardVisualization'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
 import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
 import { Card, CardHeader, CardTitle } from '@renderer/components/ui/Card'
 import {
@@ -32,10 +32,10 @@ function ChartCard({
   flippedProps,
 }: ChartCardProps) {
   const {
-    setAlgorithmVisibility,
+    setAlgorithmsVisibility,
     moveAlgorithmPositionLeft,
     moveAlgorithmPositionRight,
-  } = useGlobalChartsInfo()
+  } = useAlgorithmsVisibility()
   const { isDragging, ref, handlerId } = useDragAlgorithm(
     DRAG_ITEM_TYPE.CHART_CARD,
     algorithm,
@@ -59,7 +59,7 @@ function ChartCard({
               <Button
                 className="h-fit w-fit rounded-full p-1"
                 variant="outline"
-                onClick={() => setAlgorithmVisibility(algorithm, false)}
+                onClick={() => setAlgorithmsVisibility(algorithm, false)}
               >
                 <X />
               </Button>
@@ -69,7 +69,7 @@ function ChartCard({
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem
-            onClick={() => setAlgorithmVisibility(algorithm, false)}
+            onClick={() => setAlgorithmsVisibility(algorithm, false)}
           >
             Remove (&times;)
           </ContextMenuItem>

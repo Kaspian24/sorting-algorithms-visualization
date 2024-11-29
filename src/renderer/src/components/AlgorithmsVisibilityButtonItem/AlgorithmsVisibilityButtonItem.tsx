@@ -1,5 +1,5 @@
 import { useId } from 'react'
-import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
 import { Checkbox } from '@renderer/components/ui/Checkbox'
 import { Label } from '@renderer/components/ui/Label'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
@@ -22,7 +22,7 @@ export default function AlgorithmsVisibilityButtonItem({
   visible,
   flippedProps,
 }: AlgorithmsVisibilityButtonItemProps) {
-  const { setAlgorithmVisibility } = useGlobalChartsInfo()
+  const { setAlgorithmsVisibility } = useAlgorithmsVisibility()
   const { isDragging, ref, handlerId, preview } = useDragAlgorithm(
     DRAG_ITEM_TYPE.CONTEXT_ITEM,
     algorithm,
@@ -42,7 +42,7 @@ export default function AlgorithmsVisibilityButtonItem({
           checked={visible}
           onClick={(e) => {
             e.preventDefault()
-            setAlgorithmVisibility(
+            setAlgorithmsVisibility(
               algorithm as keyof typeof SORTING_ALGORITHM,
               !visible,
             )

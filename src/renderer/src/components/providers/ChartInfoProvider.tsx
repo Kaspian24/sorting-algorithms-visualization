@@ -28,20 +28,14 @@ interface ChartInfoProviderProps {
 
 export function ChartInfoProvider({ children }: ChartInfoProviderProps) {
   const { getDefaultChartData } = useGlobalChartsInfo()
+
   const chartActionRef = useRef<ChartAction>(CHART_ACTION.COMPARE)
-
   const maxChartActionCounterRef = useRef<number>(0)
-
   const maxChartCompareCounterRef = useRef<number>(0)
-
   const chartDataRef = useRef<ChartDataField[]>(getDefaultChartData())
-
   const chartActionCounterRef = useRef<number>(0)
-
   const chartCompareCounterRef = useRef<number>(0)
-
   const chartCheckpointsRef = useRef<ChartCheckpoint[]>([])
-
   const sortVariablesRef = useRef<object>({})
 
   const value: ChartInfoContextType = {

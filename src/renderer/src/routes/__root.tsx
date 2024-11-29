@@ -3,6 +3,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Footer from '@renderer/components/Footer/Footer'
 import Header from '@renderer/components/Header/Header'
+import { AlgorithmsVisibilityProvider } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
 import { GlobalChartsInfoProvider } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import { ThemeProvider } from '@renderer/components/providers/ThemeProvider'
 import { ScrollArea } from '@renderer/components/ui/ScrollArea'
@@ -25,13 +26,15 @@ export const Route = createRootRoute({
       <DndProvider backend={HTML5Backend}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <GlobalChartsInfoProvider>
-            <Header />
-            <ScrollArea className="h-0 flex-auto">
-              <main className="h-full w-full">
-                <Outlet />
-              </main>
-            </ScrollArea>
-            <Footer />
+            <AlgorithmsVisibilityProvider>
+              <Header />
+              <ScrollArea className="h-0 flex-auto">
+                <main className="h-full w-full">
+                  <Outlet />
+                </main>
+              </ScrollArea>
+              <Footer />
+            </AlgorithmsVisibilityProvider>
           </GlobalChartsInfoProvider>
         </ThemeProvider>
       </DndProvider>

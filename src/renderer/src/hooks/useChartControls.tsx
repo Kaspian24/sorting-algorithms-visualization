@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import { CHART_ACTION } from '@renderer/types/types'
 
@@ -11,8 +12,8 @@ export default function useChartControls() {
     linkGlobalChartActionCounterSetState,
     getGlobalMaxChartActionCounter,
     defaultChartDataState,
-    algorithmsVisibilityData,
   } = useGlobalChartsInfo()
+  const { algorithmsVisibilityData } = useAlgorithmsVisibility()
   const [globalChartActionCounterState, setGlobalChartActionCounterState] =
     useState<number>(() => getGlobalChartActionCounter())
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
