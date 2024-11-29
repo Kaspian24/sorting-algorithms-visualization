@@ -46,8 +46,8 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   const updateStates = useCallback(() => {
     setChartDataState(chartDataRef.current)
     setChartActionCounterState(chartActionCounterRef.current)
-    setChartCompareCounterState(chartActionCounterRef.current)
-  }, [chartActionCounterRef, chartDataRef])
+    setChartCompareCounterState(chartCompareCounterRef.current)
+  }, [chartActionCounterRef, chartCompareCounterRef, chartDataRef])
 
   const addCheckpoint = useCallback(() => {
     if (chartActionCounterRef.current % checkpointStepRef.current === 0) {
