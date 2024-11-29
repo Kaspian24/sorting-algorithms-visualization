@@ -16,7 +16,7 @@ import {
   SORTING_ALGORITHM,
 } from '@renderer/types/types'
 
-interface ChartsInfoContextType {
+interface GlobalChartsInfoContextType {
   chartInfoData: React.MutableRefObject<React.MutableRefObject<ChartInfoData>[]>
   addChartInfoData: (addedData: React.MutableRefObject<ChartInfoData>) => void
   removeChartInfoData: (
@@ -54,11 +54,11 @@ interface ChartsInfoContextType {
   checkpointStepRef: React.MutableRefObject<number>
 }
 
-const ChartsInfoContext = createContext<ChartsInfoContextType | undefined>(
-  undefined,
-)
+const GlobalChartsInfoContext = createContext<
+  GlobalChartsInfoContextType | undefined
+>(undefined)
 
-interface ChartsInfoProviderProps {
+interface GlobalChartsInfoProviderProps {
   children: ReactNode
 }
 
@@ -106,7 +106,9 @@ function generateInitialDraggablesTransitionStateRef(): DraggablesTransitionStat
 const initialDraggablesTransitionState =
   generateInitialDraggablesTransitionStateRef()
 
-export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
+export function GlobalChartsInfoProvider({
+  children,
+}: GlobalChartsInfoProviderProps) {
   const chartInfoData = useRef<React.MutableRefObject<ChartInfoData>[]>([])
   const durationRef = useRef<number>(250)
   const directionForwardRef = useRef<boolean>(true)
@@ -168,7 +170,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
       setGlobalMaxChartActionCounter(
         Math.max(
           globalMaxChartActionCounterRef.current,
-          addedData.current.getMaxChartActionCounter(),
+          addedData.current.maxChartActionCounterRef.current,
         ),
       )
       setGlobalChartActionCounter(
@@ -193,7 +195,8 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
       )
       setGlobalMaxChartActionCounter(
         chartInfoData.current.reduce(
-          (acc, data) => Math.max(acc, data.current.getMaxChartActionCounter()),
+          (acc, data) =>
+            Math.max(acc, data.current.maxChartActionCounterRef.current),
           0,
         ),
       )
@@ -310,7 +313,7 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
     [],
   )
 
-  const value: ChartsInfoContextType = {
+  const value: GlobalChartsInfoContextType = {
     chartInfoData,
     addChartInfoData,
     removeChartInfoData,
@@ -336,17 +339,19 @@ export function ChartsInfoProvider({ children }: ChartsInfoProviderProps) {
   }
 
   return (
-    <ChartsInfoContext.Provider value={value}>
+    <GlobalChartsInfoContext.Provider value={value}>
       {children}
-    </ChartsInfoContext.Provider>
+    </GlobalChartsInfoContext.Provider>
   )
 }
 
-export function useChartsInfo() {
-  const context = useContext(ChartsInfoContext)
+export function useGlobalChartsInfo() {
+  const context = useContext(GlobalChartsInfoContext)
 
   if (!context) {
-    throw new Error('useChartsInfo must be used within ChartsInfoProvider')
+    throw new Error(
+      'useGlobalChartsInfo must be used within GlobalChartsInfoProvider',
+    )
   }
   return context
 }

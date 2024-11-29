@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import { CHART_ACTION } from '@renderer/types/types'
 
 export default function useChartControls() {
@@ -12,7 +12,7 @@ export default function useChartControls() {
     getGlobalMaxChartActionCounter,
     defaultChartDataState,
     algorithmsVisibilityData,
-  } = useChartsInfo()
+  } = useGlobalChartsInfo()
   const [globalChartActionCounterState, setGlobalChartActionCounterState] =
     useState<number>(() => getGlobalChartActionCounter())
   const intervalRef = useRef<NodeJS.Timeout | null>(null)

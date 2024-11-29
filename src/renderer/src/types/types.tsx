@@ -53,11 +53,11 @@ export interface ChartDataField {
 export interface ChartInfoData {
   sortFunction: (dryRun?: boolean) => void
   reset: () => void
-  getMaxChartActionCounter: () => number
-  getMaxChartCompareCounter: () => number
-  getChartData: () => ChartDataField[]
-  getChartActionCounter: () => number
-  getChartCompareCounter: () => number
+  chartDataRef: React.MutableRefObject<ChartDataField[]>
+  chartActionCounterRef: React.MutableRefObject<number>
+  chartCompareCounterRef: React.MutableRefObject<number>
+  maxChartActionCounterRef: React.MutableRefObject<number>
+  maxChartCompareCounterRef: React.MutableRefObject<number>
   chartActionRef: React.MutableRefObject<ChartAction>
   goToCheckpoint: (checkpoint: number) => boolean
   setStep: () => void

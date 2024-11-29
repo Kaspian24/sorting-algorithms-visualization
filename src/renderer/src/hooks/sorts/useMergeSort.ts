@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useChartState } from '@renderer/components/providers/ChartStateProvider'
+import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
@@ -43,7 +43,7 @@ const getStarterVariables = () => {
 }
 
 export const useMergeSort: UseSort = () => {
-  const { getChartData, chartActionRef, sortVariablesRef } = useChartState()
+  const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateReplace, replace, finish, reset } = useModifyChart()
 
   if (Object.keys(sortVariablesRef.current).length === 0) {
@@ -70,7 +70,7 @@ export const useMergeSort: UseSort = () => {
         initialized,
       } = sortVariablesRef.current as MergeSortVariables
       let compareAction = chartActionRef.current
-      let arr = getChartData()
+      let arr = chartDataRef.current
       const n = arr.length
 
       if (!initialized) {
@@ -94,7 +94,7 @@ export const useMergeSort: UseSort = () => {
 
         if (compareAction === CHART_ACTION.REPLACE) {
           replace(tempFirst[tempIndex], tempSecond[tempIndex], dryRun)
-          arr = getChartData()
+          arr = chartDataRef.current
           tempIndex++
           if (tempIndex > tempFirst.length - 1) {
             compareAction = CHART_ACTION.COMPARE
@@ -229,7 +229,7 @@ export const useMergeSort: UseSort = () => {
     [
       sortVariablesRef,
       chartActionRef,
-      getChartData,
+      chartDataRef,
       finish,
       replace,
       animateReplace,

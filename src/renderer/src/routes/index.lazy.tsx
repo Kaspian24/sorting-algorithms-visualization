@@ -1,7 +1,7 @@
 import { Flipped, Flipper } from 'react-flip-toolkit'
 import AlgorithmContextMenuCheckboxItem from '@renderer/components/AlgorithmContextMenuCheckboxItem/AlgorithmContextMenuCheckboxItem'
 import { ChartCard } from '@renderer/components/ChartCard/ChartCard'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import StartCard from '@renderer/components/StartCard/StartCard'
 import {
   ContextMenu,
@@ -17,7 +17,7 @@ export const Route = createLazyFileRoute('/')({
 
 function Index() {
   const { algorithmsVisibilityData, draggablesTransitionStateRef } =
-    useChartsInfo()
+    useGlobalChartsInfo()
 
   return (
     <ContextMenu>

@@ -1,4 +1,4 @@
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import { ContextMenuCheckboxItem } from '@renderer/components/ui/ContextMenu'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
 import {
@@ -19,7 +19,7 @@ export default function AlgorithmContextMenuCheckboxItem({
   visible,
   flippedProps,
 }: AlgorithmContextMenuCheckboxItemProps) {
-  const { setAlgorithmVisibility } = useChartsInfo()
+  const { setAlgorithmVisibility } = useGlobalChartsInfo()
   const { isDragging, ref, handlerId } = useDragAlgorithm(
     DRAG_ITEM_TYPE.CONTEXT_ITEM,
     algorithm,

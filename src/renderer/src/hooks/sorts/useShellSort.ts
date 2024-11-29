@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useChartState } from '@renderer/components/providers/ChartStateProvider'
+import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
@@ -23,7 +23,7 @@ const getStarterVariables = () => {
 }
 
 export const useShellSort: UseSort = () => {
-  const { getChartData, chartActionRef, sortVariablesRef } = useChartState()
+  const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateSwap, swap, finish, reset } = useModifyChart()
 
   if (Object.keys(sortVariablesRef.current).length === 0) {
@@ -35,7 +35,7 @@ export const useShellSort: UseSort = () => {
       let { i, j, gap, temp, initialized } =
         sortVariablesRef.current as ShellSortVariables
       let compareAction = chartActionRef.current
-      let arr = getChartData()
+      let arr = chartDataRef.current
       const n = arr.length
 
       if (!initialized) {
@@ -54,7 +54,7 @@ export const useShellSort: UseSort = () => {
 
         if (compareAction === CHART_ACTION.SWAP) {
           swap(j - gap, j, dryRun)
-          arr = getChartData()
+          arr = chartDataRef.current
           j -= gap
           temp = j
           compareAction = CHART_ACTION.COMPARE
@@ -103,7 +103,7 @@ export const useShellSort: UseSort = () => {
     [
       sortVariablesRef,
       chartActionRef,
-      getChartData,
+      chartDataRef,
       finish,
       animateSwap,
       swap,

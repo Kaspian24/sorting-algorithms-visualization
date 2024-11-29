@@ -1,6 +1,6 @@
 import { Flipped, Flipper } from 'react-flip-toolkit'
 import AlgorithmsVisibilityButtonItem from '@renderer/components/AlgorithmsVisibilityButtonItem/AlgorithmsVisibilityButtonItem'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
 import {
   Dialog,
@@ -15,7 +15,7 @@ import { DRAG_ITEM_TYPE } from '@renderer/types/types'
 
 export default function AlgorithmsVisibilityButton() {
   const { algorithmsVisibilityData, draggablesTransitionStateRef } =
-    useChartsInfo()
+    useGlobalChartsInfo()
 
   return (
     <Dialog>

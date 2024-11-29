@@ -1,14 +1,8 @@
-import ChartBarChart from '@renderer/components/ChartCard/ChartBarChart'
-import ChartCardFooter from '@renderer/components/ChartCard/ChartCardFooter'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
-import { ChartStateProvider } from '@renderer/components/providers/ChartStateProvider'
+import ChartCardVisualization from '@renderer/components/ChartCard/ChartCardVisualization'
+import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@renderer/components/ui/Card'
+import { Card, CardHeader, CardTitle } from '@renderer/components/ui/Card'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -41,7 +35,7 @@ function ChartCard({
     setAlgorithmVisibility,
     moveAlgorithmPositionLeft,
     moveAlgorithmPositionRight,
-  } = useChartsInfo()
+  } = useGlobalChartsInfo()
   const { isDragging, ref, handlerId } = useDragAlgorithm(
     DRAG_ITEM_TYPE.CHART_CARD,
     algorithm,
@@ -71,10 +65,7 @@ function ChartCard({
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="flex grow flex-col justify-center p-6 pt-0">
-            <ChartBarChart sortingAlgorithm={sortingAlgorithm} />
-          </CardContent>
-          <ChartCardFooter />
+          <ChartCardVisualization sortingAlgorithm={sortingAlgorithm} />
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem
@@ -107,13 +98,13 @@ function ChartCardWrapper({
   flippedProps,
 }: ChartCardProps) {
   return (
-    <ChartStateProvider>
+    <ChartInfoProvider>
       <ChartCard
         algorithm={algorithm}
         sortingAlgorithm={sortingAlgorithm}
         flippedProps={flippedProps}
       />
-    </ChartStateProvider>
+    </ChartInfoProvider>
   )
 }
 

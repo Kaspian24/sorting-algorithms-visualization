@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider'
 
 const smallUnsorted = [4, 8, 10, 7, 2, 3, 1, 9, 5, 6]
 const smallPartiallySorted = [1, 2, 3, 5, 4, 6, 7, 9, 8, 10]
@@ -74,7 +74,7 @@ const largeDuplicates = [
 ]
 
 export default function useExampleData() {
-  const { setDefaultChartData } = useChartsInfo()
+  const { setDefaultChartData } = useGlobalChartsInfo()
 
   const setSmallUnsorted = useCallback(
     () => setDefaultChartData(smallUnsorted),
