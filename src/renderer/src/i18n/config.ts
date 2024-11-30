@@ -1,7 +1,7 @@
 import { initReactI18next } from 'react-i18next'
 import i18n from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
-import HttpApi from 'i18next-http-backend'
+import resourcesToBackend from 'i18next-resources-to-backend'
 
 export const supportedLngs = {
   en: 'English',
@@ -9,7 +9,12 @@ export const supportedLngs = {
 }
 
 i18n
-  .use(HttpApi)
+  .use(
+    resourcesToBackend(
+      (language: string, namespace: string) =>
+        import(`../locales/${language}/${namespace}.json`),
+    ),
+  )
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
