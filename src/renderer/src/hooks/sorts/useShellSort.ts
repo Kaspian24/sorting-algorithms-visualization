@@ -3,7 +3,7 @@ import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/C
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import {
   CHART_ACTION,
-  SortingAlgorithmInfo,
+  SortingAlgorithmVariant,
   UseSort,
 } from '@renderer/types/types'
 
@@ -26,17 +26,50 @@ const getStarterVariables = () => {
   return starterVariables
 }
 
-export const useShellSort: UseSort = () => {
+interface ShellSortVariant extends SortingAlgorithmVariant {
+  variables: {
+    gapFunction: (num: number) => number
+  }
+}
+
+const variants: ShellSortVariant[] = [
+  {
+    info: {
+      best: 'nlogn',
+      average: 'n^4/3',
+      worst: 'n^2',
+      memory: '1',
+      stable: false,
+    },
+    variables: {
+      gapFunction: (num: number) => {
+        return Math.floor(num / 2)
+      },
+    },
+  },
+  {
+    info: {
+      best: 'nlogn',
+      average: 'n^4/3',
+      worst: 'n^3/2',
+      memory: '1',
+      stable: false,
+    },
+    variables: {
+      gapFunction: (num: number) => {
+        let k = 1
+        while (Math.pow(2, k) - 1 < num) {
+          k++
+        }
+        return Math.floor(Math.pow(2, k - 1) - 1)
+      },
+    },
+  },
+]
+
+export const useShellSort: UseSort = (variant: number = 0) => {
   const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateSwap, swap, finish, reset } = useModifyChart()
-
-  const info: SortingAlgorithmInfo = {
-    best: 'nlogn',
-    average: 'n^4/3',
-    worst: 'n^3/2',
-    memory: '1',
-    stable: false,
-  }
 
   if (Object.keys(sortVariablesRef.current).length === 0) {
     sortVariablesRef.current = getStarterVariables()
@@ -51,7 +84,7 @@ export const useShellSort: UseSort = () => {
       const n = arr.length
 
       if (!initialized) {
-        gap = Math.floor(n / 2)
+        gap = variants[variant].variables.gapFunction(n)
         i = gap
         j = i
         temp = i
@@ -97,7 +130,7 @@ export const useShellSort: UseSort = () => {
             j = i
             temp = j
           }
-          gap = Math.floor(gap / 2)
+          gap = variants[variant].variables.gapFunction(gap)
           i = gap
           j = i
           temp = j
@@ -116,10 +149,11 @@ export const useShellSort: UseSort = () => {
       sortVariablesRef,
       chartActionRef,
       chartDataRef,
+      variant,
       finish,
-      animateSwap,
       swap,
       compare,
+      animateSwap,
     ],
   )
 
@@ -132,6 +166,6 @@ export const useShellSort: UseSort = () => {
   return {
     sortFunction: shellSort,
     reset: shellSortReset,
-    info,
+    info: variants[variant].info,
   }
 }

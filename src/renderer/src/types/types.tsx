@@ -16,7 +16,7 @@ export const CHART_ACTION = {
 export type ChartAction = (typeof CHART_ACTION)[keyof typeof CHART_ACTION]
 
 export interface UseSort {
-  (): {
+  (variant?: number): {
     sortFunction: (dryRun?: boolean) => void
     reset: () => void
     info: SortingAlgorithmInfo
@@ -29,6 +29,7 @@ export const SORTING_ALGORITHM = {
   INSERTION_SORT: useInsertionSort,
   BUBBLE_SORT: useBubbleSort,
   SHELL_SORT: useShellSort,
+  SHELL_SORT_HIBBARD: () => useShellSort(1),
 } as const
 
 export type SortingAlgorithm =
@@ -98,4 +99,9 @@ export interface SortingAlgorithmInfo {
   worst: string
   memory: string
   stable: boolean
+}
+
+export interface SortingAlgorithmVariant {
+  info: SortingAlgorithmInfo
+  variables: object
 }
