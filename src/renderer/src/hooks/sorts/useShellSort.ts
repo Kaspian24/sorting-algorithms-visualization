@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import {
@@ -30,11 +29,8 @@ const getStarterVariables = () => {
 export const useShellSort: UseSort = () => {
   const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateSwap, swap, finish, reset } = useModifyChart()
-  const { t } = useTranslation('useShellSort')
 
   const info: SortingAlgorithmInfo = {
-    name: t('name'),
-    description: t('description'),
     best: 'nlogn',
     average: 'n^4/3',
     worst: 'n^3/2',

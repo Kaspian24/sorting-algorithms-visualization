@@ -1,4 +1,9 @@
 {
   "stable": "Stabilny",
-  "unstable": "Niestabilny"
+  "unstable": "Niestabilny",
+  "best": "Złożoność Optymistyczna",
+  "average": "Złożoność Średnia",
+  "worst": "Złożoność Pesymistyczna",
+  "memory": "Złożoność Pamięciowa",
+  "stability": "Stabilność"
 }

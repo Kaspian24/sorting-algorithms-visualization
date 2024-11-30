@@ -93,8 +93,6 @@ export type ChartCheckpoint = {
 }
 
 export interface SortingAlgorithmInfo {
-  name: string
-  description: string
   best: string
   average: string
   worst: string

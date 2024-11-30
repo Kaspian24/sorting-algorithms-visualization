@@ -46,7 +46,7 @@ function ChartCard({
 
   return (
     <Card
-      className={`flex min-h-64 min-w-115 flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      className={`min-w-137.5 flex min-h-64 flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       ref={ref}
       data-handler-id={handlerId}
       {...flippedProps}

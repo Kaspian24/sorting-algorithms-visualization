@@ -70,10 +70,11 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       spacing: {
-        115: '28.75rem',
+        125: '31.25rem',
+        137.5: '34.375rem',
       },
       gridTemplateColumns: {
-        chartsBoard: 'repeat(auto-fit, minmax(28.75rem,1fr))',
+        chartsBoard: 'repeat(auto-fit, minmax(34.375rem,1fr))',
       },
     },
   },
