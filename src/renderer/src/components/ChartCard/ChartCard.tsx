@@ -58,7 +58,7 @@ function ChartCard({
             <div className="py-6">
               <CardTitle>{constantToTitleCase(algorithm)}</CardTitle>
             </div>
-            <div className="flex flex-1 justify-end pr-1 pt-1">
+            <div className="flex flex-1 justify-end gap-x-2 pr-1 pt-1">
               <Button
                 className={`h-fit w-fit rounded-full p-1`}
                 variant={`${showInfo ? 'reversedOutline' : 'outline'}`}
