@@ -14,6 +14,9 @@ export default function useChartControls() {
   const { algorithmsVisibilityData } = useAlgorithmsVisibility()
   const [globalChartActionCounterState, setGlobalChartActionCounterState] =
     useState<number>(() => globalChartActionCounterRef.current)
+  const [durationState, setDurationState] = useState<number>(
+    () => durationRef.current,
+  )
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const isRunningRef = useRef(false)
   const [isRunningState, setIsRunningState] = useState<boolean>(false)
@@ -86,15 +89,19 @@ export default function useChartControls() {
 
   const handleSetStep = useCallback(
     (step: number) => {
+      const currentDuration = durationRef.current
+      durationRef.current = 250
       handleStop()
       setStepAll(step)
+      durationRef.current = currentDuration
     },
-    [handleStop, setStepAll],
+    [durationRef, handleStop, setStepAll],
   )
 
   const handleDurationChange = useCallback(
     (duration: number) => {
       durationRef.current = 250 / duration
+      setDurationState(250 / duration)
       if (isRunningRef.current) {
         handleStop()
         continueSort()
@@ -104,14 +111,20 @@ export default function useChartControls() {
   )
 
   const handlePrevious = useCallback(() => {
+    const currentDuration = durationRef.current
+    durationRef.current = 250
     handleStop()
     setStepAll(globalChartActionCounterRef.current - 1)
-  }, [globalChartActionCounterRef, handleStop, setStepAll])
+    durationRef.current = currentDuration
+  }, [durationRef, globalChartActionCounterRef, handleStop, setStepAll])
 
   const handleNext = useCallback(() => {
+    const currentDuration = durationRef.current
+    durationRef.current = 250
     handleStop()
     setStepAll(globalChartActionCounterRef.current + 1)
-  }, [globalChartActionCounterRef, handleStop, setStepAll])
+    durationRef.current = currentDuration
+  }, [durationRef, globalChartActionCounterRef, handleStop, setStepAll])
 
   useEffect(() => {
     handleReset()
@@ -134,5 +147,6 @@ export default function useChartControls() {
     globalChartActionCounterState,
     handlePrevious,
     handleNext,
+    durationState,
   }
 }

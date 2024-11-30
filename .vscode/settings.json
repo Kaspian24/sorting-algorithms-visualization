@@ -41,5 +41,17 @@
     "src/renderer/src/components/buttons/ExampleDataButton.tsx": [
       "Example Data"
     ]
-  }
+  },
+  "i18n-ally.usage.derivedKeyRules": [
+    "{key}_zero",
+    "{key}_one",
+    "{key}_two",
+    "{key}_few",
+    "{key}_many",
+    "{key}_other",
+    "{key}_ordinal_one",
+    "{key}_ordinal_two",
+    "{key}_ordinal_few",
+    "{key}_ordinal_other"
+  ]
 }

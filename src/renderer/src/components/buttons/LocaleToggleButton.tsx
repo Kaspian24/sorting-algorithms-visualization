@@ -11,7 +11,7 @@ import {
 import { supportedLngs } from '@renderer/i18n/config'
 
 export default function LocaleToggleButton() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation('LocaleToggleButton')
 
   return (
     <Select
@@ -23,7 +23,7 @@ export default function LocaleToggleButton() {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Language</SelectLabel>
+          <SelectLabel>{t('label')}</SelectLabel>
           {Object.entries(supportedLngs).map(([code, name]) => (
             <SelectItem key={code} value={code}>
               {name}

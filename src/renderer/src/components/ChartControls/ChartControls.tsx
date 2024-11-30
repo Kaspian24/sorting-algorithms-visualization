@@ -1,14 +1,6 @@
+import SpeedToggleButton from '@renderer/components/buttons/SpeedToggleButton'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@renderer/components/ui/Select'
 import { Slider } from '@renderer/components/ui/Slider'
 import useChartControls from '@renderer/hooks/useChartControls'
 import {
@@ -21,8 +13,7 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const { globalMaxChartActionCounterState, durationRef } =
-    useGlobalChartsInfo()
+  const { globalMaxChartActionCounterState } = useGlobalChartsInfo()
   const {
     handleStart,
     handleStop,
@@ -33,6 +24,7 @@ export default function ChartControls() {
     handlePrevious,
     handleNext,
     handleSetStep,
+    durationState,
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true
@@ -92,25 +84,10 @@ export default function ChartControls() {
         onValueChange={(value) => handleSetStep(value[0])}
         step={1}
       />
-      <Select
-        defaultValue={(250 / durationRef.current).toString()}
+      <SpeedToggleButton
+        duration={durationState}
         onValueChange={(value) => handleDurationChange(Number(value))}
-      >
-        <SelectTrigger className="w-20">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Speed</SelectLabel>
-            <SelectItem value="50">50x</SelectItem>
-            <SelectItem value="10">25x</SelectItem>
-            <SelectItem value="5">5x</SelectItem>
-            <SelectItem value="1">1x</SelectItem>
-            <SelectItem value="0.5">0.5x</SelectItem>
-            <SelectItem value="0.25">0.25x</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      />
     </>
   )
 }

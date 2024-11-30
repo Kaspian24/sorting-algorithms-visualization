@@ -6,8 +6,8 @@ import ThemeToggleButton from '@renderer/components/buttons/ThemeToggleButton'
 
 export default function Header() {
   return (
-    <header className="flex h-12 items-center justify-between border-b">
-      <div className="flex flex-1">
+    <header className="flex h-12 items-center justify-between border-b px-1 py-5">
+      <div className="flex flex-1 gap-x-2">
         <ThemeToggleButton />
         <LocaleToggleButton />
       </div>
@@ -15,7 +15,7 @@ export default function Header() {
         <CustomDataButton />
         <ExampleDataButton />
       </div>
-      <div className="flex flex-1 justify-end">
+      <div className="flex flex-1 justify-end gap-x-2">
         <AlgorithmsVisibilityButton />
       </div>
     </header>

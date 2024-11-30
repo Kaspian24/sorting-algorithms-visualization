@@ -103,7 +103,7 @@ export default function ExampleDataButton() {
           <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-0 flex-auto">
-          <div className="flex flex-col gap-y-2 pr-5">
+          <div className="flex flex-col gap-y-2 pl-1 pr-5">
             {data.map(
               (
                 {

@@ -7,5 +7,7 @@
   "sorted": "Posortowane",
   "reversed": "Odwrotnie posortowane",
   "duplicates": "Wiele duplikatów",
-  "count": "{{count}} Liczb"
+  "count_one": "{{count}} Liczba",
+  "count_few": "{{count}} Liczby",
+  "count_many": "{{count}} Liczb"
 }
