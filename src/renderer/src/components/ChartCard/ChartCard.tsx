@@ -1,14 +1,8 @@
-import ChartBarChart from '@renderer/components/ChartCard/ChartBarChart'
-import ChartCardFooter from '@renderer/components/ChartCard/ChartCardFooter'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
-import { ChartStateProvider } from '@renderer/components/providers/ChartStateProvider'
+import ChartCardVisualization from '@renderer/components/ChartCard/ChartCardVisualization'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
+import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@renderer/components/ui/Card'
+import { Card, CardHeader, CardTitle } from '@renderer/components/ui/Card'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -38,10 +32,10 @@ function ChartCard({
   flippedProps,
 }: ChartCardProps) {
   const {
-    setAlgorithmVisibility,
+    setAlgorithmsVisibility,
     moveAlgorithmPositionLeft,
     moveAlgorithmPositionRight,
-  } = useChartsInfo()
+  } = useAlgorithmsVisibility()
   const { isDragging, ref, handlerId } = useDragAlgorithm(
     DRAG_ITEM_TYPE.CHART_CARD,
     algorithm,
@@ -65,20 +59,17 @@ function ChartCard({
               <Button
                 className="h-fit w-fit rounded-full p-1"
                 variant="outline"
-                onClick={() => setAlgorithmVisibility(algorithm, false)}
+                onClick={() => setAlgorithmsVisibility(algorithm, false)}
               >
                 <X />
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="flex grow flex-col justify-center p-6 pt-0">
-            <ChartBarChart sortingAlgorithm={sortingAlgorithm} />
-          </CardContent>
-          <ChartCardFooter />
+          <ChartCardVisualization sortingAlgorithm={sortingAlgorithm} />
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem
-            onClick={() => setAlgorithmVisibility(algorithm, false)}
+            onClick={() => setAlgorithmsVisibility(algorithm, false)}
           >
             Remove (&times;)
           </ContextMenuItem>
@@ -107,13 +98,13 @@ function ChartCardWrapper({
   flippedProps,
 }: ChartCardProps) {
   return (
-    <ChartStateProvider>
+    <ChartInfoProvider>
       <ChartCard
         algorithm={algorithm}
         sortingAlgorithm={sortingAlgorithm}
         flippedProps={flippedProps}
       />
-    </ChartStateProvider>
+    </ChartInfoProvider>
   )
 }
 

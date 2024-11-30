@@ -1,18 +1,14 @@
 import { useEffect, useRef } from 'react'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
-import useChartCard from '@renderer/hooks/useChartCard'
-import { ChartDataField, SortingAlgorithm } from '@renderer/types/types'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
+import { ChartDataField } from '@renderer/types/types'
 import * as d3 from 'd3'
 
 export interface ChartBarChartProps {
-  sortingAlgorithm: SortingAlgorithm
+  chartDataState: ChartDataField[]
 }
 
-export default function ChartBarChart({
-  sortingAlgorithm,
-}: ChartBarChartProps) {
-  const { defaultChartDataState } = useChartsInfo()
-  const { chartDataState } = useChartCard(sortingAlgorithm)
+export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
+  const { defaultChartDataState } = useGlobalChartsInfo()
 
   const svgRef = useRef<SVGSVGElement>(null)
 

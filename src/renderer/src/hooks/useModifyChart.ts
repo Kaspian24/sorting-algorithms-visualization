@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
-import { useChartState } from '@renderer/components/providers/ChartStateProvider'
+import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import {
   CHART_ACTION,
   ChartAction,
@@ -106,16 +106,10 @@ interface ModifyChartParams {
 }
 
 export default function useModifyChart() {
-  const { getDefaultChartData, directionForwardRef, durationRef } =
-    useChartsInfo()
-  const {
-    getChartData,
-    setChartData,
-    getChartCompareCounter,
-    setChartCompareCounter,
-    getChartActionCounter,
-    setChartActionCounter,
-  } = useChartState()
+  const { defaultChartDataRef, directionForwardRef, durationRef } =
+    useGlobalChartsInfo()
+  const { chartDataRef, chartCompareCounterRef, chartActionCounterRef } =
+    useChartInfo()
 
   const modifyChart = useCallback(
     ({ chartData, first, second, chartAction, dryRun }: ModifyChartParams) => {
@@ -123,118 +117,114 @@ export default function useModifyChart() {
         chartAction !== CHART_ACTION.SWAP &&
         chartAction !== CHART_ACTION.REPLACE
       ) {
-        setChartActionCounter(getChartActionCounter() + 1)
+        chartActionCounterRef.current += 1
       }
       if (chartAction === CHART_ACTION.COMPARE) {
-        setChartCompareCounter(getChartCompareCounter() + 1)
+        chartCompareCounterRef.current += 1
       }
       const duration = durationRef.current
       const isForward = directionForwardRef.current
 
-      setChartData(
-        modifyChartFunction({
-          chartData,
-          first,
-          second,
-          chartAction,
-          duration,
-          isForward,
-          dryRun,
-        }),
-      )
+      chartDataRef.current = modifyChartFunction({
+        chartData,
+        first,
+        second,
+        chartAction,
+        duration,
+        isForward,
+        dryRun,
+      })
     },
     [
       durationRef,
       directionForwardRef,
-      setChartData,
-      setChartActionCounter,
-      getChartActionCounter,
-      setChartCompareCounter,
-      getChartCompareCounter,
+      chartDataRef,
+      chartActionCounterRef,
+      chartCompareCounterRef,
     ],
   )
 
   const reset = useCallback(() => {
-    setChartData(getDefaultChartData())
-    setChartActionCounter(0)
-    setChartCompareCounter(0)
+    chartDataRef.current = defaultChartDataRef.current
+    chartActionCounterRef.current = 0
+    chartCompareCounterRef.current = 0
   }, [
-    setChartData,
-    getDefaultChartData,
-    setChartActionCounter,
-    setChartCompareCounter,
+    chartDataRef,
+    defaultChartDataRef,
+    chartActionCounterRef,
+    chartCompareCounterRef,
   ])
 
   const compare = useCallback(
     (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
-        chartData: getChartData(),
+        chartData: chartDataRef.current,
         first,
         second,
         chartAction: CHART_ACTION.COMPARE,
         dryRun,
       }),
-    [getChartData, modifyChart],
+    [chartDataRef, modifyChart],
   )
 
   const animateSwap = useCallback(
     (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
-        chartData: getChartData(),
+        chartData: chartDataRef.current,
         first,
         second,
         chartAction: CHART_ACTION.ANIMATE_SWAP,
         dryRun,
       }),
-    [getChartData, modifyChart],
+    [chartDataRef, modifyChart],
   )
 
   const swap = useCallback(
     (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
-        chartData: getChartData(),
+        chartData: chartDataRef.current,
         first,
         second,
         chartAction: CHART_ACTION.SWAP,
         dryRun,
       }),
-    [getChartData, modifyChart],
+    [chartDataRef, modifyChart],
   )
 
   const animateReplace = useCallback(
     (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
-        chartData: getChartData(),
+        chartData: chartDataRef.current,
         first,
         second,
         chartAction: CHART_ACTION.ANIMATE_REPLACE,
         dryRun,
       }),
-    [getChartData, modifyChart],
+    [chartDataRef, modifyChart],
   )
 
   const replace = useCallback(
     (first: number, second: number, dryRun: boolean = false) =>
       modifyChart({
-        chartData: getChartData(),
+        chartData: chartDataRef.current,
         first,
         second,
         chartAction: CHART_ACTION.REPLACE,
         dryRun,
       }),
-    [getChartData, modifyChart],
+    [chartDataRef, modifyChart],
   )
 
   const finish = useCallback(
     (dryRun: boolean = false) =>
       modifyChart({
-        chartData: getChartData(),
+        chartData: chartDataRef.current,
         first: -1,
         second: -1,
         chartAction: CHART_ACTION.FINISHED,
         dryRun,
       }),
-    [getChartData, modifyChart],
+    [chartDataRef, modifyChart],
   )
 
   return {

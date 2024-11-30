@@ -1,4 +1,4 @@
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { ContextMenuCheckboxItem } from '@renderer/components/ui/ContextMenu'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
 import {
@@ -19,7 +19,7 @@ export default function AlgorithmContextMenuCheckboxItem({
   visible,
   flippedProps,
 }: AlgorithmContextMenuCheckboxItemProps) {
-  const { setAlgorithmVisibility } = useChartsInfo()
+  const { setAlgorithmsVisibility } = useAlgorithmsVisibility()
   const { isDragging, ref, handlerId } = useDragAlgorithm(
     DRAG_ITEM_TYPE.CONTEXT_ITEM,
     algorithm,
@@ -34,7 +34,7 @@ export default function AlgorithmContextMenuCheckboxItem({
       checked={visible}
       onClick={(e) => {
         e.preventDefault()
-        setAlgorithmVisibility(
+        setAlgorithmsVisibility(
           algorithm as keyof typeof SORTING_ALGORITHM,
           !visible,
         )

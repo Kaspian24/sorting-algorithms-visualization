@@ -1,4 +1,4 @@
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
 import {
   Select,
@@ -21,7 +21,7 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const { globalMaxChartActionCounterState } = useChartsInfo()
+  const { globalMaxChartActionCounterState } = useGlobalChartsInfo()
   const {
     handleStart,
     handleStop,

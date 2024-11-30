@@ -3,8 +3,9 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Footer from '@renderer/components/Footer/Footer'
 import Header from '@renderer/components/Header/Header'
-import { ChartsInfoProvider } from '@renderer/components/providers/ChartsInfoProvider'
-import { ThemeProvider } from '@renderer/components/providers/ThemeProvider'
+import { AlgorithmsVisibilityProvider } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
+import { GlobalChartsInfoProvider } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
+import { ThemeProvider } from '@renderer/components/providers/ThemeProvider/ThemeProvider'
 import { ScrollArea } from '@renderer/components/ui/ScrollArea'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 
@@ -24,15 +25,17 @@ export const Route = createRootRoute({
     <div className="flex min-h-screen flex-col font-sans">
       <DndProvider backend={HTML5Backend}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <ChartsInfoProvider>
-            <Header />
-            <ScrollArea className="h-0 flex-auto">
-              <main className="h-full w-full">
-                <Outlet />
-              </main>
-            </ScrollArea>
-            <Footer />
-          </ChartsInfoProvider>
+          <GlobalChartsInfoProvider>
+            <AlgorithmsVisibilityProvider>
+              <Header />
+              <ScrollArea className="h-0 flex-auto">
+                <main className="h-full w-full">
+                  <Outlet />
+                </main>
+              </ScrollArea>
+              <Footer />
+            </AlgorithmsVisibilityProvider>
+          </GlobalChartsInfoProvider>
         </ThemeProvider>
       </DndProvider>
       <Suspense>

@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import { useChartsInfo } from '@renderer/components/providers/ChartsInfoProvider'
+import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import {
   DRAG_CONTAINER_LAYOUT,
   DragContainerLayout,
@@ -22,7 +22,7 @@ export default function useDragAlgorithm(
 ) {
   const ref = useRef<HTMLDivElement>(null)
   const { swapAlgorithmsPosition, draggablesTransitionStateRef } =
-    useChartsInfo()
+    useAlgorithmsVisibility()
 
   const [{ isDragging }, drag, preview] = useDrag({
     type: ITEM_TYPE,

@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useChartState } from '@renderer/components/providers/ChartStateProvider'
+import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
 import { CHART_ACTION, UseSort } from '@renderer/types/types'
 
@@ -21,7 +21,7 @@ const getStarterVariables = () => {
 }
 
 export const useInsertionSort: UseSort = () => {
-  const { getChartData, chartActionRef, sortVariablesRef } = useChartState()
+  const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateSwap, swap, finish, reset } = useModifyChart()
 
   if (Object.keys(sortVariablesRef.current).length === 0) {
@@ -33,7 +33,7 @@ export const useInsertionSort: UseSort = () => {
       let { i, j, key, initialized } =
         sortVariablesRef.current as InsertionSortVariables
       let compareAction = chartActionRef.current
-      let arr = getChartData()
+      let arr = chartDataRef.current
       const n = arr.length
 
       if (!initialized) {
@@ -49,7 +49,7 @@ export const useInsertionSort: UseSort = () => {
 
         if (compareAction === CHART_ACTION.SWAP) {
           swap(j + 1, j, dryRun)
-          arr = getChartData()
+          arr = chartDataRef.current
           j = j - 1
           compareAction = CHART_ACTION.COMPARE
         }
@@ -85,7 +85,7 @@ export const useInsertionSort: UseSort = () => {
     [
       sortVariablesRef,
       chartActionRef,
-      getChartData,
+      chartDataRef,
       finish,
       animateSwap,
       swap,
