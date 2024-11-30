@@ -21,6 +21,7 @@ export default function StartCard() {
           <p>{t('dane')}</p>
           <p>{t('theme')}</p>
           <p>{t('controls')}</p>
+          <p>{t('info')}</p>
         </div>
       </CardContent>
     </Card>

@@ -1,7 +1,11 @@
 import { useCallback } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
-import { CHART_ACTION, UseSort } from '@renderer/types/types'
+import {
+  CHART_ACTION,
+  SortingAlgorithmInfo,
+  UseSort,
+} from '@renderer/types/types'
 
 interface SelectionSortVariables {
   i: number
@@ -21,6 +25,14 @@ const getStarterVariables = () => {
 export const useSelectionSort: UseSort = () => {
   const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateSwap, swap, finish, reset } = useModifyChart()
+
+  const info: SortingAlgorithmInfo = {
+    best: 'n^2',
+    average: 'n^2',
+    worst: 'n^2',
+    memory: '1',
+    stable: false,
+  }
 
   if (Object.keys(sortVariablesRef.current).length === 0) {
     sortVariablesRef.current = getStarterVariables()
@@ -89,5 +101,6 @@ export const useSelectionSort: UseSort = () => {
   return {
     sortFunction: selectionSort,
     reset: selectionSortReset,
+    info,
   }
 }

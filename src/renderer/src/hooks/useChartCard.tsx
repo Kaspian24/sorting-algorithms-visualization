@@ -18,7 +18,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     checkpointStepRef,
     directionForwardRef,
   } = useGlobalChartsInfo()
-  const { sortFunction, reset } = sortingAlgorithm()
+  const { sortFunction, reset, info } = sortingAlgorithm()
   const {
     chartDataRef,
     chartActionCounterRef,
@@ -240,5 +240,6 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     chartCompareCounterState,
     maxChartActionCounterState,
     maxChartCompareCounterState,
+    info,
   }
 }
