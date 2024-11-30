@@ -21,7 +21,8 @@ import {
 } from 'lucide-react'
 
 export default function ChartControls() {
-  const { globalMaxChartActionCounterState } = useGlobalChartsInfo()
+  const { globalMaxChartActionCounterState, durationRef } =
+    useGlobalChartsInfo()
   const {
     handleStart,
     handleStop,
@@ -91,9 +92,12 @@ export default function ChartControls() {
         onValueChange={(value) => handleSetStep(value[0])}
         step={1}
       />
-      <Select onValueChange={(value) => handleDurationChange(Number(value))}>
+      <Select
+        defaultValue={(250 / durationRef.current).toString()}
+        onValueChange={(value) => handleDurationChange(Number(value))}
+      >
         <SelectTrigger className="w-20">
-          <SelectValue placeholder="1x" />
+          <SelectValue />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

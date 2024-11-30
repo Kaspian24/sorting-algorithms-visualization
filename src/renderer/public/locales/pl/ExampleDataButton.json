@@ -1,0 +1,11 @@
+{
+  "button": "Przykładowe dane",
+  "title": "Przykładowe dane",
+  "description": "Wybierz przykładowe dane.",
+  "unsorted": "Nieposortowane",
+  "partialySorted": "Częściowo posortowane",
+  "sorted": "Posortowane",
+  "reversed": "Odwrotnie posortowane",
+  "duplicates": "Wiele duplikatów",
+  "count": "{{count}} Liczb"
+}

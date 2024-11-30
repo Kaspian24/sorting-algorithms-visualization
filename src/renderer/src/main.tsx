@@ -6,6 +6,8 @@ import {
   RouterProvider,
 } from '@tanstack/react-router'
 
+import './i18n/config.ts'
+
 import { routeTree } from './routeTree.gen'
 
 import '@renderer/main.css'

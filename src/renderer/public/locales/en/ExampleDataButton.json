@@ -1,0 +1,11 @@
+{
+  "button": "Example Data",
+  "title": "Example Data",
+  "description": "Choose example data.",
+  "unsorted": "Unsorted",
+  "partialySorted": "Partially Sorted",
+  "sorted": "Sorted",
+  "reversed": "Reversed",
+  "duplicates": "Multiple duplicates",
+  "count": "{{count}} Numbers"
+}

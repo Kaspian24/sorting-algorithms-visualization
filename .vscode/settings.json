@@ -31,5 +31,15 @@
     "classNames",
     "ngClass"
   ],
-  "typescript.preferences.autoImportFileExcludePatterns": ["@radix-ui"]
+  "typescript.preferences.autoImportFileExcludePatterns": ["@radix-ui"],
+  "i18n-ally.localesPaths": "src/renderer/public/locales",
+  "i18n-ally.enabledFrameworks": ["react-i18next"],
+  "i18n-ally.namespace": true,
+  "i18n-ally.pathMatcher": "{locale}/{namespaces}.json",
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.extract.ignoredByFiles": {
+    "src/renderer/src/components/buttons/ExampleDataButton.tsx": [
+      "Example Data"
+    ]
+  }
 }
