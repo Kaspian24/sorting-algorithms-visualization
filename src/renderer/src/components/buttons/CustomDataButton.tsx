@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Button } from '@renderer/components/ui/Button'
 import {
   Dialog,
@@ -22,19 +23,20 @@ import { Plus, X } from 'lucide-react'
 
 export default function CustomDataButton() {
   const { form, onSubmit, fields, remove, insert } = useCustomDataForm()
+  const { t } = useTranslation('CustomDataButton')
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Custom Data</Button>
+        <Button variant="outline">{t('button')}</Button>
       </DialogTrigger>
       <DialogContent
         className="flex h-3/6 min-h-64 w-96 flex-col"
         onCloseAutoFocus={() => form.reset()}
       >
         <DialogHeader>
-          <DialogTitle>Custom Data</DialogTitle>
-          <DialogDescription>Set custom data.</DialogDescription>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
