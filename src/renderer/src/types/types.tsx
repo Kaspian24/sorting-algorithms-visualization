@@ -19,6 +19,7 @@ export interface UseSort {
   (): {
     sortFunction: (dryRun?: boolean) => void
     reset: () => void
+    info: SortingAlgorithmInfo
   }
 }
 
@@ -89,4 +90,14 @@ export type ChartCheckpoint = {
   chartActionCounter: number
   chartCompareCounter: number
   chartAction: ChartAction
+}
+
+export interface SortingAlgorithmInfo {
+  name: string
+  description: string
+  best: string
+  average: string
+  worst: string
+  memory: string
+  stable: boolean
 }

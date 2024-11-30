@@ -1,7 +1,12 @@
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
-import { CHART_ACTION, UseSort } from '@renderer/types/types'
+import {
+  CHART_ACTION,
+  SortingAlgorithmInfo,
+  UseSort,
+} from '@renderer/types/types'
 
 interface MergeSortVariables {
   curr_size: number
@@ -45,6 +50,17 @@ const getStarterVariables = () => {
 export const useMergeSort: UseSort = () => {
   const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateReplace, replace, finish, reset } = useModifyChart()
+  const { t } = useTranslation('useMergeSort')
+
+  const info: SortingAlgorithmInfo = {
+    name: t('name'),
+    description: t('description'),
+    best: 'nlogn',
+    average: 'nlogn',
+    worst: 'nlogn',
+    memory: 'n',
+    stable: true,
+  }
 
   if (Object.keys(sortVariablesRef.current).length === 0) {
     sortVariablesRef.current = getStarterVariables()
@@ -246,5 +262,6 @@ export const useMergeSort: UseSort = () => {
   return {
     sortFunction: mergeSort,
     reset: mergeSortReset,
+    info,
   }
 }

@@ -1,7 +1,12 @@
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import useModifyChart from '@renderer/hooks/useModifyChart'
-import { CHART_ACTION, UseSort } from '@renderer/types/types'
+import {
+  CHART_ACTION,
+  SortingAlgorithmInfo,
+  UseSort,
+} from '@renderer/types/types'
 
 interface ShellSortVariables {
   i: number
@@ -25,6 +30,17 @@ const getStarterVariables = () => {
 export const useShellSort: UseSort = () => {
   const { chartDataRef, chartActionRef, sortVariablesRef } = useChartInfo()
   const { compare, animateSwap, swap, finish, reset } = useModifyChart()
+  const { t } = useTranslation('useShellSort')
+
+  const info: SortingAlgorithmInfo = {
+    name: t('name'),
+    description: t('description'),
+    best: 'nlogn',
+    average: 'n^4/3',
+    worst: 'n^3/2',
+    memory: '1',
+    stable: false,
+  }
 
   if (Object.keys(sortVariablesRef.current).length === 0) {
     sortVariablesRef.current = getStarterVariables()
@@ -120,5 +136,6 @@ export const useShellSort: UseSort = () => {
   return {
     sortFunction: shellSort,
     reset: shellSortReset,
+    info,
   }
 }

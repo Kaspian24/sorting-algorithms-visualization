@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import ChartCardVisualization from '@renderer/components/ChartCard/ChartCardVisualization'
 import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
@@ -41,6 +42,8 @@ function ChartCard({
     algorithm,
   )
 
+  const [showInfo, setShowInfo] = useState(false)
+
   return (
     <Card
       className={`flex min-h-64 min-w-115 flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
@@ -57,6 +60,15 @@ function ChartCard({
             </div>
             <div className="flex flex-1 justify-end pr-1 pt-1">
               <Button
+                className={`h-fit w-fit rounded-full p-1`}
+                variant={`${showInfo ? 'reversedOutline' : 'outline'}`}
+                onClick={() => setShowInfo((prev) => !prev)}
+              >
+                <p className="flex h-6 w-6 items-center justify-center text-lg">
+                  i
+                </p>
+              </Button>
+              <Button
                 className="h-fit w-fit rounded-full p-1"
                 variant="outline"
                 onClick={() => setAlgorithmsVisibility(algorithm, false)}
@@ -65,7 +77,10 @@ function ChartCard({
               </Button>
             </div>
           </CardHeader>
-          <ChartCardVisualization sortingAlgorithm={sortingAlgorithm} />
+          <ChartCardVisualization
+            sortingAlgorithm={sortingAlgorithm}
+            showInfo={showInfo}
+          />
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem
