@@ -42,15 +42,15 @@ function modifyChartFunction({
   const colorFirst =
     chartAction === CHART_ACTION.ANIMATE_SWAP ||
     chartAction === CHART_ACTION.ANIMATE_REPLACE
-      ? 'hsl(var(--chart-4))'
-      : 'hsl(var(--chart-2))'
+      ? 'hsl(var(--chart-swap))'
+      : 'hsl(var(--chart-compare-first))'
 
   const colorSecond =
     chartAction === CHART_ACTION.ANIMATE_SWAP
-      ? 'hsl(var(--chart-4))'
+      ? 'hsl(var(--chart-swap))'
       : chartAction === CHART_ACTION.ANIMATE_REPLACE
-        ? 'hsl(var(--chart-1))'
-        : 'hsl(var(--chart-3))'
+        ? 'hsl(var(--chart-default))'
+        : 'hsl(var(--chart-compare-second))'
 
   const newChartData = !dryRun
     ? chartData.map((data, index) => {
@@ -58,12 +58,12 @@ function modifyChartFunction({
           ...data,
           fill:
             chartAction === CHART_ACTION.FINISHED
-              ? 'hsl(var(--chart-5))'
+              ? 'hsl(var(--chart-finish))'
               : index === first
                 ? colorFirst
                 : index === second
                   ? colorSecond
-                  : 'hsl(var(--chart-1))',
+                  : 'hsl(var(--chart-default))',
           style: {
             ...data.style,
             transitionProperty:

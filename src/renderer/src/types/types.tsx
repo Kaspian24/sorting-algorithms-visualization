@@ -1,6 +1,7 @@
 import { useBubbleSort } from '@renderer/hooks/sorts/useBubbleSort'
 import { useInsertionSort } from '@renderer/hooks/sorts/useInsertionSort'
 import { useMergeSort } from '@renderer/hooks/sorts/useMergeSort'
+import { useQuickSort } from '@renderer/hooks/sorts/useQuickSort'
 import { useSelectionSort } from '@renderer/hooks/sorts/useSelectionSort'
 import { useShellSort } from '@renderer/hooks/sorts/useShellSort'
 
@@ -30,6 +31,7 @@ export const SORTING_ALGORITHM = {
   BUBBLE_SORT: useBubbleSort,
   SHELL_SORT: useShellSort,
   SHELL_SORT_HIBBARD: () => useShellSort(1),
+  QUICK_SORT: useQuickSort,
 } as const
 
 export type SortingAlgorithm =
