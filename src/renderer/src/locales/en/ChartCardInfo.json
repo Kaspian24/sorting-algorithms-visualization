@@ -1,0 +1,9 @@
+{
+  "stable": "Stable",
+  "unstable": "Unstable",
+  "best": "Best Case Complexity",
+  "average": "Average Case Complexity",
+  "worst": "Worst Case Complexity",
+  "memory": "Memory Complexity",
+  "stability": "Stability"
+}

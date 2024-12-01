@@ -1,0 +1,7 @@
+{
+  "integer": "Number must be an integer",
+  "positive": "Number must be positive",
+  "highest": "Number cannot be higher than 100",
+  "min": "There must be at least 5 numbers",
+  "max": "There can be maximum of 100 numbers"
+}

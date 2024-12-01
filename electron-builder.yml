@@ -1,0 +1,35 @@
+appId: com.marcin.sorting-algorithms-visualization
+productName: sorting-algorithms-visualization
+directories:
+  buildResources: build
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+asarUnpack:
+  - resources/**
+win:
+  executableName: sorting-algorithms-visualization
+  target:
+    - portable
+  artifactName: ${name}-${version}-windows.${ext}
+mac:
+  entitlementsInherit: build/entitlements.mac.plist
+  notarize: false
+  target:
+    - dmg
+  artifactName: ${name}-${version}-mac.${ext}
+linux:
+  target:
+    - appImage
+  maintainer: Marcin
+  category: Education
+  artifactName: ${name}-${version}-linux.${ext}
+npmRebuild: false
+publish:
+  provider: generic
+  publishAutoUpdate: false
+  url: https://github.com/Kaspian24/sorting-algorithms-visualization
