@@ -20,9 +20,7 @@ mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
   target:
-    - zip # archive because I can't package it without mac
-  #    - dmg # it should work when run on mac
-  #    - pkg # it should work when run on mac
+    - dmg
   artifactName: ${name}-${version}-mac.${ext}
 linux:
   target:
