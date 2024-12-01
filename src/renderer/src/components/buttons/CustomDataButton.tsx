@@ -70,11 +70,12 @@ export default function CustomDataButton() {
                               asChild
                               variant="outline"
                               className="p-0"
-                              onClick={() =>
+                              onClick={() => {
                                 insert(index + 1, {
                                   number: Math.floor(Math.random() * 51 + 1),
                                 })
-                              }
+                                form.trigger()
+                              }}
                             >
                               <Plus />
                             </Button>
@@ -83,9 +84,10 @@ export default function CustomDataButton() {
                                 asChild
                                 variant="outline"
                                 className="p-0"
-                                onClick={() =>
+                                onClick={() => {
                                   fields.length > 1 && remove(index)
-                                }
+                                  form.trigger()
+                                }}
                               >
                                 <X />
                               </Button>
@@ -104,9 +106,7 @@ export default function CustomDataButton() {
                 name={`numbers`}
                 render={() => (
                   <FormItem>
-                    {(fields.length < 5 || fields.length > 100) && (
-                      <FormMessage />
-                    )}
+                    <FormMessage />
                   </FormItem>
                 )}
               />
