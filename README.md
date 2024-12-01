@@ -2,8 +2,8 @@
 
 ## EN
 
-An aplication that alows you to visualize and compare sorting algorithms.
+An application that allows for the visualization of sorting algorithms and their comparison.
 
 ## PL
 
-Aplikacja, która pozwala Ci zobaczyć i porównać algorytmy sortowania.
+Aplikacja, która umożliwia wizualizację działania algorytmów sortujących oraz ich porównanie.

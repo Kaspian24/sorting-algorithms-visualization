@@ -1,10 +1,12 @@
 import { useFieldArray, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { z } from 'zod'
 
 export default function useCustomDataForm() {
   const { defaultChartDataRef, setDefaultChartData } = useGlobalChartsInfo()
+  const { t } = useTranslation('useCustomDataForm')
 
   const values = {
     numbers: defaultChartDataRef.current.map(({ number }) => ({ number })),
@@ -13,22 +15,22 @@ export default function useCustomDataForm() {
   const numberObj = z.object({
     number: z.coerce
       .number()
-      .int({ message: 'Number must be an integer' })
-      .positive({ message: 'Number must be positive' })
-      .max(100, { message: 'Number cannot be higher than 100' }),
+      .int({ message: t('integer') })
+      .positive({ message: t('positive') })
+      .max(100, { message: t('highest') }),
   })
 
   const CustomDataSchema = z.object({
-    numbers: numberObj
-      .array()
-      .min(5, { message: 'There must be at least 5 numbers' })
-      .max(100, { message: 'There can be maximum of 100 numbers' }),
+    numbers: z
+      .array(numberObj)
+      .min(5, { message: t('min') })
+      .max(100, { message: t('max') }),
   })
 
   const form = useForm<z.infer<typeof CustomDataSchema>>({
     resolver: zodResolver(CustomDataSchema),
     values,
-    mode: 'onChange',
+    mode: 'all',
   })
 
   const { fields, remove, insert } = useFieldArray({
