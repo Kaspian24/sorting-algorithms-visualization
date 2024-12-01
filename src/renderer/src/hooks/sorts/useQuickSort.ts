@@ -42,7 +42,7 @@ export const useQuickSort: UseSort = () => {
     best: 'nlogn',
     average: 'nlogn',
     worst: 'n^2',
-    memory: 'logn',
+    memory: 'n',
     stable: false,
   }
 
