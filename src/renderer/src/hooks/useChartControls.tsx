@@ -45,14 +45,6 @@ export default function useChartControls() {
     ],
   )
 
-  const resetAll = useCallback(() => {
-    globalChartActionCounterRef.current = 0
-    setGlobalChartActionCounterState(0)
-    globalChartsInfoDataRef.current.forEach((data) => {
-      data.current.reset()
-    })
-  }, [globalChartsInfoDataRef, globalChartActionCounterRef])
-
   const handleStop = useCallback(() => {
     if (intervalRef.current) {
       isRunningRef.current = false
@@ -84,8 +76,8 @@ export default function useChartControls() {
 
   const handleReset = useCallback(() => {
     handleStop()
-    resetAll()
-  }, [handleStop, resetAll])
+    setStepAll(0)
+  }, [handleStop, setStepAll])
 
   const handleSetStep = useCallback(
     (step: number) => {

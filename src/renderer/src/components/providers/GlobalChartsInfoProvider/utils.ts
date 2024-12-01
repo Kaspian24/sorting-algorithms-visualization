@@ -6,7 +6,7 @@ export function numbersToChartDataFieldArray(
   return numbers.map((number, index) => ({
     key: `bar${index}`,
     number: number,
-    fill: 'hsl(var(--chart-1))',
+    fill: 'hsl(var(--chart-default))',
     className: '',
     style: {
       transform: 'translateX(0)',
