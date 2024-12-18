@@ -3,7 +3,7 @@ import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/C
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import {
   CHART_ACTION,
-  ChartDataField,
+  ChartData,
   ChartInfoData,
   SortingAlgorithm,
 } from '@renderer/types/types'
@@ -35,7 +35,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
   const [maxChartCompareCounterState, setMaxChartCompareCounterState] =
     useState<number>(0)
 
-  const [chartDataState, setChartDataState] = useState<ChartDataField[]>(
+  const [chartDataState, setChartDataState] = useState<ChartData>(
     () => chartDataRef.current,
   )
   const [chartActionCounterState, setChartActionCounterState] =
@@ -44,7 +44,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     useState<number>(() => chartCompareCounterRef.current)
 
   const updateStates = useCallback(() => {
-    setChartDataState(chartDataRef.current)
+    setChartDataState({ ...chartDataRef.current })
     setChartActionCounterState(chartActionCounterRef.current)
     setChartCompareCounterState(chartCompareCounterRef.current)
   }, [chartActionCounterRef, chartCompareCounterRef, chartDataRef])
@@ -54,7 +54,10 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
       chartCheckpointsRef.current.push({
         checkpoint: chartActionCounterRef.current / checkpointStepRef.current,
         data: chartDataRef.current,
-        sortVariables: structuredClone(sortVariablesRef.current),
+        sortVariables: {
+          ...structuredClone(sortVariablesRef.current),
+          returned: true,
+        },
         chartActionCounter: chartActionCounterRef.current,
         chartCompareCounter: chartCompareCounterRef.current,
         chartAction: chartActionRef.current,
@@ -100,21 +103,6 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     ],
   )
 
-  const nextStep = useCallback(
-    (step: number) => {
-      const currentStep = chartActionCounterRef.current
-      if (
-        step - 1 === currentStep ||
-        maxChartActionCounterRef.current - 1 === currentStep
-      ) {
-        sortFunction()
-      } else {
-        sortFunction(true)
-      }
-    },
-    [chartActionCounterRef, maxChartActionCounterRef, sortFunction],
-  )
-
   const setStep = useCallback(() => {
     let step = globalChartActionCounterRef.current
     if (step > maxChartActionCounterRef.current) {
@@ -139,7 +127,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
       step > chartActionCounterRef.current &&
       chartActionRef.current !== CHART_ACTION.FINISHED
     ) {
-      nextStep(step)
+      sortFunction()
     }
 
     updateStates()
@@ -151,7 +139,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     globalChartActionCounterRef,
     goToCheckpoint,
     maxChartActionCounterRef,
-    nextStep,
+    sortFunction,
     updateStates,
   ])
 
@@ -172,34 +160,21 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     chartCheckpointsRef.current = []
     while (chartActionRef.current !== CHART_ACTION.FINISHED) {
       addCheckpoint()
-      if (
-        chartActionCounterRef.current % checkpointStepRef.current ===
-        checkpointStepRef.current - 1
-      ) {
-        sortFunction()
-      } else {
-        sortFunction(true)
-      }
+      sortFunction()
     }
     addCheckpoint()
     maxChartActionCounterRef.current = chartActionCounterRef.current
     maxChartCompareCounterRef.current = chartCompareCounterRef.current
+    chartDataRef.current = defaultChartDataRef.current
+    chartActionCounterRef.current = 0
+    chartCompareCounterRef.current = 0
     reset()
 
     while (
       chartActionCounterRef.current < globalChartActionCounterRef.current &&
       chartActionRef.current !== CHART_ACTION.FINISHED
     ) {
-      if (
-        chartActionCounterRef.current ===
-          maxChartActionCounterRef.current - 1 ||
-        chartActionCounterRef.current ===
-          globalChartActionCounterRef.current - 1
-      ) {
-        sortFunction()
-      } else {
-        sortFunction(true)
-      }
+      sortFunction()
     }
 
     addChartInfoData(controlData)
@@ -212,6 +187,8 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
       removeChartInfoData(controlData)
       // eslint-disable-next-line react-hooks/exhaustive-deps
       chartDataRef.current = defaultChartDataRef.current
+      chartActionCounterRef.current = 0
+      chartCompareCounterRef.current = 0
       reset()
     }
   }, [

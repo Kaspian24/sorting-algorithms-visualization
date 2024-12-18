@@ -1,11 +1,12 @@
-import { useBubbleSort } from '@renderer/hooks/sorts/useBubbleSort'
-import { useInsertionSort } from '@renderer/hooks/sorts/useInsertionSort'
-import { useMergeSort } from '@renderer/hooks/sorts/useMergeSort'
-import { useQuickSort } from '@renderer/hooks/sorts/useQuickSort'
-import { useSelectionSort } from '@renderer/hooks/sorts/useSelectionSort'
-import { useShellSort } from '@renderer/hooks/sorts/useShellSort'
+import { useBubbleSort } from '@renderer/hooks/sorts/bubbleSort/useBubbleSort'
+import { useInsertionSort } from '@renderer/hooks/sorts/insertionSort/useInsertionSort'
+import { useMergeSort } from '@renderer/hooks/sorts/mergeSort/useMergeSort'
+import { useQuickSort } from '@renderer/hooks/sorts/quickSort/useQuickSort'
+import { useSelectionSort } from '@renderer/hooks/sorts/selectionSort/useSelectionSort'
+import { useShellSort } from '@renderer/hooks/sorts/shellSort/useShellSort'
 
 export const CHART_ACTION = {
+  DEFAULT: 'DEFAULT',
   COMPARE: 'COMPARE',
   ANIMATE_SWAP: 'ANIMATE_SWAP',
   SWAP: 'SWAP',
@@ -18,7 +19,7 @@ export type ChartAction = (typeof CHART_ACTION)[keyof typeof CHART_ACTION]
 
 export interface UseSort {
   (variant?: number): {
-    sortFunction: (dryRun?: boolean) => void
+    sortFunction: () => void
     reset: () => void
     info: SortingAlgorithmInfo
   }
@@ -31,7 +32,10 @@ export const SORTING_ALGORITHM = {
   BUBBLE_SORT: useBubbleSort,
   SHELL_SORT: useShellSort,
   SHELL_SORT_HIBBARD: () => useShellSort(1),
-  QUICK_SORT: useQuickSort,
+  QUICK_SORT_LOMUTO_LAST_AS_PIVOT: useQuickSort,
+  QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT: () => useQuickSort(1),
+  QUICK_SORT_HOARE_FIRST_AS_PIVOT: () => useQuickSort(2),
+  QUICK_SORT_HOARE_MIDDLE_AS_PIVOT: () => useQuickSort(3),
 } as const
 
 export type SortingAlgorithm =
@@ -42,22 +46,20 @@ export type AlgorithmVisibilityData = {
   visible: boolean
 }
 
+export interface ChartData {
+  fields: ChartDataField[]
+  visualization: { action: ChartAction; numbers: number[] }
+}
+
 export interface ChartDataField {
-  key: string
+  key: number
   number: number
-  fill: string
-  className: string
-  style: {
-    transform: string
-    transitionDuration: string
-    transitionProperty: string
-  }
 }
 
 export interface ChartInfoData {
-  sortFunction: (dryRun?: boolean) => void
+  sortFunction: () => void
   reset: () => void
-  chartDataRef: React.MutableRefObject<ChartDataField[]>
+  chartDataRef: React.MutableRefObject<ChartData>
   chartActionCounterRef: React.MutableRefObject<number>
   chartCompareCounterRef: React.MutableRefObject<number>
   maxChartActionCounterRef: React.MutableRefObject<number>
@@ -88,7 +90,7 @@ export type DragContainerLayout =
 
 export type ChartCheckpoint = {
   checkpoint: number
-  data: ChartDataField[]
+  data: ChartData
   sortVariables: object
   chartActionCounter: number
   chartCompareCounter: number
