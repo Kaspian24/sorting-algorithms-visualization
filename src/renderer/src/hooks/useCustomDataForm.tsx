@@ -9,7 +9,9 @@ export default function useCustomDataForm() {
   const { t } = useTranslation('useCustomDataForm')
 
   const values = {
-    numbers: defaultChartDataRef.current.map(({ number }) => ({ number })),
+    numbers: defaultChartDataRef.current.fields.map(({ number }) => ({
+      number,
+    })),
   }
 
   const numberObj = z.object({

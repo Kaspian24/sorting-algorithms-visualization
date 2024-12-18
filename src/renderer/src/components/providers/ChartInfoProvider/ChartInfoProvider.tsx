@@ -4,14 +4,14 @@ import {
   CHART_ACTION,
   ChartAction,
   ChartCheckpoint,
-  ChartDataField,
+  ChartData,
 } from '@renderer/types/types'
 
 interface ChartInfoContextType {
   chartActionRef: React.MutableRefObject<ChartAction>
   maxChartActionCounterRef: React.MutableRefObject<number>
   maxChartCompareCounterRef: React.MutableRefObject<number>
-  chartDataRef: React.MutableRefObject<ChartDataField[]>
+  chartDataRef: React.MutableRefObject<ChartData>
   chartActionCounterRef: React.MutableRefObject<number>
   chartCompareCounterRef: React.MutableRefObject<number>
   chartCheckpointsRef: React.MutableRefObject<ChartCheckpoint[]>
@@ -32,7 +32,7 @@ export function ChartInfoProvider({ children }: ChartInfoProviderProps) {
   const chartActionRef = useRef<ChartAction>(CHART_ACTION.COMPARE)
   const maxChartActionCounterRef = useRef<number>(0)
   const maxChartCompareCounterRef = useRef<number>(0)
-  const chartDataRef = useRef<ChartDataField[]>(defaultChartDataRef.current)
+  const chartDataRef = useRef<ChartData>(defaultChartDataRef.current)
   const chartActionCounterRef = useRef<number>(0)
   const chartCompareCounterRef = useRef<number>(0)
   const chartCheckpointsRef = useRef<ChartCheckpoint[]>([])
