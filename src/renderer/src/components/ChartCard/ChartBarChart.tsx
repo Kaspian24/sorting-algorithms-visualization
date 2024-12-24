@@ -17,10 +17,10 @@ export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
     const { fields, visualization } = chartDataState
     const { numbers, action } = visualization
 
-    const firstIndex = numbers?.[0]
-    const secondIndex = numbers?.[1]
-    const firstKey = fields?.[firstIndex]?.key
-    const secondKey = fields?.[secondIndex]?.key
+    const firstNumber = numbers?.[0]
+    const secondNumber = numbers?.[1]
+    const firstKey = fields?.[firstNumber]?.key
+    const secondKey = fields?.[secondNumber]?.key
 
     const duration = durationRef.current
     const isForward = directionForwardRef.current
@@ -56,7 +56,7 @@ export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
         if (key === secondKey)
           return `translateX(${(-Math.abs(firstKey - secondKey) / fields.length) * 100}%)`
       } else if (action === CHART_ACTION.ANIMATE_REPLACE && key === firstKey) {
-        return `scaleY(${1 / (fields[firstIndex!].number / secondKey)})`
+        return `scaleY(${1 / (fields[firstNumber!].number / secondNumber)})`
       }
       return 'translateX(0%) scaleY(1)'
     }

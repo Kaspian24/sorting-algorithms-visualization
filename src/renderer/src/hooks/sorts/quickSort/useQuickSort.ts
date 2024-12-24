@@ -40,8 +40,8 @@ export const useQuickSort: UseSort = (variant: number = 0) => {
   )
 
   const callNext = useCallback(() => {
+    // TODO remove when compatibility with older method is not needed anymore
     if ((sortVariablesRef.current as QuickSortVariables).returned) {
-      // TODO remove when compatibility with older method is not needed anymore
       sortVariablesRef.current = getStarterVariables()
       chartDataRef.current = defaultChartDataRef.current
       chartActionRef.current = CHART_ACTION.DEFAULT
@@ -55,7 +55,6 @@ export const useQuickSort: UseSort = (variant: number = 0) => {
         chartDataRef.current.fields.length - 1,
       )
 
-      generatorRef.current.next(chartActionCounterRef.current)
       sortVariablesRef.current = {
         returned: false,
       }

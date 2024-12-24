@@ -1,26 +1,23 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
+import { selectionSort } from '@renderer/hooks/sorts/selectionSort/sortingFunction'
 import {
   CHART_ACTION,
   SortingAlgorithmInfo,
   UseSort,
 } from '@renderer/types/types'
-import {
-  swapChartDataFields,
-  visualizeChartDataFields,
-} from '@renderer/utils/modifyChartData'
+import { visualizeChartDataFields } from '@renderer/utils/modifyChartData'
 
 interface SelectionSortVariables {
-  i: number
-  j: number
-  min_idx: number
+  iteration: number
+  returned: boolean
 }
 
 const getStarterVariables = () => {
   const starterVariables: SelectionSortVariables = {
-    i: 0,
-    j: 1,
-    min_idx: 0,
+    iteration: 0,
+    returned: false,
   }
   return starterVariables
 }
@@ -33,6 +30,7 @@ export const useSelectionSort: UseSort = () => {
     chartActionCounterRef,
     sortVariablesRef,
   } = useChartInfo()
+  const { defaultChartDataRef } = useGlobalChartsInfo()
 
   const info: SortingAlgorithmInfo = {
     best: 'n^2',
@@ -42,82 +40,60 @@ export const useSelectionSort: UseSort = () => {
     stable: false,
   }
 
-  if (Object.keys(sortVariablesRef.current).length === 0) {
-    sortVariablesRef.current = getStarterVariables()
-  }
+  const generatorRef = useRef<Generator<number, void, unknown>>(
+    selectionSort(chartDataRef, chartCompareCounterRef),
+  )
 
-  const selectionSort = useCallback(() => {
-    let { i, j, min_idx } = sortVariablesRef.current as SelectionSortVariables
-    let compareAction = chartActionRef.current
-    let arr = chartDataRef.current.fields
-    const n = arr.length
+  const callNext = useCallback(() => {
+    // TODO remove when compatibility with older method is not needed anymore
+    if ((sortVariablesRef.current as SelectionSortVariables).returned) {
+      sortVariablesRef.current = getStarterVariables()
+      chartDataRef.current = defaultChartDataRef.current
+      chartActionRef.current = CHART_ACTION.DEFAULT
+      chartActionCounterRef.current = 0
+      chartCompareCounterRef.current = 0
+      generatorRef.current = selectionSort(chartDataRef, chartCompareCounterRef)
 
-    function selectionSortFunction() {
-      if (compareAction === CHART_ACTION.FINISHED) {
-        return
+      sortVariablesRef.current = {
+        returned: false,
       }
-      chartActionCounterRef.current++
+    }
 
-      if (compareAction === CHART_ACTION.SWAP) {
-        swapChartDataFields(chartDataRef, i, min_idx)
-        arr = chartDataRef.current.fields
-        compareAction = CHART_ACTION.COMPARE
-        i++
-        j = i + 1
-        min_idx = i
-      }
-
-      while (i < n - 1) {
-        while (j < n) {
-          visualizeChartDataFields(
-            chartDataRef,
-            chartCompareCounterRef,
-            CHART_ACTION.COMPARE,
-            [min_idx, j],
-          )
-          if (arr[j].number < arr[min_idx].number) {
-            min_idx = j
-          }
-          j++
-          return
-        }
-        visualizeChartDataFields(
-          chartDataRef,
-          chartCompareCounterRef,
-          CHART_ACTION.ANIMATE_SWAP,
-          [i, min_idx],
-        )
-        compareAction = CHART_ACTION.SWAP
-        return
-      }
+    if (chartActionRef.current === CHART_ACTION.FINISHED) {
+      return
+    }
+    const result = generatorRef.current.next()
+    chartActionCounterRef.current++
+    if (result.done) {
       visualizeChartDataFields(
         chartDataRef,
         chartCompareCounterRef,
         CHART_ACTION.FINISHED,
         [],
       )
-      compareAction = CHART_ACTION.FINISHED
-      return
+      chartActionRef.current = CHART_ACTION.FINISHED
     }
-
-    selectionSortFunction()
-    sortVariablesRef.current = { i, j, min_idx }
-    chartActionRef.current = compareAction
   }, [
-    sortVariablesRef,
-    chartActionRef,
-    chartDataRef,
     chartActionCounterRef,
+    chartActionRef,
     chartCompareCounterRef,
+    chartDataRef,
+    defaultChartDataRef,
+    sortVariablesRef,
   ])
+
+  if (Object.keys(sortVariablesRef.current).length === 0) {
+    sortVariablesRef.current = getStarterVariables()
+  }
 
   const selectionSortReset = useCallback(() => {
     sortVariablesRef.current = getStarterVariables()
-    chartActionRef.current = CHART_ACTION.COMPARE
-  }, [chartActionRef, sortVariablesRef])
+    chartActionRef.current = CHART_ACTION.DEFAULT
+    generatorRef.current = selectionSort(chartDataRef, chartCompareCounterRef)
+  }, [chartActionRef, chartCompareCounterRef, chartDataRef, sortVariablesRef])
 
   return {
-    sortFunction: selectionSort,
+    sortFunction: callNext,
     reset: selectionSortReset,
     info,
   }

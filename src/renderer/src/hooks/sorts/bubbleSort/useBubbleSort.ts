@@ -1,26 +1,23 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
+import { bubbleSort } from '@renderer/hooks/sorts/bubbleSort/sortingFunction'
 import {
   CHART_ACTION,
   SortingAlgorithmInfo,
   UseSort,
 } from '@renderer/types/types'
-import {
-  swapChartDataFields,
-  visualizeChartDataFields,
-} from '@renderer/utils/modifyChartData'
+import { visualizeChartDataFields } from '@renderer/utils/modifyChartData'
 
 interface BubbleSortVariables {
-  i: number
-  j: number
-  swapped: boolean
+  iteration: number
+  returned: boolean
 }
 
 const getStarterVariables = () => {
   const starterVariables: BubbleSortVariables = {
-    i: 0,
-    j: 0,
-    swapped: false,
+    iteration: 0,
+    returned: false,
   }
   return starterVariables
 }
@@ -33,6 +30,7 @@ export const useBubbleSort: UseSort = () => {
     chartActionCounterRef,
     sortVariablesRef,
   } = useChartInfo()
+  const { defaultChartDataRef } = useGlobalChartsInfo()
 
   const info: SortingAlgorithmInfo = {
     best: 'n',
@@ -42,94 +40,60 @@ export const useBubbleSort: UseSort = () => {
     stable: true,
   }
 
-  if (Object.keys(sortVariablesRef.current).length === 0) {
-    sortVariablesRef.current = getStarterVariables()
-  }
+  const generatorRef = useRef<Generator<number, void, unknown>>(
+    bubbleSort(chartDataRef, chartCompareCounterRef),
+  )
 
-  const bubbleSort = useCallback(() => {
-    let { i, j, swapped } = sortVariablesRef.current as BubbleSortVariables
-    let compareAction = chartActionRef.current
-    let arr = chartDataRef.current.fields
-    const n = arr.length
+  const callNext = useCallback(() => {
+    // TODO remove when compatibility with older method is not needed anymore
+    if ((sortVariablesRef.current as BubbleSortVariables).returned) {
+      sortVariablesRef.current = getStarterVariables()
+      chartDataRef.current = defaultChartDataRef.current
+      chartActionRef.current = CHART_ACTION.DEFAULT
+      chartActionCounterRef.current = 0
+      chartCompareCounterRef.current = 0
+      generatorRef.current = bubbleSort(chartDataRef, chartCompareCounterRef)
 
-    function bubbleSortFunction() {
-      if (compareAction === CHART_ACTION.FINISHED) {
-        return
+      sortVariablesRef.current = {
+        returned: false,
       }
-      chartActionCounterRef.current++
+    }
 
-      if (compareAction === CHART_ACTION.SWAP) {
-        swapChartDataFields(chartDataRef, j, j + 1)
-        arr = chartDataRef.current.fields
-        compareAction = CHART_ACTION.COMPARE
-        j++
-      }
-
-      while (i < n - 1) {
-        while (j < n - i - 1) {
-          if (compareAction === CHART_ACTION.COMPARE) {
-            visualizeChartDataFields(
-              chartDataRef,
-              chartCompareCounterRef,
-              CHART_ACTION.COMPARE,
-              [j, j + 1],
-            )
-            if (arr[j].number > arr[j + 1].number) {
-              compareAction = CHART_ACTION.ANIMATE_SWAP
-              swapped = true
-            } else {
-              j++
-            }
-            return
-          }
-          if (compareAction === CHART_ACTION.ANIMATE_SWAP) {
-            visualizeChartDataFields(
-              chartDataRef,
-              chartCompareCounterRef,
-              CHART_ACTION.ANIMATE_SWAP,
-              [j, j + 1],
-            )
-            compareAction = CHART_ACTION.SWAP
-            return
-          }
-        }
-        j = 0
-
-        if (swapped === false) {
-          break
-        }
-        i++
-        swapped = false
-      }
-
+    if (chartActionRef.current === CHART_ACTION.FINISHED) {
+      return
+    }
+    const result = generatorRef.current.next()
+    chartActionCounterRef.current++
+    if (result.done) {
       visualizeChartDataFields(
         chartDataRef,
         chartCompareCounterRef,
         CHART_ACTION.FINISHED,
         [],
       )
-      compareAction = CHART_ACTION.FINISHED
-      return
+      chartActionRef.current = CHART_ACTION.FINISHED
     }
-
-    bubbleSortFunction()
-    sortVariablesRef.current = { i, j, swapped }
-    chartActionRef.current = compareAction
   }, [
-    sortVariablesRef,
-    chartActionRef,
-    chartDataRef,
     chartActionCounterRef,
+    chartActionRef,
     chartCompareCounterRef,
+    chartDataRef,
+    defaultChartDataRef,
+    sortVariablesRef,
   ])
+
+  if (Object.keys(sortVariablesRef.current).length === 0) {
+    sortVariablesRef.current = getStarterVariables()
+  }
 
   const bubbleSortReset = useCallback(() => {
     sortVariablesRef.current = getStarterVariables()
-    chartActionRef.current = CHART_ACTION.COMPARE
-  }, [chartActionRef, sortVariablesRef])
+    chartActionRef.current = CHART_ACTION.DEFAULT
+    generatorRef.current = bubbleSort(chartDataRef, chartCompareCounterRef)
+  }, [chartActionRef, chartCompareCounterRef, chartDataRef, sortVariablesRef])
 
   return {
-    sortFunction: bubbleSort,
+    sortFunction: callNext,
     reset: bubbleSortReset,
     info,
   }

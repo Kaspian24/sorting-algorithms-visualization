@@ -27,7 +27,8 @@ export interface UseSort {
 
 export const SORTING_ALGORITHM = {
   SELECTION_SORT: useSelectionSort,
-  MERGE_SORT: useMergeSort,
+  MERGE_SORT_TOP_BOTTOM: useMergeSort,
+  MERGE_SORT_BOTTOM_UP: () => useMergeSort(1),
   INSERTION_SORT: useInsertionSort,
   BUBBLE_SORT: useBubbleSort,
   SHELL_SORT: useShellSort,

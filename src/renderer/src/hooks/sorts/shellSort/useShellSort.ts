@@ -1,74 +1,23 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
-import {
-  CHART_ACTION,
-  SortingAlgorithmVariant,
-  UseSort,
-} from '@renderer/types/types'
-import {
-  swapChartDataFields,
-  visualizeChartDataFields,
-} from '@renderer/utils/modifyChartData'
+import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
+import { shellSort } from '@renderer/hooks/sorts/shellSort/sortingFunction'
+import { variants } from '@renderer/hooks/sorts/shellSort/variants'
+import { CHART_ACTION, UseSort } from '@renderer/types/types'
+import { visualizeChartDataFields } from '@renderer/utils/modifyChartData'
 
 interface ShellSortVariables {
-  i: number
-  j: number
-  gap: number
-  temp: number
-  initialized: boolean
+  iteration: number
+  returned: boolean
 }
 
 const getStarterVariables = () => {
   const starterVariables: ShellSortVariables = {
-    i: 0,
-    j: 0,
-    gap: 0,
-    temp: 0,
-    initialized: false,
+    iteration: 0,
+    returned: false,
   }
   return starterVariables
 }
-
-interface ShellSortVariant extends SortingAlgorithmVariant {
-  variables: {
-    gapFunction: (num: number) => number
-  }
-}
-
-const variants: ShellSortVariant[] = [
-  {
-    info: {
-      best: 'nlogn',
-      average: 'n^4/3',
-      worst: 'n^2',
-      memory: '1',
-      stable: false,
-    },
-    variables: {
-      gapFunction: (num: number) => {
-        return Math.floor(num / 2)
-      },
-    },
-  },
-  {
-    info: {
-      best: 'nlogn',
-      average: 'n^4/3',
-      worst: 'n^3/2',
-      memory: '1',
-      stable: false,
-    },
-    variables: {
-      gapFunction: (num: number) => {
-        let k = 1
-        while (Math.pow(2, k) - 1 < num) {
-          k++
-        }
-        return Math.floor(Math.pow(2, k - 1) - 1)
-      },
-    },
-  },
-]
 
 export const useShellSort: UseSort = (variant: number = 0) => {
   const {
@@ -78,111 +27,77 @@ export const useShellSort: UseSort = (variant: number = 0) => {
     chartActionCounterRef,
     sortVariablesRef,
   } = useChartInfo()
+  const { defaultChartDataRef } = useGlobalChartsInfo()
 
-  if (Object.keys(sortVariablesRef.current).length === 0) {
-    sortVariablesRef.current = getStarterVariables()
-  }
+  const generatorRef = useRef<Generator<number, void, unknown>>(
+    shellSort(chartDataRef, chartCompareCounterRef, variants[variant]),
+  )
 
-  const shellSort = useCallback(() => {
-    let { i, j, gap, temp, initialized } =
-      sortVariablesRef.current as ShellSortVariables
-    let compareAction = chartActionRef.current
-    let arr = chartDataRef.current.fields
-    const n = arr.length
+  const callNext = useCallback(() => {
+    // TODO remove when compatibility with older method is not needed anymore
+    if ((sortVariablesRef.current as ShellSortVariables).returned) {
+      sortVariablesRef.current = getStarterVariables()
+      chartDataRef.current = defaultChartDataRef.current
+      chartActionRef.current = CHART_ACTION.DEFAULT
+      chartActionCounterRef.current = 0
+      chartCompareCounterRef.current = 0
+      generatorRef.current = shellSort(
+        chartDataRef,
+        chartCompareCounterRef,
+        variants[variant],
+      )
 
-    if (!initialized) {
-      gap = variants[variant].variables.gapFunction(n)
-      i = gap
-      j = i
-      temp = i
-
-      initialized = true
+      sortVariablesRef.current = {
+        returned: false,
+      }
     }
 
-    function shellSortFunction() {
-      if (compareAction === CHART_ACTION.FINISHED) {
-        return
-      }
-      chartActionCounterRef.current++
-
-      if (compareAction === CHART_ACTION.SWAP) {
-        swapChartDataFields(chartDataRef, j - gap, j)
-        arr = chartDataRef.current.fields
-        j -= gap
-        temp = j
-        compareAction = CHART_ACTION.COMPARE
-      }
-
-      while (gap > 0) {
-        while (i < n) {
-          if (j >= gap) {
-            if (compareAction === CHART_ACTION.COMPARE) {
-              visualizeChartDataFields(
-                chartDataRef,
-                chartCompareCounterRef,
-                CHART_ACTION.COMPARE,
-                [j - gap, temp],
-              )
-              if (arr[j - gap].number > arr[temp].number) {
-                compareAction = CHART_ACTION.ANIMATE_SWAP
-              } else {
-                i += 1
-                j = i
-                temp = j
-              }
-              return
-            }
-            if (CHART_ACTION.ANIMATE_SWAP) {
-              visualizeChartDataFields(
-                chartDataRef,
-                chartCompareCounterRef,
-                CHART_ACTION.ANIMATE_SWAP,
-                [j - gap, j],
-              )
-              compareAction = CHART_ACTION.SWAP
-              return
-            }
-          }
-
-          i += 1
-          j = i
-          temp = j
-        }
-        gap = variants[variant].variables.gapFunction(gap)
-        i = gap
-        j = i
-        temp = j
-      }
-
+    if (chartActionRef.current === CHART_ACTION.FINISHED) {
+      return
+    }
+    const result = generatorRef.current.next()
+    chartActionCounterRef.current++
+    if (result.done) {
       visualizeChartDataFields(
         chartDataRef,
         chartCompareCounterRef,
         CHART_ACTION.FINISHED,
         [],
       )
-      compareAction = CHART_ACTION.FINISHED
-      return
+      chartActionRef.current = CHART_ACTION.FINISHED
     }
-
-    shellSortFunction()
-    sortVariablesRef.current = { i, j, gap, temp, initialized }
-    chartActionRef.current = compareAction
   }, [
-    sortVariablesRef,
-    chartActionRef,
-    chartDataRef,
-    variant,
     chartActionCounterRef,
+    chartActionRef,
     chartCompareCounterRef,
+    chartDataRef,
+    defaultChartDataRef,
+    sortVariablesRef,
+    variant,
   ])
+
+  if (Object.keys(sortVariablesRef.current).length === 0) {
+    sortVariablesRef.current = getStarterVariables()
+  }
 
   const shellSortReset = useCallback(() => {
     sortVariablesRef.current = getStarterVariables()
-    chartActionRef.current = CHART_ACTION.COMPARE
-  }, [chartActionRef, sortVariablesRef])
+    chartActionRef.current = CHART_ACTION.DEFAULT
+    generatorRef.current = shellSort(
+      chartDataRef,
+      chartCompareCounterRef,
+      variants[variant],
+    )
+  }, [
+    chartActionRef,
+    chartCompareCounterRef,
+    chartDataRef,
+    sortVariablesRef,
+    variant,
+  ])
 
   return {
-    sortFunction: shellSort,
+    sortFunction: callNext,
     reset: shellSortReset,
     info: variants[variant].info,
   }
