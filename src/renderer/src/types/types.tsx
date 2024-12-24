@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react'
 import { useBubbleSort } from '@renderer/hooks/sorts/bubbleSort/useBubbleSort'
 import { useInsertionSort } from '@renderer/hooks/sorts/insertionSort/useInsertionSort'
 import { useMergeSort } from '@renderer/hooks/sorts/mergeSort/useMergeSort'
@@ -19,20 +20,21 @@ export type ChartAction = (typeof CHART_ACTION)[keyof typeof CHART_ACTION]
 
 export interface UseSort {
   (variant?: number): {
-    sortFunction: () => void
+    sortFunctionGeneratorRef: MutableRefObject<Generator<number, void, unknown>>
     reset: () => void
     info: SortingAlgorithmInfo
   }
 }
 
 export const SORTING_ALGORITHM = {
-  SELECTION_SORT: useSelectionSort,
-  MERGE_SORT: useMergeSort,
-  INSERTION_SORT: useInsertionSort,
-  BUBBLE_SORT: useBubbleSort,
-  SHELL_SORT: useShellSort,
+  SELECTION_SORT: () => useSelectionSort(),
+  MERGE_SORT_TOP_BOTTOM: () => useMergeSort(),
+  MERGE_SORT_BOTTOM_UP: () => useMergeSort(1),
+  INSERTION_SORT: () => useInsertionSort(),
+  BUBBLE_SORT: () => useBubbleSort(),
+  SHELL_SORT: () => useShellSort(),
   SHELL_SORT_HIBBARD: () => useShellSort(1),
-  QUICK_SORT_LOMUTO_LAST_AS_PIVOT: useQuickSort,
+  QUICK_SORT_LOMUTO_LAST_AS_PIVOT: () => useQuickSort(),
   QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT: () => useQuickSort(1),
   QUICK_SORT_HOARE_FIRST_AS_PIVOT: () => useQuickSort(2),
   QUICK_SORT_HOARE_MIDDLE_AS_PIVOT: () => useQuickSort(3),
@@ -57,15 +59,12 @@ export interface ChartDataField {
 }
 
 export interface ChartInfoData {
-  sortFunction: () => void
-  reset: () => void
   chartDataRef: React.MutableRefObject<ChartData>
   chartActionCounterRef: React.MutableRefObject<number>
   chartCompareCounterRef: React.MutableRefObject<number>
   maxChartActionCounterRef: React.MutableRefObject<number>
   maxChartCompareCounterRef: React.MutableRefObject<number>
   chartActionRef: React.MutableRefObject<ChartAction>
-  goToCheckpoint: (checkpoint: number) => boolean
   setStep: () => void
 }
 
@@ -87,15 +86,6 @@ export const DRAG_CONTAINER_LAYOUT = {
 
 export type DragContainerLayout =
   (typeof DRAG_CONTAINER_LAYOUT)[keyof typeof DRAG_CONTAINER_LAYOUT]
-
-export type ChartCheckpoint = {
-  checkpoint: number
-  data: ChartData
-  sortVariables: object
-  chartActionCounter: number
-  chartCompareCounter: number
-  chartAction: ChartAction
-}
 
 export interface SortingAlgorithmInfo {
   best: string

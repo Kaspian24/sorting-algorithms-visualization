@@ -1,11 +1,6 @@
 import { createContext, ReactNode, useContext, useRef } from 'react'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
-import {
-  CHART_ACTION,
-  ChartAction,
-  ChartCheckpoint,
-  ChartData,
-} from '@renderer/types/types'
+import { CHART_ACTION, ChartAction, ChartData } from '@renderer/types/types'
 
 interface ChartInfoContextType {
   chartActionRef: React.MutableRefObject<ChartAction>
@@ -14,7 +9,6 @@ interface ChartInfoContextType {
   chartDataRef: React.MutableRefObject<ChartData>
   chartActionCounterRef: React.MutableRefObject<number>
   chartCompareCounterRef: React.MutableRefObject<number>
-  chartCheckpointsRef: React.MutableRefObject<ChartCheckpoint[]>
   sortVariablesRef: React.MutableRefObject<object>
 }
 
@@ -35,7 +29,6 @@ export function ChartInfoProvider({ children }: ChartInfoProviderProps) {
   const chartDataRef = useRef<ChartData>(defaultChartDataRef.current)
   const chartActionCounterRef = useRef<number>(0)
   const chartCompareCounterRef = useRef<number>(0)
-  const chartCheckpointsRef = useRef<ChartCheckpoint[]>([])
   const sortVariablesRef = useRef<object>({})
 
   const value: ChartInfoContextType = {
@@ -45,7 +38,6 @@ export function ChartInfoProvider({ children }: ChartInfoProviderProps) {
     chartDataRef,
     chartActionCounterRef,
     chartCompareCounterRef,
-    chartCheckpointsRef,
     sortVariablesRef,
   }
 
