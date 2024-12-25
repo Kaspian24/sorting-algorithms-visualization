@@ -1,5 +1,6 @@
 import { MutableRefObject } from 'react'
 import { useBubbleSort } from '@renderer/hooks/sorts/bubbleSort/useBubbleSort'
+import { useHeapSort } from '@renderer/hooks/sorts/heapSort/useHeapSort'
 import { useInsertionSort } from '@renderer/hooks/sorts/insertionSort/useInsertionSort'
 import { useMergeSort } from '@renderer/hooks/sorts/mergeSort/useMergeSort'
 import { useQuickSort } from '@renderer/hooks/sorts/quickSort/useQuickSort'
@@ -28,16 +29,17 @@ export interface UseSort {
 
 export const SORTING_ALGORITHM = {
   SELECTION_SORT: () => useSelectionSort(),
-  MERGE_SORT_TOP_BOTTOM: () => useMergeSort(),
-  MERGE_SORT_BOTTOM_UP: () => useMergeSort(1),
-  INSERTION_SORT: () => useInsertionSort(),
   BUBBLE_SORT: () => useBubbleSort(),
+  INSERTION_SORT: () => useInsertionSort(),
   SHELL_SORT: () => useShellSort(),
   SHELL_SORT_HIBBARD: () => useShellSort(1),
+  MERGE_SORT_TOP_BOTTOM: () => useMergeSort(),
+  MERGE_SORT_BOTTOM_UP: () => useMergeSort(1),
   QUICK_SORT_LOMUTO_LAST_AS_PIVOT: () => useQuickSort(),
   QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT: () => useQuickSort(1),
   QUICK_SORT_HOARE_FIRST_AS_PIVOT: () => useQuickSort(2),
   QUICK_SORT_HOARE_MIDDLE_AS_PIVOT: () => useQuickSort(3),
+  HEAP_SORT: () => useHeapSort(),
 } as const
 
 export type SortingAlgorithm =

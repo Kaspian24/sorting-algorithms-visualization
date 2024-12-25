@@ -21,10 +21,10 @@ export interface QuickSortVariant extends SortingAlgorithmVariant {
 export const variants: QuickSortVariant[] = [
   {
     info: {
-      best: 'nlogn',
-      average: 'nlogn',
-      worst: 'n^2',
-      memory: 'logn',
+      best: 'O(n log n)',
+      average: 'O(n log n)',
+      worst: 'O(n^(2))',
+      memory: 'O(log n)',
       stable: false,
     },
     variables: {
@@ -34,10 +34,10 @@ export const variants: QuickSortVariant[] = [
   },
   {
     info: {
-      best: 'nlogn',
-      average: 'nlogn',
-      worst: 'n^2',
-      memory: 'logn',
+      best: 'O(n log n)',
+      average: 'O(n log n)',
+      worst: 'O(n^(2))',
+      memory: 'O(log n)',
       stable: false,
     },
     variables: {
@@ -47,10 +47,10 @@ export const variants: QuickSortVariant[] = [
   },
   {
     info: {
-      best: 'n',
-      average: 'nlogn',
-      worst: 'n^2',
-      memory: 'logn',
+      best: 'O(n)',
+      average: 'O(n log n)',
+      worst: 'O(n^(2))',
+      memory: 'O(log n)',
       stable: false,
     },
     variables: {
@@ -60,10 +60,10 @@ export const variants: QuickSortVariant[] = [
   },
   {
     info: {
-      best: 'n',
-      average: 'nlogn',
-      worst: 'n^2',
-      memory: 'logn',
+      best: 'O(n)',
+      average: 'O(n log n)',
+      worst: 'O(n^(2))',
+      memory: 'O(log n)',
       stable: false,
     },
     variables: {

@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { Checkbox } from '@renderer/components/ui/Checkbox'
 import { Label } from '@renderer/components/ui/Label'
@@ -8,7 +9,6 @@ import {
   DRAG_ITEM_TYPE,
   SORTING_ALGORITHM,
 } from '@renderer/types/types'
-import constantToTitleCase from '@renderer/utils/constantToTitleCase'
 import { GripVertical } from 'lucide-react'
 
 export interface AlgorithmsVisibilityButtonItemProps {
@@ -28,6 +28,7 @@ export default function AlgorithmsVisibilityButtonItem({
     algorithm,
     DRAG_CONTAINER_LAYOUT.HANDLE,
   )
+  const { t } = useTranslation('AlgorithmsNames')
   const id = useId()
 
   return (
@@ -50,7 +51,7 @@ export default function AlgorithmsVisibilityButtonItem({
           id={id}
         />
         <Label className="text-lg" htmlFor={id}>
-          {constantToTitleCase(algorithm)}
+          {t(algorithm)}
         </Label>
       </div>
       <div ref={ref}>

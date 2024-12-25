@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import ChartCardVisualization from '@renderer/components/ChartCard/ChartCardVisualization'
 import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
@@ -13,25 +14,15 @@ import {
   ContextMenuTrigger,
 } from '@renderer/components/ui/ContextMenu'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
-import {
-  DRAG_ITEM_TYPE,
-  SORTING_ALGORITHM,
-  SortingAlgorithm,
-} from '@renderer/types/types'
-import constantToTitleCase from '@renderer/utils/constantToTitleCase'
+import { DRAG_ITEM_TYPE, SORTING_ALGORITHM } from '@renderer/types/types'
 import { X } from 'lucide-react'
 
 export interface ChartCardProps {
   algorithm: keyof typeof SORTING_ALGORITHM
-  sortingAlgorithm: SortingAlgorithm
   flippedProps: object
 }
 
-function ChartCard({
-  algorithm,
-  sortingAlgorithm,
-  flippedProps,
-}: ChartCardProps) {
+function ChartCard({ algorithm, flippedProps }: ChartCardProps) {
   const {
     setAlgorithmsVisibility,
     moveAlgorithmPositionLeft,
@@ -41,12 +32,13 @@ function ChartCard({
     DRAG_ITEM_TYPE.CHART_CARD,
     algorithm,
   )
+  const { t } = useTranslation('AlgorithmsNames')
 
   const [showInfo, setShowInfo] = useState(false)
 
   return (
     <Card
-      className={`min-w-137.5 flex min-h-64 flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      className={`flex min-h-64 min-w-137.5 flex-col ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       ref={ref}
       data-handler-id={handlerId}
       {...flippedProps}
@@ -56,7 +48,7 @@ function ChartCard({
           <CardHeader className="flex flex-row justify-between space-y-0 p-0 text-center">
             <div className="flex-1" />
             <div className="py-6">
-              <CardTitle>{constantToTitleCase(algorithm)}</CardTitle>
+              <CardTitle>{t(algorithm)}</CardTitle>
             </div>
             <div className="flex flex-1 justify-end gap-x-2 pr-1 pt-1">
               <Button
@@ -78,7 +70,9 @@ function ChartCard({
             </div>
           </CardHeader>
           <ChartCardVisualization
-            sortingAlgorithm={sortingAlgorithm}
+            useSort={
+              SORTING_ALGORITHM[algorithm as keyof typeof SORTING_ALGORITHM]
+            }
             showInfo={showInfo}
           />
         </ContextMenuTrigger>
@@ -107,18 +101,10 @@ function ChartCard({
   )
 }
 
-function ChartCardWrapper({
-  algorithm,
-  sortingAlgorithm,
-  flippedProps,
-}: ChartCardProps) {
+function ChartCardWrapper({ algorithm, flippedProps }: ChartCardProps) {
   return (
     <ChartInfoProvider>
-      <ChartCard
-        algorithm={algorithm}
-        sortingAlgorithm={sortingAlgorithm}
-        flippedProps={flippedProps}
-      />
+      <ChartCard algorithm={algorithm} flippedProps={flippedProps} />
     </ChartInfoProvider>
   )
 }

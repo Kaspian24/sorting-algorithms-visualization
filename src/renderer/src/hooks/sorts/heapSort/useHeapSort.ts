@@ -1,25 +1,25 @@
 import { useCallback, useRef } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
-import { selectionSort } from '@renderer/hooks/sorts/selectionSort/sortingFunction'
+import { heapSort } from '@renderer/hooks/sorts/heapSort/sortingFunction'
 import { SortingAlgorithmInfo, UseSort } from '@renderer/types/types'
 
 const info: SortingAlgorithmInfo = {
-  best: 'O(n^(2))',
-  average: 'O(n^(2))',
-  worst: 'O(n^(2))',
+  best: 'O(n log n)',
+  average: 'O(n log n)',
+  worst: 'O(n log n)',
   memory: 'O(1)',
   stable: false,
 }
 
-export const useSelectionSort: UseSort = () => {
+export const useHeapSort: UseSort = () => {
   const { chartDataRef, chartCompareCounterRef } = useChartInfo()
 
   const generatorRef = useRef<Generator<number, void, unknown>>(
-    selectionSort(chartDataRef, chartCompareCounterRef),
+    heapSort(chartDataRef, chartCompareCounterRef),
   )
 
   const reset = useCallback(() => {
-    generatorRef.current = selectionSort(chartDataRef, chartCompareCounterRef)
+    generatorRef.current = heapSort(chartDataRef, chartCompareCounterRef)
   }, [chartCompareCounterRef, chartDataRef])
 
   return {

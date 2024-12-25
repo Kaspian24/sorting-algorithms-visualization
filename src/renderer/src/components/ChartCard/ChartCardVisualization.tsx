@@ -3,15 +3,15 @@ import ChartCardFooter from '@renderer/components/ChartCard/ChartCardFooter'
 import ChartCardInfo from '@renderer/components/ChartCard/ChartCardInfo'
 import { CardContent } from '@renderer/components/ui/Card'
 import useChartCard from '@renderer/hooks/useChartCard'
-import { SortingAlgorithm } from '@renderer/types/types'
+import { UseSort } from '@renderer/types/types'
 
 export interface ChartCardVisualizationProps {
-  sortingAlgorithm: SortingAlgorithm
+  useSort: UseSort
   showInfo: boolean
 }
 
 export default function ChartCardVisualization({
-  sortingAlgorithm,
+  useSort,
   showInfo,
 }: ChartCardVisualizationProps) {
   const {
@@ -21,7 +21,7 @@ export default function ChartCardVisualization({
     maxChartActionCounterState,
     maxChartCompareCounterState,
     info,
-  } = useChartCard(sortingAlgorithm)
+  } = useChartCard(useSort)
 
   return (
     <>
