@@ -8,22 +8,22 @@ import {
 } from 'react'
 import {
   initialDefaultChartData,
-  numbersToChartDataFieldArray,
+  numbersToChartData,
 } from '@renderer/components/providers/GlobalChartsInfoProvider/utils'
-import { ChartDataField, ChartInfoData } from '@renderer/types/types'
+import { DURATION_MS } from '@renderer/constants/constants'
+import { ChartData, ChartInfoData } from '@renderer/types/types'
 
 interface GlobalChartsInfoContextType {
-  defaultChartDataRef: React.MutableRefObject<ChartDataField[]>
+  defaultChartDataRef: React.MutableRefObject<ChartData>
   globalChartsInfoDataRef: React.MutableRefObject<
     React.MutableRefObject<ChartInfoData>[]
   >
   globalChartActionCounterRef: React.MutableRefObject<number>
   globalMaxChartActionCounterRef: React.MutableRefObject<number>
-  checkpointStepRef: React.MutableRefObject<number>
   durationRef: React.MutableRefObject<number>
   directionForwardRef: React.MutableRefObject<boolean>
 
-  defaultChartDataState: ChartDataField[]
+  defaultChartDataState: ChartData
   setDefaultChartData: (numbers: number[]) => void
 
   globalMaxChartActionCounterState: number
@@ -45,19 +45,18 @@ interface GlobalChartsInfoProviderProps {
 export function GlobalChartsInfoProvider({
   children,
 }: GlobalChartsInfoProviderProps) {
-  const defaultChartDataRef = useRef<ChartDataField[]>(initialDefaultChartData)
+  const defaultChartDataRef = useRef<ChartData>(initialDefaultChartData)
   const globalChartsInfoDataRef = useRef<
     React.MutableRefObject<ChartInfoData>[]
   >([])
   const globalChartActionCounterRef = useRef<number>(0)
   const globalMaxChartActionCounterRef = useRef<number>(0)
-  const checkpointStepRef = useRef<number>(250)
-  const durationRef = useRef<number>(250)
+  const durationRef = useRef<number>(DURATION_MS)
   const directionForwardRef = useRef<boolean>(true)
 
-  const [defaultChartDataState, setDefaultChartDataState] = useState<
-    ChartDataField[]
-  >(initialDefaultChartData)
+  const [defaultChartDataState, setDefaultChartDataState] = useState<ChartData>(
+    initialDefaultChartData,
+  )
 
   const [
     globalMaxChartActionCounterState,
@@ -65,7 +64,7 @@ export function GlobalChartsInfoProvider({
   ] = useState<number>(0)
 
   const setDefaultChartData = useCallback((numbers: number[]) => {
-    defaultChartDataRef.current = numbersToChartDataFieldArray(numbers)
+    defaultChartDataRef.current = numbersToChartData(numbers)
     setDefaultChartDataState(defaultChartDataRef.current)
   }, [])
 
@@ -114,7 +113,6 @@ export function GlobalChartsInfoProvider({
     globalChartsInfoDataRef,
     globalChartActionCounterRef,
     globalMaxChartActionCounterRef,
-    checkpointStepRef,
     durationRef,
     directionForwardRef,
 

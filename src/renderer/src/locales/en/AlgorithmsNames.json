@@ -1,0 +1,15 @@
+{
+  "SELECTION_SORT": "Selection Sort",
+  "BUBBLE_SORT": "Bubble Sort",
+  "INSERTION_SORT": "Insertion Sort",
+  "SHELL_SORT": "Shell Sort",
+  "SHELL_SORT_HIBBARD": "Shell Sort (Hibbard's gap)",
+  "SHELL_SORT_SEDGEWICK": "Shell Sort (Sedgewick's gap)",
+  "MERGE_SORT_TOP_BOTTOM": "Merge Sort (From top to bottom)",
+  "MERGE_SORT_BOTTOM_UP": "Merge Sort (From bottom to top)",
+  "HEAP_SORT": "Heap Sort",
+  "QUICK_SORT_LOMUTO_LAST_AS_PIVOT": "Quick Sort (Lomuto) (Last element)",
+  "QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT": "Quick Sort (Lomuto) (Median)",
+  "QUICK_SORT_HOARE_FIRST_AS_PIVOT": "Quick Sort (Hoare) (First element)",
+  "QUICK_SORT_HOARE_MIDDLE_AS_PIVOT": "Quick Sort (Hoare) (Middle element)"
+}

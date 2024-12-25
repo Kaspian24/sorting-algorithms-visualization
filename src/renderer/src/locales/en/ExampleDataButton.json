@@ -3,7 +3,7 @@
   "title": "Example data",
   "description": "Choose example data.",
   "unsorted": "Unsorted",
-  "partialySorted": "Partially Sorted",
+  "partiallySorted": "Partially Sorted",
   "sorted": "Sorted",
   "reversed": "Reversed",
   "duplicates": "Multiple duplicates",

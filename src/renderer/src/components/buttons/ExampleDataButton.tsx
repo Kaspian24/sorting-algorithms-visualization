@@ -11,17 +11,15 @@ import {
 } from '@renderer/components/ui/Dialog'
 import { ScrollArea } from '@renderer/components/ui/ScrollArea'
 
-const data = [
-  {
-    count: 10,
+export const exampleData = {
+  10: {
     unsorted: [4, 8, 10, 7, 2, 3, 1, 9, 5, 6],
     partiallySorted: [1, 2, 3, 5, 4, 6, 7, 9, 8, 10],
     sorted: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     reversed: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
     duplicates: [8, 10, 3, 8, 4, 4, 3, 10, 3, 8],
   },
-  {
-    count: 30,
+  30: {
     unsorted: [
       14, 28, 2, 22, 5, 17, 23, 8, 4, 12, 29, 7, 20, 10, 15, 26, 1, 9, 3, 18,
       25, 11, 16, 30, 6, 19, 21, 24, 13, 27,
@@ -43,8 +41,7 @@ const data = [
       8, 4, 4, 11, 15, 4, 20, 11, 4, 4, 25,
     ],
   },
-  {
-    count: 100,
+  100: {
     unsorted: [
       45, 76, 34, 89, 23, 12, 56, 91, 18, 64, 7, 37, 99, 29, 3, 81, 27, 88, 42,
       73, 94, 14, 22, 15, 69, 53, 11, 49, 38, 2, 67, 61, 86, 77, 19, 57, 85, 25,
@@ -86,7 +83,7 @@ const data = [
       60, 50, 40, 40, 10, 20, 30, 60, 60, 50,
     ],
   },
-]
+}
 
 export default function ExampleDataButton() {
   const { setDefaultChartData } = useGlobalChartsInfo()
@@ -104,55 +101,22 @@ export default function ExampleDataButton() {
         </DialogHeader>
         <ScrollArea className="h-0 flex-auto">
           <div className="flex flex-col gap-y-2 pl-1 pr-5">
-            {data.map(
-              (
-                {
-                  count,
-                  unsorted,
-                  partiallySorted,
-                  sorted,
-                  reversed,
-                  duplicates,
-                },
-                index,
-              ) => (
-                <div key={index} className="flex flex-col space-y-2">
-                  <p>{t('count', { count: count })}</p>
-                  <div className="flex flex-wrap gap-2">
+            {Object.entries(exampleData).map(([count, variants], index) => (
+              <div key={index} className="flex flex-col space-y-2">
+                <p>{t('count', { count: Number(count) })}</p>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(variants).map(([key, value]) => (
                     <Button
+                      key={key}
                       variant="outline"
-                      onClick={() => setDefaultChartData(unsorted)}
+                      onClick={() => setDefaultChartData(value)}
                     >
-                      {t('unsorted')}
+                      {t(key)}
                     </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setDefaultChartData(partiallySorted)}
-                    >
-                      {t('partialySorted')}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setDefaultChartData(sorted)}
-                    >
-                      {t('sorted')}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setDefaultChartData(reversed)}
-                    >
-                      {t('reversed')}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setDefaultChartData(duplicates)}
-                    >
-                      {t('duplicates')}
-                    </Button>
-                  </div>
+                  ))}
                 </div>
-              ),
-            )}
+              </div>
+            ))}
           </div>
         </ScrollArea>
       </DialogContent>

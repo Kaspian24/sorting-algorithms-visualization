@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { ContextMenuCheckboxItem } from '@renderer/components/ui/ContextMenu'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
@@ -6,7 +7,6 @@ import {
   DRAG_ITEM_TYPE,
   SORTING_ALGORITHM,
 } from '@renderer/types/types'
-import constantToTitleCase from '@renderer/utils/constantToTitleCase'
 
 export interface AlgorithmContextMenuCheckboxItemProps {
   algorithm: keyof typeof SORTING_ALGORITHM
@@ -25,6 +25,7 @@ export default function AlgorithmContextMenuCheckboxItem({
     algorithm,
     DRAG_CONTAINER_LAYOUT.VERTICAL,
   )
+  const { t } = useTranslation('AlgorithmsNames')
 
   return (
     <ContextMenuCheckboxItem
@@ -41,7 +42,7 @@ export default function AlgorithmContextMenuCheckboxItem({
       }}
       {...flippedProps}
     >
-      {constantToTitleCase(algorithm)}
+      {t(algorithm)}
     </ContextMenuCheckboxItem>
   )
 }

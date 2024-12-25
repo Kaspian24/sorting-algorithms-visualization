@@ -1,64 +1,111 @@
 import { useEffect, useRef } from 'react'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
-import { ChartDataField } from '@renderer/types/types'
+import { CHART_ACTION, ChartData, ChartDataField } from '@renderer/types/types'
 import * as d3 from 'd3'
 
 export interface ChartBarChartProps {
-  chartDataState: ChartDataField[]
+  chartDataState: ChartData
 }
 
 export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
-  const { defaultChartDataState } = useGlobalChartsInfo()
+  const { defaultChartDataState, directionForwardRef, durationRef } =
+    useGlobalChartsInfo()
 
   const svgRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
+    const { fields, visualization } = chartDataState
+    const { numbers, action } = visualization
+
+    const firstNumber = numbers?.[0]
+    const secondNumber = numbers?.[1]
+    const firstKey = fields?.[firstNumber]?.key
+    const secondKey = fields?.[secondNumber]?.key
+
+    const duration = durationRef.current
+    const isForward = directionForwardRef.current
+
     const svg = d3.select(svgRef.current)
     const width = 600
     const height = 400
-    const barWidth = width / chartDataState.length
+    const barWidth = width / chartDataState.fields.length
+
+    const colorMapping = (key: number) => {
+      if (key === firstKey) {
+        return action === CHART_ACTION.ANIMATE_SWAP ||
+          action === CHART_ACTION.ANIMATE_REPLACE
+          ? 'hsl(var(--chart-swap))'
+          : 'hsl(var(--chart-compare-first))'
+      }
+      if (key === secondKey) {
+        return action === CHART_ACTION.ANIMATE_SWAP
+          ? 'hsl(var(--chart-swap))'
+          : action === CHART_ACTION.ANIMATE_REPLACE
+            ? 'hsl(var(--chart-default))'
+            : 'hsl(var(--chart-compare-second))'
+      }
+      return action === CHART_ACTION.FINISHED
+        ? 'hsl(var(--chart-finish))'
+        : 'hsl(var(--chart-default))'
+    }
+
+    const transformMapping = (key: number) => {
+      if (action === CHART_ACTION.ANIMATE_SWAP) {
+        if (key === firstKey)
+          return `translateX(${(Math.abs(firstKey - secondKey) / fields.length) * 100}%)`
+        if (key === secondKey)
+          return `translateX(${(-Math.abs(firstKey - secondKey) / fields.length) * 100}%)`
+      } else if (action === CHART_ACTION.ANIMATE_REPLACE && key === firstKey) {
+        return `scaleY(${1 / (fields[firstNumber!].number / secondNumber)})`
+      }
+      return 'translateX(0%) scaleY(1)'
+    }
+
+    const transitionProperty = (key: number) => {
+      if (
+        ((key === firstKey && action === CHART_ACTION.ANIMATE_REPLACE) ||
+          ((key === firstKey || key === secondKey) &&
+            action === CHART_ACTION.ANIMATE_SWAP)) &&
+        isForward
+      ) {
+        return 'transform'
+      }
+      return 'none'
+    }
 
     const xScale = d3
       .scaleBand()
-      .domain(chartDataState.map((d) => d.key))
+      .domain(chartDataState.fields.map((d) => d.key.toString()))
       .range([0, width])
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(defaultChartDataState, (d) => d.number)!])
+      .domain([0, d3.max(defaultChartDataState.fields, (d) => d.number)!])
       .range([height, 0])
 
     const bars = svg
       .selectAll<SVGRectElement, ChartDataField>('.bar')
-      .data(chartDataState, (d: ChartDataField) => d.key)
+      .data(chartDataState.fields, (d: ChartDataField) => d.key)
+
+    bars.enter().append('rect').attr('class', 'bar')
 
     bars
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', (d) => xScale(d.key)!)
+      .merge(bars)
+      .attr('x', (d) => xScale(d.key.toString())!)
       .attr('y', (d) => yScale(d.number))
       .attr('width', barWidth - 2)
       .attr('height', (d) => height - yScale(d.number))
-      .attr('fill', (d) => d.fill)
-      .style('transition-property', (d) => d.style.transitionProperty)
-      .style('transition-duration', (d) => d.style.transitionDuration)
+      .attr('fill', (d) => colorMapping(d.key))
+      .style('transition-property', (d) => transitionProperty(d.key))
+      .style('transition-duration', `${duration}ms`)
       .style('transform-origin', 'bottom')
-      .style('transform', (d) => d.style.transform)
-
-    bars
-      .attr('x', (d) => xScale(d.key)!)
-      .attr('y', (d) => yScale(d.number))
-      .attr('width', barWidth - 2)
-      .attr('height', (d) => height - yScale(d.number))
-      .attr('fill', (d) => d.fill)
-      .style('transition-property', (d) => d.style.transitionProperty)
-      .style('transition-duration', (d) => d.style.transitionDuration)
-      .style('transform-origin', 'bottom')
-      .style('transform', (d) => d.style.transform)
+      .style('transform', (d) => transformMapping(d.key))
 
     bars.exit().remove()
-  }, [chartDataState, defaultChartDataState])
+  }, [chartDataState, defaultChartDataState, directionForwardRef, durationRef])
 
   return (
     <div className="h-0 flex-auto">

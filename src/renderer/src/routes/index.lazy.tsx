@@ -42,11 +42,6 @@ function Index() {
                   {(flippedProps) => (
                     <ChartCard
                       algorithm={algorithm as keyof typeof SORTING_ALGORITHM}
-                      sortingAlgorithm={
-                        SORTING_ALGORITHM[
-                          algorithm as keyof typeof SORTING_ALGORITHM
-                        ]
-                      }
                       flippedProps={flippedProps}
                     />
                   )}

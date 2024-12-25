@@ -1,20 +1,14 @@
 import { createContext, ReactNode, useContext, useRef } from 'react'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
-import {
-  CHART_ACTION,
-  ChartAction,
-  ChartCheckpoint,
-  ChartDataField,
-} from '@renderer/types/types'
+import { CHART_ACTION, ChartAction, ChartData } from '@renderer/types/types'
 
 interface ChartInfoContextType {
   chartActionRef: React.MutableRefObject<ChartAction>
   maxChartActionCounterRef: React.MutableRefObject<number>
   maxChartCompareCounterRef: React.MutableRefObject<number>
-  chartDataRef: React.MutableRefObject<ChartDataField[]>
+  chartDataRef: React.MutableRefObject<ChartData>
   chartActionCounterRef: React.MutableRefObject<number>
   chartCompareCounterRef: React.MutableRefObject<number>
-  chartCheckpointsRef: React.MutableRefObject<ChartCheckpoint[]>
   sortVariablesRef: React.MutableRefObject<object>
 }
 
@@ -32,10 +26,9 @@ export function ChartInfoProvider({ children }: ChartInfoProviderProps) {
   const chartActionRef = useRef<ChartAction>(CHART_ACTION.COMPARE)
   const maxChartActionCounterRef = useRef<number>(0)
   const maxChartCompareCounterRef = useRef<number>(0)
-  const chartDataRef = useRef<ChartDataField[]>(defaultChartDataRef.current)
+  const chartDataRef = useRef<ChartData>(defaultChartDataRef.current)
   const chartActionCounterRef = useRef<number>(0)
   const chartCompareCounterRef = useRef<number>(0)
-  const chartCheckpointsRef = useRef<ChartCheckpoint[]>([])
   const sortVariablesRef = useRef<object>({})
 
   const value: ChartInfoContextType = {
@@ -45,7 +38,6 @@ export function ChartInfoProvider({ children }: ChartInfoProviderProps) {
     chartDataRef,
     chartActionCounterRef,
     chartCompareCounterRef,
-    chartCheckpointsRef,
     sortVariablesRef,
   }
 

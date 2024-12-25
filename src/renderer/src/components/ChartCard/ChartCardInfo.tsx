@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@renderer/components/ui/Table'
 import { SortingAlgorithmInfo } from '@renderer/types/types'
+import { formatComplexity } from '@renderer/utils/formatComplexity'
 
 export interface ChartCardInfoProps {
   info: SortingAlgorithmInfo
@@ -23,7 +24,7 @@ export default function ChartCardInfo({
       <div className="w-125">
         <Table className="w-125">
           <TableHeader>
-            <TableRow>
+            <TableRow className="hover:bg-inherit">
               <TableHead className="text-center">{t('best')}</TableHead>
               <TableHead className="text-center">{t('average')}</TableHead>
               <TableHead className="text-center">{t('worst')}</TableHead>
@@ -32,11 +33,19 @@ export default function ChartCardInfo({
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="text-center">{best}</TableCell>
-              <TableCell className="text-center">{average}</TableCell>
-              <TableCell className="text-center">{worst}</TableCell>
-              <TableCell className="text-center">{memory}</TableCell>
+            <TableRow className="hover:bg-inherit">
+              <TableCell className="text-center">
+                {formatComplexity(best)}
+              </TableCell>
+              <TableCell className="text-center">
+                {formatComplexity(average)}
+              </TableCell>
+              <TableCell className="text-center">
+                {formatComplexity(worst)}
+              </TableCell>
+              <TableCell className="text-center">
+                {formatComplexity(memory)}
+              </TableCell>
               <TableCell className="text-center">
                 {stable ? t('stable') : t('unstable')}
               </TableCell>
