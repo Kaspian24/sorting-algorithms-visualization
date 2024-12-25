@@ -10,6 +10,7 @@ import {
   initialDefaultChartData,
   numbersToChartData,
 } from '@renderer/components/providers/GlobalChartsInfoProvider/utils'
+import { DURATION_MS } from '@renderer/constants/constants'
 import { ChartData, ChartInfoData } from '@renderer/types/types'
 
 interface GlobalChartsInfoContextType {
@@ -19,7 +20,6 @@ interface GlobalChartsInfoContextType {
   >
   globalChartActionCounterRef: React.MutableRefObject<number>
   globalMaxChartActionCounterRef: React.MutableRefObject<number>
-  checkpointStepRef: React.MutableRefObject<number>
   durationRef: React.MutableRefObject<number>
   directionForwardRef: React.MutableRefObject<boolean>
 
@@ -51,8 +51,7 @@ export function GlobalChartsInfoProvider({
   >([])
   const globalChartActionCounterRef = useRef<number>(0)
   const globalMaxChartActionCounterRef = useRef<number>(0)
-  const checkpointStepRef = useRef<number>(250)
-  const durationRef = useRef<number>(250)
+  const durationRef = useRef<number>(DURATION_MS)
   const directionForwardRef = useRef<boolean>(true)
 
   const [defaultChartDataState, setDefaultChartDataState] = useState<ChartData>(
@@ -114,7 +113,6 @@ export function GlobalChartsInfoProvider({
     globalChartsInfoDataRef,
     globalChartActionCounterRef,
     globalMaxChartActionCounterRef,
-    checkpointStepRef,
     durationRef,
     directionForwardRef,
 

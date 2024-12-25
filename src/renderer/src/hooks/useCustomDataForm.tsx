@@ -2,6 +2,10 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
+import {
+  CUSTOM_DATA_FORM_HIGHEST_NUMBER,
+  CUSTOM_DATA_FORM_MAX_NUMBERS,
+} from '@renderer/constants/constants'
 import { z } from 'zod'
 
 export default function useCustomDataForm() {
@@ -19,14 +23,18 @@ export default function useCustomDataForm() {
       .number()
       .int({ message: t('integer') })
       .positive({ message: t('positive') })
-      .max(100, { message: t('highest') }),
+      .max(CUSTOM_DATA_FORM_HIGHEST_NUMBER, {
+        message: t('highest', { number: CUSTOM_DATA_FORM_HIGHEST_NUMBER }),
+      }),
   })
 
   const CustomDataSchema = z.object({
     numbers: z
       .array(numberObj)
       .min(5, { message: t('min') })
-      .max(100, { message: t('max') }),
+      .max(CUSTOM_DATA_FORM_MAX_NUMBERS, {
+        message: t('max', { number: CUSTOM_DATA_FORM_MAX_NUMBERS }),
+      }),
   })
 
   const form = useForm<z.infer<typeof CustomDataSchema>>({

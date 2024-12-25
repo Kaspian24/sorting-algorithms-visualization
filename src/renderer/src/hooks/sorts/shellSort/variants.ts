@@ -1,5 +1,6 @@
 import {
   gapHibbard,
+  gapSedgewick,
   gapShell,
 } from '@renderer/hooks/sorts/shellSort/gapFunctions'
 import { SortingAlgorithmVariant } from '@renderer/types/types'
@@ -33,6 +34,18 @@ export const variants: ShellSortVariant[] = [
     },
     variables: {
       gapFunction: gapHibbard,
+    },
+  },
+  {
+    info: {
+      best: 'O(n log n)',
+      average: 'O(n^(4/3))',
+      worst: 'O(n^(4/3))',
+      memory: 'O(1)',
+      stable: false,
+    },
+    variables: {
+      gapFunction: gapSedgewick,
     },
   },
 ]

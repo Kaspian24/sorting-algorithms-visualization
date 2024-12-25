@@ -1,0 +1,3 @@
+export const CUSTOM_DATA_FORM_HIGHEST_NUMBER = 100
+export const CUSTOM_DATA_FORM_MAX_NUMBERS = 100
+export const DURATION_MS = 250

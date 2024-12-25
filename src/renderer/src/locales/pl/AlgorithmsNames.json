@@ -4,11 +4,12 @@
   "INSERTION_SORT": "Sortowanie Przez Wstawianie",
   "SHELL_SORT": "Sortowanie Shella",
   "SHELL_SORT_HIBBARD": "Sortowanie Shella (Odstępy Hibbarda)",
-  "MERGE_SORT_TOP_BOTTOM": "Sortowanie przez wstawianie (Od góry)",
-  "MERGE_SORT_BOTTOM_UP": "Sortowanie Przez Wstawianie (Od dołu)",
-  "QUICK_SORT_LOMUTO_LAST_AS_PIVOT": "Sortowanie szybkie (Lomuto) (Ostatni element)",
-  "QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT": "Sortowanie szybkie (Lomuto) (Mediana)",
-  "QUICK_SORT_HOARE_FIRST_AS_PIVOT": "Sortowanie szybkie (Hoare) (Pierwszy element)",
-  "QUICK_SORT_HOARE_MIDDLE_AS_PIVOT": "Sortowanie szybkie (Hoare) (Środkowy element)",
-  "HEAP_SORT": "Sortowanie Przez Kopcowanie"
+  "SHELL_SORT_SEDGEWICK": "Sortowanie Shella (Odstępy Sedgewicka)",
+  "MERGE_SORT_TOP_BOTTOM": "Sortowanie Przez Scalanie (Od góry)",
+  "MERGE_SORT_BOTTOM_UP": "Sortowanie Przez Scalanie (Od dołu)",
+  "HEAP_SORT": "Sortowanie Przez Kopcowanie",
+  "QUICK_SORT_LOMUTO_LAST_AS_PIVOT": "Sortowanie Szybkie (Lomuto) (Ostatni element)",
+  "QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT": "Sortowanie Szybkie (Lomuto) (Mediana)",
+  "QUICK_SORT_HOARE_FIRST_AS_PIVOT": "Sortowanie Szybkie (Hoare) (Pierwszy element)",
+  "QUICK_SORT_HOARE_MIDDLE_AS_PIVOT": "Sortowanie Szybkie (Hoare) (Środkowy element)"
 }
