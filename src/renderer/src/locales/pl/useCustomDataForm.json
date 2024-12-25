@@ -1,7 +1,7 @@
 {
   "integer": "Liczba musi być liczbą całkowitą",
   "positive": "Liczba musi być dodatnia",
-  "highest": "Liczba nie może być większa niż 100",
+  "highest": "Liczba nie może być większa niż {{number}}",
   "min": "Musi być co najmniej 5 liczb",
-  "max": "Maksymalnie może być 100 liczb"
+  "max": "Maksymalnie może być {{number}} liczb"
 }
