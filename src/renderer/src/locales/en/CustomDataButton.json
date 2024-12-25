@@ -1,5 +1,6 @@
 {
   "button": "Custom Data",
   "title": "Custom data",
-  "description": "Set custom data."
+  "description": "Set custom data.",
+  "save": "Save changes"
 }

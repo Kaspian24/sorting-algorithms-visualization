@@ -19,10 +19,10 @@ export interface MergeSortVariant extends SortingAlgorithmVariant {
 export const variants: MergeSortVariant[] = [
   {
     info: {
-      best: 'nlogn',
-      average: 'nlogn',
-      worst: 'nlogn',
-      memory: 'n',
+      best: 'O(n log n)',
+      average: '(n log n)',
+      worst: 'O(n log n)',
+      memory: 'O(n)',
       stable: true,
     },
     variables: {
@@ -31,10 +31,10 @@ export const variants: MergeSortVariant[] = [
   },
   {
     info: {
-      best: 'nlogn',
-      average: 'nlogn',
-      worst: 'nlogn',
-      memory: 'n',
+      best: 'O(n log n)',
+      average: 'O(n log n)',
+      worst: 'O(n log n)',
+      memory: 'O(n)',
       stable: true,
     },
     variables: {

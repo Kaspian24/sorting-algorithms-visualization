@@ -13,10 +13,10 @@ export interface ShellSortVariant extends SortingAlgorithmVariant {
 export const variants: ShellSortVariant[] = [
   {
     info: {
-      best: 'nlogn',
-      average: 'n^4/3',
-      worst: 'n^2',
-      memory: '1',
+      best: 'O(n log n)',
+      average: 'O(n^(4/3))',
+      worst: 'O(n^(2))',
+      memory: 'O(1)',
       stable: false,
     },
     variables: {
@@ -25,10 +25,10 @@ export const variants: ShellSortVariant[] = [
   },
   {
     info: {
-      best: 'nlogn',
-      average: 'n^4/3',
-      worst: 'n^3/2',
-      memory: '1',
+      best: 'O(n log n)',
+      average: 'O(n^(4/3))',
+      worst: 'O(n^(3/2))',
+      memory: 'O(1)',
       stable: false,
     },
     variables: {

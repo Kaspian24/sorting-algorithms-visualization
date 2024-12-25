@@ -111,7 +111,7 @@ export default function CustomDataButton() {
                 )}
               />
               <Button type="submit" variant="outline">
-                Save changes
+                {t('save')}
               </Button>
             </DialogFooter>
           </form>

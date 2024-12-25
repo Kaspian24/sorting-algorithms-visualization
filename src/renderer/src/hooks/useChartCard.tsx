@@ -5,11 +5,11 @@ import {
   CHART_ACTION,
   ChartData,
   ChartInfoData,
-  SortingAlgorithm,
+  UseSort,
 } from '@renderer/types/types'
 import { visualizeChartDataFields } from '@renderer/utils/modifyChartData'
 
-export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
+export default function useChartCard(useSort: UseSort) {
   const {
     addChartInfoData,
     removeChartInfoData,
@@ -18,7 +18,7 @@ export default function useChartCard(sortingAlgorithm: SortingAlgorithm) {
     defaultChartDataState,
     directionForwardRef,
   } = useGlobalChartsInfo()
-  const { sortFunctionGeneratorRef, reset, info } = sortingAlgorithm()
+  const { sortFunctionGeneratorRef, reset, info } = useSort()
   const {
     chartDataRef,
     chartActionCounterRef,

@@ -4,10 +4,10 @@ import { insertionSort } from '@renderer/hooks/sorts/insertionSort/sortingFuncti
 import { SortingAlgorithmInfo, UseSort } from '@renderer/types/types'
 
 const info: SortingAlgorithmInfo = {
-  best: 'n',
-  average: 'n^2',
-  worst: 'n^2',
-  memory: '1',
+  best: 'O(n)',
+  average: 'O(n^(2))',
+  worst: 'O(n^(2))',
+  memory: 'O(1)',
   stable: true,
 }
 
