@@ -57,4 +57,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm deploy:gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./out/renderer
