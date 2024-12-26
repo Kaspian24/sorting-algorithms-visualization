@@ -1,0 +1,44 @@
+const SELECTION_SORT = "Selection Sort";
+const BUBBLE_SORT = "Bubble Sort";
+const INSERTION_SORT = "Insertion Sort";
+const SHELL_SORT = "Shell Sort";
+const SHELL_SORT_HIBBARD = "Shell Sort (Hibbard's gap)";
+const SHELL_SORT_SEDGEWICK = "Shell Sort (Sedgewick's gap)";
+const MERGE_SORT_TOP_BOTTOM = "Merge Sort (From top to bottom)";
+const MERGE_SORT_BOTTOM_UP = "Merge Sort (From bottom to top)";
+const HEAP_SORT = "Heap Sort";
+const QUICK_SORT_LOMUTO_LAST_AS_PIVOT = "Quick Sort (Lomuto) (Last element)";
+const QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT = "Quick Sort (Lomuto) (Median)";
+const QUICK_SORT_HOARE_FIRST_AS_PIVOT = "Quick Sort (Hoare) (First element)";
+const QUICK_SORT_HOARE_MIDDLE_AS_PIVOT = "Quick Sort (Hoare) (Middle element)";
+const AlgorithmsNames = {
+  SELECTION_SORT,
+  BUBBLE_SORT,
+  INSERTION_SORT,
+  SHELL_SORT,
+  SHELL_SORT_HIBBARD,
+  SHELL_SORT_SEDGEWICK,
+  MERGE_SORT_TOP_BOTTOM,
+  MERGE_SORT_BOTTOM_UP,
+  HEAP_SORT,
+  QUICK_SORT_LOMUTO_LAST_AS_PIVOT,
+  QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT,
+  QUICK_SORT_HOARE_FIRST_AS_PIVOT,
+  QUICK_SORT_HOARE_MIDDLE_AS_PIVOT
+};
+export {
+  BUBBLE_SORT,
+  HEAP_SORT,
+  INSERTION_SORT,
+  MERGE_SORT_BOTTOM_UP,
+  MERGE_SORT_TOP_BOTTOM,
+  QUICK_SORT_HOARE_FIRST_AS_PIVOT,
+  QUICK_SORT_HOARE_MIDDLE_AS_PIVOT,
+  QUICK_SORT_LOMUTO_LAST_AS_PIVOT,
+  QUICK_SORT_LOMUTO_MEDIAN_OF_THREE_AS_PIVOT,
+  SELECTION_SORT,
+  SHELL_SORT,
+  SHELL_SORT_HIBBARD,
+  SHELL_SORT_SEDGEWICK,
+  AlgorithmsNames as default
+};
