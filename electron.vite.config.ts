@@ -16,6 +16,7 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src'),
       },
     },
+    base: '/sorting-algorithms-visualization/',
     plugins: [TanStackRouterVite(), react()],
   },
 })
