@@ -15,19 +15,19 @@ win:
   executableName: sorting-algorithms-visualization
   target:
     - portable
-  artifactName: ${name}-${version}-windows.${ext}
+  artifactName: ${name}-${version}.${ext}
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
   target:
     - dmg
-  artifactName: ${name}-${version}-mac.${ext}
+  artifactName: ${name}-${version}.${ext}
 linux:
   target:
     - appImage
   maintainer: Marcin
   category: Education
-  artifactName: ${name}-${version}-linux.${ext}
+  artifactName: ${name}-${version}.${ext}
 npmRebuild: false
 publish:
   provider: generic

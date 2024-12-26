@@ -1,10 +1,10 @@
 {
   "name": "sorting-algorithms-visualization",
-  "version": "v1.1.0-alpha",
-  "description": "An Electron application with React and TypeScript",
+  "version": "v1.1.1-alpha",
+  "description": "Sorting algorithms visualization",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "marcin.com",
+  "homepage": "https://github.com/Kaspian24/sorting-algorithms-visualization",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
@@ -19,7 +19,8 @@
     "build:win": "electron-vite build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
     "build:linux": "electron-vite build && electron-builder --linux",
-    "build:wml": "electron-vite build && electron-builder -wml"
+    "build:wml": "electron-vite build && electron-builder -wml",
+    "deploy:gh-pages": "gh-pages -d out/renderer"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
@@ -73,6 +74,7 @@
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "gh-pages": "^6.2.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
