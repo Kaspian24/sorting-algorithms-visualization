@@ -1,4 +1,4 @@
-name: Build/release Electron app
+name: Build/release sorting-algorithms-visualization
 
 on:
   push:
@@ -54,3 +54,7 @@ jobs:
             dist/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to GitHub Pages
+        if: matrix.os == 'ubuntu-latest'
+        run: pnpm deploy:gh-pages
