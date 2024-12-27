@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
+import {
+  getColorMappingFunction,
+  getTransformMappingFunction,
+  getTransitionPropertyMappingFunction,
+} from '@renderer/components/ChartCard/utils'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
-import { CHART_ACTION, ChartData } from '@renderer/types/types'
+import { ChartData } from '@renderer/types/types'
 
 export interface ChartBarChartProps {
   chartDataState: ChartData
@@ -21,79 +26,47 @@ export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
     const firstKey = fields?.[firstNumber]?.key
     const secondKey = fields?.[secondNumber]?.key
 
-    const duration = durationRef.current
-    const isForward = directionForwardRef.current
-
     const width = 600
     const height = 400
     const barWidth = width / chartDataState.fields.length
 
-    const colorMapping = (key: number) => {
-      if (key === firstKey) {
-        return action === CHART_ACTION.ANIMATE_SWAP ||
-          action === CHART_ACTION.ANIMATE_REPLACE
-          ? 'hsl(var(--chart-swap))'
-          : 'hsl(var(--chart-compare-first))'
-      }
-      if (key === secondKey) {
-        return action === CHART_ACTION.ANIMATE_SWAP
-          ? 'hsl(var(--chart-swap))'
-          : action === CHART_ACTION.ANIMATE_REPLACE
-            ? 'hsl(var(--chart-default))'
-            : 'hsl(var(--chart-compare-second))'
-      }
-      return action === CHART_ACTION.FINISHED
-        ? 'hsl(var(--chart-finish))'
-        : 'hsl(var(--chart-default))'
-    }
-
-    const transformMapping = (key: number) => {
-      if (action === CHART_ACTION.ANIMATE_SWAP) {
-        if (key === firstKey)
-          return `translateX(${(Math.abs(firstKey - secondKey) / fields.length) * 100}%)`
-        if (key === secondKey)
-          return `translateX(${(-Math.abs(firstKey - secondKey) / fields.length) * 100}%)`
-      } else if (action === CHART_ACTION.ANIMATE_REPLACE && key === firstKey) {
-        return `scaleY(${1 / (fields[firstNumber!].number / secondNumber)})`
-      }
-      return 'translateX(0%) scaleY(1)'
-    }
-
-    const transitionProperty = (key: number) => {
-      if (
-        ((key === firstKey && action === CHART_ACTION.ANIMATE_REPLACE) ||
-          ((key === firstKey || key === secondKey) &&
-            action === CHART_ACTION.ANIMATE_SWAP)) &&
-        isForward
-      ) {
-        return 'transform'
-      }
-      return 'none'
-    }
+    const maxNumber = Math.max(
+      ...defaultChartDataState.fields.map((field) => field.number),
+    )
 
     const xScale = (key: number) => (key / chartDataState.fields.length) * width
-    const yScale = (number: number) =>
-      height -
-      (number /
-        Math.max(
-          ...defaultChartDataState.fields.map((field) => field.number),
-        )) *
-        height
+    const yScale = (number: number) => height - (number / maxNumber) * height
 
-    const newBars = chartDataState.fields.map((d) => (
+    const colorMapping = getColorMappingFunction(action, firstKey, secondKey)
+    const transformMapping = getTransformMappingFunction(
+      action,
+      firstKey,
+      secondKey,
+      firstNumber,
+      secondNumber,
+      fields,
+    )
+    const transitionPropertyMapping = getTransitionPropertyMappingFunction(
+      directionForwardRef.current,
+      action,
+      firstKey,
+      secondKey,
+    )
+
+    const newBars = chartDataState.fields.map((field) => (
       <rect
-        key={d.key}
+        key={field.key}
         className="bar"
-        x={xScale(d.key)}
-        y={yScale(d.number)}
+        x={xScale(field.key)}
+        y={yScale(field.number)}
         width={barWidth - 2}
-        height={height - yScale(d.number)}
-        fill={colorMapping(d.key)}
+        height={height - yScale(field.number)}
+        fill={colorMapping(field.key)}
         style={{
-          transitionProperty: transitionProperty(d.key),
-          transitionDuration: `${duration}ms`,
+          transitionProperty: transitionPropertyMapping(field.key),
+          transitionDuration: `${durationRef.current}ms`,
           transformOrigin: 'bottom',
-          transform: transformMapping(d.key),
+          transform: transformMapping(field.key),
         }}
       />
     ))

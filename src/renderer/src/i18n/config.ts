@@ -26,4 +26,6 @@ i18n
     },
   })
 
+i18n.loadNamespaces(['AlgorithmsNames', 'ChartCardFooter', 'ChartCardInfo'])
+
 export default i18n
