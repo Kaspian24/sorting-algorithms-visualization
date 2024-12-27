@@ -13034,7 +13034,7 @@ const supportedLngs = {
 };
 instance.use(
   resourcesToBackend(
-    (language, namespace) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../locales/en/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-C70z0T7I.js"), true ? [] : void 0, import.meta.url), "../locales/en/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-C3bB4VOA.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-BvHYLcyH.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-DZB-khjS.js"), true ? [] : void 0, import.meta.url), "../locales/en/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-CvHMS63K.js"), true ? [] : void 0, import.meta.url), "../locales/en/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-BbLeYv0h.js"), true ? [] : void 0, import.meta.url), "../locales/en/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-DQ4aPH-X.js"), true ? [] : void 0, import.meta.url), "../locales/en/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-S3E3Gb3E.js"), true ? [] : void 0, import.meta.url), "../locales/en/StartCard.json": () => __vitePreload(() => import("./StartCard-CUHSOw3P.js"), true ? [] : void 0, import.meta.url), "../locales/en/translation.json": () => __vitePreload(() => import("./translation-ClZbUgHW.js"), true ? [] : void 0, import.meta.url), "../locales/en/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-DngkthoJ.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-CDN4riav.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-DnQEJLug.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-CVgT2FIA.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-B4zmKzol.js"), true ? [] : void 0, import.meta.url), "../locales/pl/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-BAKuOE6D.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-Co2Wk0Bf.js"), true ? [] : void 0, import.meta.url), "../locales/pl/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-JlfoQgHK.js"), true ? [] : void 0, import.meta.url), "../locales/pl/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-YiwDB0wk.js"), true ? [] : void 0, import.meta.url), "../locales/pl/StartCard.json": () => __vitePreload(() => import("./StartCard-BotuZP_L.js"), true ? [] : void 0, import.meta.url), "../locales/pl/translation.json": () => __vitePreload(() => import("./translation-CdnDYdmq.js"), true ? [] : void 0, import.meta.url), "../locales/pl/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-C2MI-H3E.js"), true ? [] : void 0, import.meta.url) }), `../locales/${language}/${namespace}.json`, 4)
+    (language, namespace) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../locales/en/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-C70z0T7I.js"), true ? [] : void 0, import.meta.url), "../locales/en/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-C3bB4VOA.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-BvHYLcyH.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-DZB-khjS.js"), true ? [] : void 0, import.meta.url), "../locales/en/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-CvHMS63K.js"), true ? [] : void 0, import.meta.url), "../locales/en/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-BbLeYv0h.js"), true ? [] : void 0, import.meta.url), "../locales/en/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-DQ4aPH-X.js"), true ? [] : void 0, import.meta.url), "../locales/en/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-S3E3Gb3E.js"), true ? [] : void 0, import.meta.url), "../locales/en/StartCard.json": () => __vitePreload(() => import("./StartCard-3TXE18ac.js"), true ? [] : void 0, import.meta.url), "../locales/en/translation.json": () => __vitePreload(() => import("./translation-ClZbUgHW.js"), true ? [] : void 0, import.meta.url), "../locales/en/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-DngkthoJ.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-CDN4riav.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-DnQEJLug.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-CVgT2FIA.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-B4zmKzol.js"), true ? [] : void 0, import.meta.url), "../locales/pl/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-BAKuOE6D.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-Co2Wk0Bf.js"), true ? [] : void 0, import.meta.url), "../locales/pl/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-JlfoQgHK.js"), true ? [] : void 0, import.meta.url), "../locales/pl/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-YiwDB0wk.js"), true ? [] : void 0, import.meta.url), "../locales/pl/StartCard.json": () => __vitePreload(() => import("./StartCard-DKXKMsJa.js"), true ? [] : void 0, import.meta.url), "../locales/pl/translation.json": () => __vitePreload(() => import("./translation-CdnDYdmq.js"), true ? [] : void 0, import.meta.url), "../locales/pl/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-C2MI-H3E.js"), true ? [] : void 0, import.meta.url) }), `../locales/${language}/${namespace}.json`, 4)
   )
 ).use(Browser).use(initReactI18next).init({
   fallbackLng: "en",
@@ -27542,13 +27542,10 @@ function useChartControls() {
   }, [handleStop, setStepAll]);
   const handleSetStep = reactExports.useCallback(
     (step) => {
-      const currentDuration = durationRef.current;
-      durationRef.current = 250;
       handleStop();
       setStepAll(step);
-      durationRef.current = currentDuration;
     },
-    [durationRef, handleStop, setStepAll]
+    [handleStop, setStepAll]
   );
   const handleDurationChange = reactExports.useCallback(
     (duration) => {
@@ -27562,19 +27559,13 @@ function useChartControls() {
     [continueSort, durationRef, handleStop]
   );
   const handlePrevious = reactExports.useCallback(() => {
-    const currentDuration = durationRef.current;
-    durationRef.current = 250;
     handleStop();
     setStepAll(globalChartActionCounterRef.current - 1);
-    durationRef.current = currentDuration;
-  }, [durationRef, globalChartActionCounterRef, handleStop, setStepAll]);
+  }, [globalChartActionCounterRef, handleStop, setStepAll]);
   const handleNext = reactExports.useCallback(() => {
-    const currentDuration = durationRef.current;
-    durationRef.current = 250;
     handleStop();
     setStepAll(globalChartActionCounterRef.current + 1);
-    durationRef.current = currentDuration;
-  }, [durationRef, globalChartActionCounterRef, handleStop, setStepAll]);
+  }, [globalChartActionCounterRef, handleStop, setStepAll]);
   reactExports.useEffect(() => {
     handleReset();
   }, [defaultChartDataState, handleReset]);
@@ -35002,7 +34993,7 @@ const IndexLazyImport = createFileRoute("/")();
 const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => Route2
-}).lazy(() => __vitePreload(() => import("./index.lazy-BZAP6lxq.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
+}).lazy(() => __vitePreload(() => import("./index.lazy-BD0viwoD.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
 const rootRouteChildren = {
   IndexLazyRoute
 };
