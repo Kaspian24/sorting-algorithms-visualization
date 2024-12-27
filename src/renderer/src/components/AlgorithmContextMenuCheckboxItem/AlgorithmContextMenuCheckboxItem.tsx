@@ -35,10 +35,7 @@ export default function AlgorithmContextMenuCheckboxItem({
       checked={visible}
       onClick={(e) => {
         e.preventDefault()
-        setAlgorithmsVisibility(
-          algorithm as keyof typeof SORTING_ALGORITHM,
-          !visible,
-        )
+        setAlgorithmsVisibility(algorithm, !visible)
       }}
       {...flippedProps}
     >

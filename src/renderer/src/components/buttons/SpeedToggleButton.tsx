@@ -31,7 +31,9 @@ export default function SpeedToggleButton({
       <SelectContent>
         <SelectGroup>
           <SelectLabel>{t('speed')}</SelectLabel>
-          <SelectItem value="99999">Max</SelectItem>
+          <SelectItem value={Number.MAX_SAFE_INTEGER.toString()}>
+            Max
+          </SelectItem>
           <SelectItem value="4">4x</SelectItem>
           <SelectItem value="2">2x</SelectItem>
           <SelectItem value="1">1x</SelectItem>

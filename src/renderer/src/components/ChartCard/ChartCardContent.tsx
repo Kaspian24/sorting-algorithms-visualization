@@ -5,15 +5,15 @@ import { CardContent } from '@renderer/components/ui/Card'
 import useChartCard from '@renderer/hooks/useChartCard'
 import { UseSort } from '@renderer/types/types'
 
-export interface ChartCardVisualizationProps {
+export interface ChartCardContentProps {
   useSort: UseSort
   showInfo: boolean
 }
 
-export default function ChartCardVisualization({
+export default function ChartCardContent({
   useSort,
   showInfo,
-}: ChartCardVisualizationProps) {
+}: ChartCardContentProps) {
   const {
     chartDataState,
     chartActionCounterState,

@@ -47,7 +47,7 @@ export const variants: QuickSortVariant[] = [
   },
   {
     info: {
-      best: 'O(n)',
+      best: 'O(n log n)',
       average: 'O(n log n)',
       worst: 'O(n^(2))',
       memory: 'O(log n)',
@@ -60,7 +60,7 @@ export const variants: QuickSortVariant[] = [
   },
   {
     info: {
-      best: 'O(n)',
+      best: 'O(n log n)',
       average: 'O(n log n)',
       worst: 'O(n^(2))',
       memory: 'O(log n)',
