@@ -22,7 +22,7 @@ const TanStackRouterDevtools =
 
 export const Route = createRootRoute({
   component: () => (
-    <div className="flex min-h-screen flex-col font-sans">
+    <div className="flex min-h-dvh flex-col font-sans">
       <DndProvider backend={HTML5Backend}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <GlobalChartsInfoProvider>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ChartCardVisualization from '@renderer/components/ChartCard/ChartCardVisualization'
+import ChartCardContent from '@renderer/components/ChartCard/ChartCardContent'
 import { useAlgorithmsVisibility } from '@renderer/components/providers/AlgorithmsVisibilityProvider/AlgorithmsVisibilityProvider'
 import { ChartInfoProvider } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
@@ -69,7 +69,7 @@ function ChartCard({ algorithm, flippedProps }: ChartCardProps) {
               </Button>
             </div>
           </CardHeader>
-          <ChartCardVisualization
+          <ChartCardContent
             useSort={
               SORTING_ALGORITHM[algorithm as keyof typeof SORTING_ALGORITHM]
             }
