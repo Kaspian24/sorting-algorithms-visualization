@@ -1,6 +1,6 @@
 {
   "name": "sorting-algorithms-visualization",
-  "version": "v1.1.1-alpha",
+  "version": "v1.1.2-alpha",
   "description": "Sorting algorithms visualization",
   "main": "./out/main/index.js",
   "author": "marcin.com",
@@ -41,7 +41,6 @@
     "@types/d3": "^7.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "d3": "^7.9.0",
     "i18next": "^24.0.2",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-resources-to-backend": "^1.2.1",
