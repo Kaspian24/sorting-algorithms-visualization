@@ -1,4 +1,4 @@
-import { c as createCollection, a as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, b as useDirection, d as useControllableState, e as useCallbackRef, P as Primitive, f as composeEventHandlers, g as useId, h as createContextScope$1, i as createPopperScope, A as Anchor, k as Presence, l as hideOthers, m as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, n as Arrow, o as composeRefs, R as ReactRemoveScroll, S as Slot, p as dispatchDiscreteCustomEvent, q as Root2$1, s as Portal$1, t as cn, v as ChevronRightIcon, w as CheckIcon, x as DotFilledIcon, y as useAlgorithmsVisibility, z as useDragAlgorithm, B as DRAG_CONTAINER_LAYOUT, E as DRAG_ITEM_TYPE, G as useTranslation, H as CHART_ACTION, I as useGlobalChartsInfo, J as useChartInfo, K as visualizeChartDataFields, L as ChartInfoProvider, M as Button, X, N as SORTING_ALGORITHM, O as createLazyFileRoute, Q as h, T as v } from "./index-BS_NidMW.js";
+import { c as createCollection, a as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, b as useDirection, d as useControllableState, e as useCallbackRef, P as Primitive, f as composeEventHandlers, g as useId, h as createContextScope$1, i as createPopperScope, A as Anchor, k as Presence, l as hideOthers, m as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, n as Arrow, o as composeRefs, R as ReactRemoveScroll, S as Slot, p as dispatchDiscreteCustomEvent, q as Root2$1, s as Portal$1, t as cn, v as ChevronRightIcon, w as CheckIcon, x as DotFilledIcon, y as useAlgorithmsVisibility, z as useDragAlgorithm, B as DRAG_CONTAINER_LAYOUT, E as DRAG_ITEM_TYPE, G as useTranslation, H as CHART_ACTION, I as useGlobalChartsInfo, J as useChartInfo, K as visualizeChartDataFields, L as ChartInfoProvider, M as Button, X, N as SORTING_ALGORITHM, O as createLazyFileRoute, Q as h, T as v } from "./index-BaR7aL9m.js";
 var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
 var EVENT_OPTIONS = { bubbles: false, cancelable: true };
 var GROUP_NAME$2 = "RovingFocusGroup";
@@ -1372,10 +1372,7 @@ function AlgorithmContextMenuCheckboxItem({
       checked: visible,
       onClick: (e) => {
         e.preventDefault();
-        setAlgorithmsVisibility(
-          algorithm,
-          !visible
-        );
+        setAlgorithmsVisibility(algorithm, !visible);
       },
       ...flippedProps,
       children: t(algorithm)
@@ -1977,7 +1974,7 @@ function useChartCard(useSort) {
     info
   };
 }
-function ChartCardVisualization({
+function ChartCardContent({
   useSort,
   showInfo
 }) {
@@ -2048,7 +2045,7 @@ function ChartCard({ algorithm, flippedProps }) {
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
-            ChartCardVisualization,
+            ChartCardContent,
             {
               useSort: SORTING_ALGORITHM[algorithm],
               showInfo

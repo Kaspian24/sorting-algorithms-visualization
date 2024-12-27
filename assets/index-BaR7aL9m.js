@@ -13044,6 +13044,7 @@ instance.use(
     escapeValue: false
   }
 });
+instance.loadNamespaces(["AlgorithmsNames", "ChartCardFooter", "ChartCardInfo"]);
 const DndContext = reactExports.createContext({
   dragDropManager: void 0
 });
@@ -23793,7 +23794,7 @@ function SpeedToggleButton({
         /* @__PURE__ */ jsxRuntimeExports.jsx(SelectTrigger, { className: "w-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SelectValue, {}) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(SelectGroup, { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(SelectLabel, { children: t2("speed") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "99999", children: "Max" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: Number.MAX_SAFE_INTEGER.toString(), children: "Max" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "4", children: "4x" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "2", children: "2x" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "1", children: "1x" }),
@@ -26462,7 +26463,7 @@ const variants$1 = [
   },
   {
     info: {
-      best: "O(n)",
+      best: "O(n log n)",
       average: "O(n log n)",
       worst: "O(n^(2))",
       memory: "O(log n)",
@@ -26475,7 +26476,7 @@ const variants$1 = [
   },
   {
     info: {
-      best: "O(n)",
+      best: "O(n log n)",
       average: "O(n log n)",
       worst: "O(n^(2))",
       memory: "O(log n)",
@@ -34993,7 +34994,7 @@ const IndexLazyImport = createFileRoute("/")();
 const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => Route2
-}).lazy(() => __vitePreload(() => import("./index.lazy-DBqmi1ds.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
+}).lazy(() => __vitePreload(() => import("./index.lazy-6D0TooI7.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
 const rootRouteChildren = {
   IndexLazyRoute
 };
