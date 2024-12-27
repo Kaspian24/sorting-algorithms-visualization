@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
-import { CHART_ACTION, ChartData, ChartDataField } from '@renderer/types/types'
-import * as d3 from 'd3'
+import { CHART_ACTION, ChartData } from '@renderer/types/types'
 
 export interface ChartBarChartProps {
   chartDataState: ChartData
@@ -11,7 +10,7 @@ export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
   const { defaultChartDataState, directionForwardRef, durationRef } =
     useGlobalChartsInfo()
 
-  const svgRef = useRef<SVGSVGElement>(null)
+  const [bars, setBars] = useState<React.JSX.Element[]>([])
 
   useEffect(() => {
     const { fields, visualization } = chartDataState
@@ -25,7 +24,6 @@ export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
     const duration = durationRef.current
     const isForward = directionForwardRef.current
 
-    const svg = d3.select(svgRef.current)
     const width = 600
     const height = 400
     const barWidth = width / chartDataState.fields.length
@@ -73,48 +71,45 @@ export default function ChartBarChart({ chartDataState }: ChartBarChartProps) {
       return 'none'
     }
 
-    const xScale = d3
-      .scaleBand()
-      .domain(chartDataState.fields.map((d) => d.key.toString()))
-      .range([0, width])
+    const xScale = (key: number) => (key / chartDataState.fields.length) * width
+    const yScale = (number: number) =>
+      height -
+      (number /
+        Math.max(
+          ...defaultChartDataState.fields.map((field) => field.number),
+        )) *
+        height
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(defaultChartDataState.fields, (d) => d.number)!])
-      .range([height, 0])
+    const newBars = chartDataState.fields.map((d) => (
+      <rect
+        key={d.key}
+        className="bar"
+        x={xScale(d.key)}
+        y={yScale(d.number)}
+        width={barWidth - 2}
+        height={height - yScale(d.number)}
+        fill={colorMapping(d.key)}
+        style={{
+          transitionProperty: transitionProperty(d.key),
+          transitionDuration: `${duration}ms`,
+          transformOrigin: 'bottom',
+          transform: transformMapping(d.key),
+        }}
+      />
+    ))
 
-    const bars = svg
-      .selectAll<SVGRectElement, ChartDataField>('.bar')
-      .data(chartDataState.fields, (d: ChartDataField) => d.key)
-
-    bars.enter().append('rect').attr('class', 'bar')
-
-    bars
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .merge(bars)
-      .attr('x', (d) => xScale(d.key.toString())!)
-      .attr('y', (d) => yScale(d.number))
-      .attr('width', barWidth - 2)
-      .attr('height', (d) => height - yScale(d.number))
-      .attr('fill', (d) => colorMapping(d.key))
-      .style('transition-property', (d) => transitionProperty(d.key))
-      .style('transition-duration', `${duration}ms`)
-      .style('transform-origin', 'bottom')
-      .style('transform', (d) => transformMapping(d.key))
-
-    bars.exit().remove()
+    setBars(newBars)
   }, [chartDataState, defaultChartDataState, directionForwardRef, durationRef])
 
   return (
     <div className="h-0 flex-auto">
       <svg
-        ref={svgRef}
         viewBox="0 0 600 400"
         preserveAspectRatio="none"
         className="h-full w-full"
-      ></svg>
+      >
+        {bars}
+      </svg>
     </div>
   )
 }

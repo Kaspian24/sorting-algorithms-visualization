@@ -81,13 +81,10 @@ export default function useChartControls() {
 
   const handleSetStep = useCallback(
     (step: number) => {
-      const currentDuration = durationRef.current
-      durationRef.current = 250
       handleStop()
       setStepAll(step)
-      durationRef.current = currentDuration
     },
-    [durationRef, handleStop, setStepAll],
+    [handleStop, setStepAll],
   )
 
   const handleDurationChange = useCallback(
@@ -103,20 +100,14 @@ export default function useChartControls() {
   )
 
   const handlePrevious = useCallback(() => {
-    const currentDuration = durationRef.current
-    durationRef.current = 250
     handleStop()
     setStepAll(globalChartActionCounterRef.current - 1)
-    durationRef.current = currentDuration
-  }, [durationRef, globalChartActionCounterRef, handleStop, setStepAll])
+  }, [globalChartActionCounterRef, handleStop, setStepAll])
 
   const handleNext = useCallback(() => {
-    const currentDuration = durationRef.current
-    durationRef.current = 250
     handleStop()
     setStepAll(globalChartActionCounterRef.current + 1)
-    durationRef.current = currentDuration
-  }, [durationRef, globalChartActionCounterRef, handleStop, setStepAll])
+  }, [globalChartActionCounterRef, handleStop, setStepAll])
 
   useEffect(() => {
     handleReset()
