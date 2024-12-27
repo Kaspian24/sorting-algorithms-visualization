@@ -34980,7 +34980,7 @@ function Header() {
 }
 const TanStackRouterDevtools = () => null;
 const Route2 = createRootRoute({
-  component: () => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-h-screen flex-col font-sans", children: [
+  component: () => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-h-dvh flex-col font-sans", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(DndProvider, { backend: HTML5Backend, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ThemeProvider, { defaultTheme: "dark", storageKey: "vite-ui-theme", children: /* @__PURE__ */ jsxRuntimeExports.jsx(GlobalChartsInfoProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(AlgorithmsVisibilityProvider, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollArea, { className: "h-0 flex-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "h-full w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }),
@@ -34993,7 +34993,7 @@ const IndexLazyImport = createFileRoute("/")();
 const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => Route2
-}).lazy(() => __vitePreload(() => import("./index.lazy-BD0viwoD.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
+}).lazy(() => __vitePreload(() => import("./index.lazy-DBqmi1ds.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
 const rootRouteChildren = {
   IndexLazyRoute
 };
@@ -35017,8 +35017,8 @@ export {
   DRAG_ITEM_TYPE as E,
   FocusScope as F,
   useTranslation as G,
-  useGlobalChartsInfo as H,
-  CHART_ACTION as I,
+  CHART_ACTION as H,
+  useGlobalChartsInfo as I,
   useChartInfo as J,
   visualizeChartDataFields as K,
   ChartInfoProvider as L,

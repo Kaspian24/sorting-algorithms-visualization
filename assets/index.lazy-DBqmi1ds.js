@@ -1,4 +1,4 @@
-import { c as createCollection, a as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, b as useDirection, d as useControllableState, e as useCallbackRef, P as Primitive, f as composeEventHandlers, g as useId, h as createContextScope$1, i as createPopperScope, A as Anchor, k as Presence, l as hideOthers, m as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, n as Arrow, o as composeRefs, R as ReactRemoveScroll, S as Slot, p as dispatchDiscreteCustomEvent, q as Root2$1, s as Portal$1, t as cn, v as ChevronRightIcon, w as CheckIcon, x as DotFilledIcon, y as useAlgorithmsVisibility, z as useDragAlgorithm, B as DRAG_CONTAINER_LAYOUT, E as DRAG_ITEM_TYPE, G as useTranslation, H as useGlobalChartsInfo, I as CHART_ACTION, J as useChartInfo, K as visualizeChartDataFields, L as ChartInfoProvider, M as Button, X, N as SORTING_ALGORITHM, O as createLazyFileRoute, Q as h, T as v } from "./index-Bei7iWki.js";
+import { c as createCollection, a as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, b as useDirection, d as useControllableState, e as useCallbackRef, P as Primitive, f as composeEventHandlers, g as useId, h as createContextScope$1, i as createPopperScope, A as Anchor, k as Presence, l as hideOthers, m as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, n as Arrow, o as composeRefs, R as ReactRemoveScroll, S as Slot, p as dispatchDiscreteCustomEvent, q as Root2$1, s as Portal$1, t as cn, v as ChevronRightIcon, w as CheckIcon, x as DotFilledIcon, y as useAlgorithmsVisibility, z as useDragAlgorithm, B as DRAG_CONTAINER_LAYOUT, E as DRAG_ITEM_TYPE, G as useTranslation, H as CHART_ACTION, I as useGlobalChartsInfo, J as useChartInfo, K as visualizeChartDataFields, L as ChartInfoProvider, M as Button, X, N as SORTING_ALGORITHM, O as createLazyFileRoute, Q as h, T as v } from "./index-BS_NidMW.js";
 var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
 var EVENT_OPTIONS = { bubbles: false, cancelable: true };
 var GROUP_NAME$2 = "RovingFocusGroup";
@@ -1382,6 +1382,97 @@ function AlgorithmContextMenuCheckboxItem({
     }
   );
 }
+function getDefaultColor(action) {
+  return action === CHART_ACTION.FINISHED ? "hsl(var(--chart-finish))" : "hsl(var(--chart-default))";
+}
+function getFirstColor(action) {
+  return action === CHART_ACTION.ANIMATE_SWAP || action === CHART_ACTION.ANIMATE_REPLACE ? "hsl(var(--chart-swap))" : "hsl(var(--chart-compare-first))";
+}
+function getSecondColor(action, defaultColor) {
+  if (action === CHART_ACTION.ANIMATE_SWAP) {
+    return "hsl(var(--chart-swap))";
+  }
+  if (action === CHART_ACTION.ANIMATE_REPLACE) {
+    return defaultColor;
+  }
+  return "hsl(var(--chart-compare-second))";
+}
+function getFirstTransform(action, firstKey, secondKey, firstNumber, secondNumber, fields) {
+  if (action === CHART_ACTION.ANIMATE_SWAP) {
+    return `translateX(${Math.abs(firstKey - secondKey) / fields.length * 100}%)`;
+  }
+  if (action === CHART_ACTION.ANIMATE_REPLACE) {
+    return `scaleY(${1 / (fields[firstNumber].number / secondNumber)})`;
+  }
+  return "translateX(0%) scaleY(1)";
+}
+function getSecondTransform(action, firstKey, secondKey, fields) {
+  return action === CHART_ACTION.ANIMATE_SWAP ? `translateX(${-Math.abs(firstKey - secondKey) / fields.length * 100}%)` : "translateX(0%) scaleY(1)";
+}
+function getColorMappingFunction(action, firstKey, secondKey) {
+  const defaultColor = getDefaultColor(action);
+  const firstKeyColor = getFirstColor(action);
+  const secondKeyColor = getSecondColor(action, defaultColor);
+  return (key) => {
+    if (key === firstKey) {
+      return firstKeyColor;
+    }
+    if (key === secondKey) {
+      return secondKeyColor;
+    }
+    return defaultColor;
+  };
+}
+function getTransformMappingFunction(action, firstKey, secondKey, firstNumber, secondNumber, fields) {
+  const firstKeyTransform = getFirstTransform(
+    action,
+    firstKey,
+    secondKey,
+    firstNumber,
+    secondNumber,
+    fields
+  );
+  const secondKeyTransform = getSecondTransform(
+    action,
+    firstKey,
+    secondKey,
+    fields
+  );
+  if (action === CHART_ACTION.ANIMATE_SWAP || action === CHART_ACTION.ANIMATE_REPLACE) {
+    return (key) => {
+      if (key === firstKey) {
+        return firstKeyTransform;
+      }
+      if (key === secondKey) {
+        return secondKeyTransform;
+      }
+      return "translateX(0%) scaleY(1)";
+    };
+  }
+  return () => "translateX(0%) scaleY(1)";
+}
+function getTransitionPropertyMappingFunction(isForward, action, firstKey, secondKey) {
+  if (!isForward) {
+    return () => "none";
+  }
+  if (action === CHART_ACTION.ANIMATE_REPLACE) {
+    return (key) => {
+      if (key === firstKey || key === secondKey) {
+        return "transform";
+      }
+      return "none";
+    };
+  }
+  if (action === CHART_ACTION.ANIMATE_SWAP) {
+    return (key) => {
+      if (key === firstKey) {
+        return "transform";
+      }
+      return "none";
+    };
+  }
+  return () => "none";
+}
 function ChartBarChart({ chartDataState }) {
   const { defaultChartDataState, directionForwardRef, durationRef } = useGlobalChartsInfo();
   const [bars, setBars] = reactExports.useState([]);
@@ -1392,58 +1483,46 @@ function ChartBarChart({ chartDataState }) {
     const secondNumber = numbers?.[1];
     const firstKey = fields?.[firstNumber]?.key;
     const secondKey = fields?.[secondNumber]?.key;
-    const duration = durationRef.current;
-    const isForward = directionForwardRef.current;
     const width = 600;
     const height = 400;
     const barWidth = width / chartDataState.fields.length;
-    const colorMapping = (key) => {
-      if (key === firstKey) {
-        return action === CHART_ACTION.ANIMATE_SWAP || action === CHART_ACTION.ANIMATE_REPLACE ? "hsl(var(--chart-swap))" : "hsl(var(--chart-compare-first))";
-      }
-      if (key === secondKey) {
-        return action === CHART_ACTION.ANIMATE_SWAP ? "hsl(var(--chart-swap))" : action === CHART_ACTION.ANIMATE_REPLACE ? "hsl(var(--chart-default))" : "hsl(var(--chart-compare-second))";
-      }
-      return action === CHART_ACTION.FINISHED ? "hsl(var(--chart-finish))" : "hsl(var(--chart-default))";
-    };
-    const transformMapping = (key) => {
-      if (action === CHART_ACTION.ANIMATE_SWAP) {
-        if (key === firstKey)
-          return `translateX(${Math.abs(firstKey - secondKey) / fields.length * 100}%)`;
-        if (key === secondKey)
-          return `translateX(${-Math.abs(firstKey - secondKey) / fields.length * 100}%)`;
-      } else if (action === CHART_ACTION.ANIMATE_REPLACE && key === firstKey) {
-        return `scaleY(${1 / (fields[firstNumber].number / secondNumber)})`;
-      }
-      return "translateX(0%) scaleY(1)";
-    };
-    const transitionProperty = (key) => {
-      if ((key === firstKey && action === CHART_ACTION.ANIMATE_REPLACE || (key === firstKey || key === secondKey) && action === CHART_ACTION.ANIMATE_SWAP) && isForward) {
-        return "transform";
-      }
-      return "none";
-    };
-    const xScale = (key) => key / chartDataState.fields.length * width;
-    const yScale = (number) => height - number / Math.max(
+    const maxNumber = Math.max(
       ...defaultChartDataState.fields.map((field) => field.number)
-    ) * height;
-    const newBars = chartDataState.fields.map((d) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+    );
+    const xScale = (key) => key / chartDataState.fields.length * width;
+    const yScale = (number) => height - number / maxNumber * height;
+    const colorMapping = getColorMappingFunction(action, firstKey, secondKey);
+    const transformMapping = getTransformMappingFunction(
+      action,
+      firstKey,
+      secondKey,
+      firstNumber,
+      secondNumber,
+      fields
+    );
+    const transitionPropertyMapping = getTransitionPropertyMappingFunction(
+      directionForwardRef.current,
+      action,
+      firstKey,
+      secondKey
+    );
+    const newBars = chartDataState.fields.map((field) => /* @__PURE__ */ jsxRuntimeExports.jsx(
       "rect",
       {
         className: "bar",
-        x: xScale(d.key),
-        y: yScale(d.number),
+        x: xScale(field.key),
+        y: yScale(field.number),
         width: barWidth - 2,
-        height: height - yScale(d.number),
-        fill: colorMapping(d.key),
+        height: height - yScale(field.number),
+        fill: colorMapping(field.key),
         style: {
-          transitionProperty: transitionProperty(d.key),
-          transitionDuration: `${duration}ms`,
+          transitionProperty: transitionPropertyMapping(field.key),
+          transitionDuration: `${durationRef.current}ms`,
           transformOrigin: "bottom",
-          transform: transformMapping(d.key)
+          transform: transformMapping(field.key)
         }
       },
-      d.key
+      field.key
     ));
     setBars(newBars);
   }, [chartDataState, defaultChartDataState, directionForwardRef, durationRef]);

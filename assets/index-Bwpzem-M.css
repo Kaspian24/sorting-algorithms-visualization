@@ -720,8 +720,8 @@ video {
 .min-h-64 {
   min-height: 16rem;
 }
-.min-h-screen {
-  min-height: 100vh;
+.min-h-dvh {
+  min-height: 100dvh;
 }
 .w-1\/2 {
   width: 50%;
