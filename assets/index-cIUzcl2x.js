@@ -23780,31 +23780,24 @@ const SelectSeparator = reactExports.forwardRef(({ className, ...props }, ref) =
   }
 ));
 SelectSeparator.displayName = Separator.displayName;
-function SpeedToggleButton({
+const SpeedToggleButton = reactExports.memo(function SpeedToggleButton2({
   duration,
   onValueChange
 }) {
   const { t: t2 } = useTranslation("SpeedToggleButton");
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    Select,
-    {
-      defaultValue: (250 / duration).toString(),
-      onValueChange,
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(SelectTrigger, { className: "w-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SelectValue, {}) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(SelectGroup, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectLabel, { children: t2("speed") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: Number.MAX_SAFE_INTEGER.toString(), children: "Max" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "4", children: "4x" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "2", children: "2x" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "1", children: "1x" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "0.5", children: "0.5x" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "0.25", children: "0.25x" })
-        ] }) })
-      ]
-    }
-  );
-}
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Select, { value: (250 / duration).toString(), onValueChange, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(SelectTrigger, { className: "w-20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SelectValue, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContent, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(SelectGroup, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SelectLabel, { children: t2("speed") }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: Number.MAX_SAFE_INTEGER.toString(), children: "Max" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "4", children: "4x" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "2", children: "2x" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "1", children: "1x" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "0.5", children: "0.5x" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: "0.25", children: "0.25x" })
+    ] }) })
+  ] });
+});
 function r$2(e2) {
   var t2, f2, n2 = "";
   if ("string" == typeof e2 || "number" == typeof e2) n2 += e2;
@@ -27809,6 +27802,10 @@ function ChartControls() {
     durationState
   } = useChartControls();
   const allHidden = globalMaxChartActionCounterState ? false : true;
+  const onSpeedValueChange = reactExports.useCallback(
+    (value) => handleDurationChange(Number(value)),
+    [handleDurationChange]
+  );
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       Button,
@@ -27878,7 +27875,7 @@ function ChartControls() {
       SpeedToggleButton,
       {
         duration: durationState,
-        onValueChange: (value) => handleDurationChange(Number(value))
+        onValueChange: onSpeedValueChange
       }
     )
   ] });
@@ -34994,7 +34991,7 @@ const IndexLazyImport = createFileRoute("/")();
 const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => Route2
-}).lazy(() => __vitePreload(() => import("./index.lazy-6D0TooI7.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
+}).lazy(() => __vitePreload(() => import("./index.lazy-CKWw2Gq5.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
 const rootRouteChildren = {
   IndexLazyRoute
 };
