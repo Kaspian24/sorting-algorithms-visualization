@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import SpeedToggleButton from '@renderer/components/buttons/SpeedToggleButton'
 import { useGlobalChartsInfo } from '@renderer/components/providers/GlobalChartsInfoProvider/GlobalChartsInfoProvider'
 import { Button } from '@renderer/components/ui/Button'
@@ -28,6 +29,11 @@ export default function ChartControls() {
   } = useChartControls()
 
   const allHidden = globalMaxChartActionCounterState ? false : true
+
+  const onSpeedValueChange = useCallback(
+    (value: string) => handleDurationChange(Number(value)),
+    [handleDurationChange],
+  )
 
   return (
     <>
@@ -86,7 +92,7 @@ export default function ChartControls() {
       />
       <SpeedToggleButton
         duration={durationState}
-        onValueChange={(value) => handleDurationChange(Number(value))}
+        onValueChange={onSpeedValueChange}
       />
     </>
   )
