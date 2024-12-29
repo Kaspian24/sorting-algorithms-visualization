@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Select,
@@ -14,17 +15,14 @@ interface SpeedToggleButtonProps {
   onValueChange: (value: string) => void
 }
 
-export default function SpeedToggleButton({
+const SpeedToggleButton = memo(function SpeedToggleButton({
   duration,
   onValueChange,
 }: SpeedToggleButtonProps) {
   const { t } = useTranslation('SpeedToggleButton')
 
   return (
-    <Select
-      defaultValue={(250 / duration).toString()}
-      onValueChange={onValueChange}
-    >
+    <Select value={(250 / duration).toString()} onValueChange={onValueChange}>
       <SelectTrigger className="w-20">
         <SelectValue />
       </SelectTrigger>
@@ -43,4 +41,6 @@ export default function SpeedToggleButton({
       </SelectContent>
     </Select>
   )
-}
+})
+
+export default SpeedToggleButton

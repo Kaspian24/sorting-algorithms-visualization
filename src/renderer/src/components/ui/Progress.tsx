@@ -21,8 +21,8 @@ const Progress = React.forwardRef<
     {...props}
   >
     <ProgressPrimitive.Indicator
-      className={cn('h-full flex-1 bg-primary', indicatorClassName)}
-      style={{ width: `${value || 0}%` }}
+      className={cn('h-full flex-1 origin-left bg-primary', indicatorClassName)}
+      style={{ transform: `scaleX(${(value || 0) / 100})` }}
     />
   </ProgressPrimitive.Root>
 ))

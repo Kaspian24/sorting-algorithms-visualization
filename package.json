@@ -1,6 +1,6 @@
 {
   "name": "sorting-algorithms-visualization",
-  "version": "v1.1.3-alpha",
+  "version": "v1.1.4-alpha",
   "description": "Sorting algorithms visualization",
   "main": "./out/main/index.js",
   "author": "marcin.com",
