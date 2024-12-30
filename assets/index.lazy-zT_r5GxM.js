@@ -1,4 +1,24 @@
-import { c as createCollection, a as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, b as useDirection, d as useControllableState, e as useCallbackRef, P as Primitive, f as composeEventHandlers, g as useId, h as createContextScope$1, i as createPopperScope, A as Anchor, k as Presence, l as hideOthers, m as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, n as Arrow, o as composeRefs, R as ReactRemoveScroll, S as Slot, p as dispatchDiscreteCustomEvent, q as Root2$1, s as Portal$1, t as cn, v as ChevronRightIcon, w as CheckIcon, x as DotFilledIcon, y as useAlgorithmsVisibility, z as useDragAlgorithm, B as DRAG_CONTAINER_LAYOUT, E as DRAG_ITEM_TYPE, G as useTranslation, H as CHART_ACTION, I as useGlobalChartsInfo, J as useChartInfo, K as visualizeChartDataFields, L as ChartInfoProvider, M as Button, X, N as SORTING_ALGORITHM, O as createLazyFileRoute, Q as h, T as v } from "./index-cIUzcl2x.js";
+import { c as createLucideIcon, a as createCollection, b as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, d as useDirection, e as useControllableState, f as useCallbackRef, P as Primitive, g as composeEventHandlers, h as useId, i as createContextScope$1, k as createPopperScope, A as Anchor, l as Presence, m as hideOthers, n as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, o as Arrow, p as composeRefs, R as ReactRemoveScroll, S as Slot, q as dispatchDiscreteCustomEvent, s as Root2$1, t as Portal$1, v as cn, w as ChevronRightIcon, x as CheckIcon, y as DotFilledIcon, z as useAlgorithmsVisibility, B as useDragAlgorithm, E as DRAG_CONTAINER_LAYOUT, G as DRAG_ITEM_TYPE, H as useTranslation, I as CHART_ACTION, J as useGlobalChartsInfo, K as useChartInfo, L as visualizeChartDataFields, M as ChartInfoProvider, N as Button, X, O as SORTING_ALGORITHM, Q as createLazyFileRoute, T as h, U as v } from "./index-DV6mjzn1.js";
+/**
+ * @license lucide-react v0.451.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ArrowLeft = createLucideIcon("ArrowLeft", [
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
+]);
+/**
+ * @license lucide-react v0.451.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const ArrowRight = createLucideIcon("ArrowRight", [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+]);
 var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
 var EVENT_OPTIONS = { bubbles: false, cancelable: true };
 var GROUP_NAME$2 = "RovingFocusGroup";
@@ -2009,7 +2029,7 @@ function ChartCard({ algorithm, flippedProps }) {
     DRAG_ITEM_TYPE.CHART_CARD,
     algorithm
   );
-  const { t } = useTranslation("AlgorithmsNames");
+  const { t } = useTranslation(["ChartCard", "AlgorithmsNames"]);
   const [showInfo, setShowInfo] = reactExports.useState(false);
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Card,
@@ -2022,7 +2042,7 @@ function ChartCard({ algorithm, flippedProps }) {
         /* @__PURE__ */ jsxRuntimeExports.jsxs(ContextMenuTrigger, { className: "contents", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(CardHeader, { className: "flex flex-row justify-between space-y-0 p-0 text-center", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { children: t(algorithm) }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CardTitle, { children: t(algorithm, { ns: "AlgorithmsNames" }) }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-1 justify-end gap-x-2 pr-1 pt-1", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 Button,
@@ -2053,27 +2073,39 @@ function ChartCard({ algorithm, flippedProps }) {
           )
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(ContextMenuContent, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
             ContextMenuItem,
             {
+              className: "flex justify-between",
               onClick: () => setAlgorithmsVisibility(algorithm, false),
-              children: "Remove (×)"
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("remove") }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 16 })
+              ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ContextMenuLabel, { className: "text-center", children: "Move" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ContextMenuLabel, { className: "text-center", children: t("move") }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(ContextMenuGroup, { className: "flex", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
               ContextMenuItem,
               {
                 onClick: () => moveAlgorithmPositionLeft(algorithm),
-                children: "Left (←)"
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 16 }),
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("left") })
+                ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
               ContextMenuItem,
               {
                 onClick: () => moveAlgorithmPositionRight(algorithm),
-                children: "Right (→)"
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("right") }),
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { size: 16 })
+                ]
               }
             )
           ] })

@@ -13034,7 +13034,7 @@ const supportedLngs = {
 };
 instance.use(
   resourcesToBackend(
-    (language, namespace) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../locales/en/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-C70z0T7I.js"), true ? [] : void 0, import.meta.url), "../locales/en/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-C3bB4VOA.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-BvHYLcyH.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-DZB-khjS.js"), true ? [] : void 0, import.meta.url), "../locales/en/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-CvHMS63K.js"), true ? [] : void 0, import.meta.url), "../locales/en/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-BbLeYv0h.js"), true ? [] : void 0, import.meta.url), "../locales/en/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-DQ4aPH-X.js"), true ? [] : void 0, import.meta.url), "../locales/en/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-S3E3Gb3E.js"), true ? [] : void 0, import.meta.url), "../locales/en/StartCard.json": () => __vitePreload(() => import("./StartCard-3TXE18ac.js"), true ? [] : void 0, import.meta.url), "../locales/en/translation.json": () => __vitePreload(() => import("./translation-ClZbUgHW.js"), true ? [] : void 0, import.meta.url), "../locales/en/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-DngkthoJ.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-CDN4riav.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-DnQEJLug.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-CVgT2FIA.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-B4zmKzol.js"), true ? [] : void 0, import.meta.url), "../locales/pl/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-BAKuOE6D.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-Co2Wk0Bf.js"), true ? [] : void 0, import.meta.url), "../locales/pl/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-JlfoQgHK.js"), true ? [] : void 0, import.meta.url), "../locales/pl/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-YiwDB0wk.js"), true ? [] : void 0, import.meta.url), "../locales/pl/StartCard.json": () => __vitePreload(() => import("./StartCard-DKXKMsJa.js"), true ? [] : void 0, import.meta.url), "../locales/pl/translation.json": () => __vitePreload(() => import("./translation-CdnDYdmq.js"), true ? [] : void 0, import.meta.url), "../locales/pl/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-C2MI-H3E.js"), true ? [] : void 0, import.meta.url) }), `../locales/${language}/${namespace}.json`, 4)
+    (language, namespace) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../locales/en/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-C70z0T7I.js"), true ? [] : void 0, import.meta.url), "../locales/en/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-C3bB4VOA.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCard.json": () => __vitePreload(() => import("./ChartCard-BVicS4vc.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-BvHYLcyH.js"), true ? [] : void 0, import.meta.url), "../locales/en/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-DZB-khjS.js"), true ? [] : void 0, import.meta.url), "../locales/en/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-CvHMS63K.js"), true ? [] : void 0, import.meta.url), "../locales/en/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-BbLeYv0h.js"), true ? [] : void 0, import.meta.url), "../locales/en/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-DQ4aPH-X.js"), true ? [] : void 0, import.meta.url), "../locales/en/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-S3E3Gb3E.js"), true ? [] : void 0, import.meta.url), "../locales/en/StartCard.json": () => __vitePreload(() => import("./StartCard-3TXE18ac.js"), true ? [] : void 0, import.meta.url), "../locales/en/translation.json": () => __vitePreload(() => import("./translation-ClZbUgHW.js"), true ? [] : void 0, import.meta.url), "../locales/en/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-DngkthoJ.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsNames.json": () => __vitePreload(() => import("./AlgorithmsNames-CDN4riav.js"), true ? [] : void 0, import.meta.url), "../locales/pl/AlgorithmsVisibilityButton.json": () => __vitePreload(() => import("./AlgorithmsVisibilityButton-DnQEJLug.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCard.json": () => __vitePreload(() => import("./ChartCard-VigpK1Li.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardFooter.json": () => __vitePreload(() => import("./ChartCardFooter-CVgT2FIA.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ChartCardInfo.json": () => __vitePreload(() => import("./ChartCardInfo-B4zmKzol.js"), true ? [] : void 0, import.meta.url), "../locales/pl/CustomDataButton.json": () => __vitePreload(() => import("./CustomDataButton-BAKuOE6D.js"), true ? [] : void 0, import.meta.url), "../locales/pl/ExampleDataButton.json": () => __vitePreload(() => import("./ExampleDataButton-Co2Wk0Bf.js"), true ? [] : void 0, import.meta.url), "../locales/pl/LocaleToggleButton.json": () => __vitePreload(() => import("./LocaleToggleButton-JlfoQgHK.js"), true ? [] : void 0, import.meta.url), "../locales/pl/SpeedToggleButton.json": () => __vitePreload(() => import("./SpeedToggleButton-YiwDB0wk.js"), true ? [] : void 0, import.meta.url), "../locales/pl/StartCard.json": () => __vitePreload(() => import("./StartCard-DKXKMsJa.js"), true ? [] : void 0, import.meta.url), "../locales/pl/translation.json": () => __vitePreload(() => import("./translation-CdnDYdmq.js"), true ? [] : void 0, import.meta.url), "../locales/pl/useCustomDataForm.json": () => __vitePreload(() => import("./useCustomDataForm-C2MI-H3E.js"), true ? [] : void 0, import.meta.url) }), `../locales/${language}/${namespace}.json`, 4)
   )
 ).use(Browser).use(initReactI18next).init({
   fallbackLng: "en",
@@ -13044,7 +13044,12 @@ instance.use(
     escapeValue: false
   }
 });
-instance.loadNamespaces(["AlgorithmsNames", "ChartCardFooter", "ChartCardInfo"]);
+instance.loadNamespaces([
+  "AlgorithmsNames",
+  "ChartCard",
+  "ChartCardFooter",
+  "ChartCardInfo"
+]);
 const DndContext = reactExports.createContext({
   dragDropManager: void 0
 });
@@ -34981,7 +34986,7 @@ const Route2 = createRootRoute({
   component: () => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex min-h-dvh flex-col font-sans", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(DndProvider, { backend: HTML5Backend, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ThemeProvider, { defaultTheme: "dark", storageKey: "vite-ui-theme", children: /* @__PURE__ */ jsxRuntimeExports.jsx(GlobalChartsInfoProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(AlgorithmsVisibilityProvider, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollArea, { className: "h-0 flex-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "h-full w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollArea, { className: "h-0 flex-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "h-full w-full select-none", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
     ] }) }) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.Suspense, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(TanStackRouterDevtools, { position: "top-right" }) })
@@ -34991,7 +34996,7 @@ const IndexLazyImport = createFileRoute("/")();
 const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => Route2
-}).lazy(() => __vitePreload(() => import("./index.lazy-CKWw2Gq5.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
+}).lazy(() => __vitePreload(() => import("./index.lazy-zT_r5GxM.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
 const rootRouteChildren = {
   IndexLazyRoute
 };
@@ -35009,50 +35014,51 @@ if (!rootElement.innerHTML) {
 }
 export {
   Anchor as A,
-  DRAG_CONTAINER_LAYOUT as B,
+  useDragAlgorithm as B,
   Content$1 as C,
   DismissableLayer as D,
-  DRAG_ITEM_TYPE as E,
+  DRAG_CONTAINER_LAYOUT as E,
   FocusScope as F,
-  useTranslation as G,
-  CHART_ACTION as H,
-  useGlobalChartsInfo as I,
-  useChartInfo as J,
-  visualizeChartDataFields as K,
-  ChartInfoProvider as L,
-  Button as M,
-  SORTING_ALGORITHM as N,
-  createLazyFileRoute as O,
+  DRAG_ITEM_TYPE as G,
+  useTranslation as H,
+  CHART_ACTION as I,
+  useGlobalChartsInfo as J,
+  useChartInfo as K,
+  visualizeChartDataFields as L,
+  ChartInfoProvider as M,
+  Button as N,
+  SORTING_ALGORITHM as O,
   Primitive as P,
-  h as Q,
+  createLazyFileRoute as Q,
   ReactRemoveScroll as R,
   Slot as S,
-  v as T,
+  h as T,
+  v as U,
   X,
-  createContextScope$1 as a,
-  useDirection as b,
-  createCollection as c,
-  useControllableState as d,
-  useCallbackRef$1 as e,
-  composeEventHandlers as f,
-  useId as g,
-  createContextScope as h,
-  createPopperScope as i,
+  createCollection as a,
+  createContextScope$1 as b,
+  createLucideIcon as c,
+  useDirection as d,
+  useControllableState as e,
+  useCallbackRef$1 as f,
+  composeEventHandlers as g,
+  useId as h,
+  createContextScope as i,
   jsxRuntimeExports as j,
-  Presence as k,
-  hideOthers as l,
-  useFocusGuards as m,
-  Arrow as n,
-  composeRefs as o,
-  dispatchDiscreteCustomEvent as p,
-  Root2$1 as q,
+  createPopperScope as k,
+  Presence as l,
+  hideOthers as m,
+  useFocusGuards as n,
+  Arrow as o,
+  composeRefs as p,
+  dispatchDiscreteCustomEvent as q,
   reactExports as r,
-  Portal$2 as s,
-  cn as t,
+  Root2$1 as s,
+  Portal$2 as t,
   useComposedRefs as u,
-  ChevronRightIcon as v,
-  CheckIcon as w,
-  DotFilledIcon as x,
-  useAlgorithmsVisibility as y,
-  useDragAlgorithm as z
+  cn as v,
+  ChevronRightIcon as w,
+  CheckIcon as x,
+  DotFilledIcon as y,
+  useAlgorithmsVisibility as z
 };
