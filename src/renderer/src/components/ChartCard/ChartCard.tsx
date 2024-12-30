@@ -15,7 +15,7 @@ import {
 } from '@renderer/components/ui/ContextMenu'
 import useDragAlgorithm from '@renderer/hooks/useDragAlgorithm'
 import { DRAG_ITEM_TYPE, SORTING_ALGORITHM } from '@renderer/types/types'
-import { X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, X } from 'lucide-react'
 
 export interface ChartCardProps {
   algorithm: keyof typeof SORTING_ALGORITHM
@@ -32,7 +32,7 @@ function ChartCard({ algorithm, flippedProps }: ChartCardProps) {
     DRAG_ITEM_TYPE.CHART_CARD,
     algorithm,
   )
-  const { t } = useTranslation('AlgorithmsNames')
+  const { t } = useTranslation(['ChartCard', 'AlgorithmsNames'])
 
   const [showInfo, setShowInfo] = useState(false)
 
@@ -48,7 +48,7 @@ function ChartCard({ algorithm, flippedProps }: ChartCardProps) {
           <CardHeader className="flex flex-row justify-between space-y-0 p-0 text-center">
             <div className="flex-1" />
             <div className="py-6">
-              <CardTitle>{t(algorithm)}</CardTitle>
+              <CardTitle>{t(algorithm, { ns: 'AlgorithmsNames' })}</CardTitle>
             </div>
             <div className="flex flex-1 justify-end gap-x-2 pr-1 pt-1">
               <Button
@@ -78,21 +78,25 @@ function ChartCard({ algorithm, flippedProps }: ChartCardProps) {
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem
+            className="flex justify-between"
             onClick={() => setAlgorithmsVisibility(algorithm, false)}
           >
-            Remove (&times;)
+            <span>{t('remove')}</span>
+            <X size={16} />
           </ContextMenuItem>
-          <ContextMenuLabel className="text-center">Move</ContextMenuLabel>
+          <ContextMenuLabel className="text-center">
+            {t('move')}
+          </ContextMenuLabel>
           <ContextMenuGroup className="flex">
             <ContextMenuItem
               onClick={() => moveAlgorithmPositionLeft(algorithm)}
             >
-              Left (&larr;)
+              <ArrowLeft size={16} /> <span>{t('left')}</span>
             </ContextMenuItem>
             <ContextMenuItem
               onClick={() => moveAlgorithmPositionRight(algorithm)}
             >
-              Right (&rarr;)
+              <span>{t('right')}</span> <ArrowRight size={16} />
             </ContextMenuItem>
           </ContextMenuGroup>
         </ContextMenuContent>
