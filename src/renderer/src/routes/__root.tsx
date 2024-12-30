@@ -29,7 +29,7 @@ export const Route = createRootRoute({
             <AlgorithmsVisibilityProvider>
               <Header />
               <ScrollArea className="h-0 flex-auto">
-                <main className="h-full w-full">
+                <main className="h-full w-full select-none">
                   <Outlet />
                 </main>
               </ScrollArea>
