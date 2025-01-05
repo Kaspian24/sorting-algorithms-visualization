@@ -1,4 +1,4 @@
-const button = "Dane niestandardowe";
+const button = "Dane Niestandardowe";
 const title = "Dane niestandardowe";
 const description = "Ustaw niestandardowe dane.";
 const save = "Zapisz zmiany";

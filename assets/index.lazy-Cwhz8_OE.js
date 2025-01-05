@@ -1,4 +1,4 @@
-import { c as createLucideIcon, a as createCollection, b as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, d as useDirection, e as useControllableState, f as useCallbackRef, P as Primitive, g as composeEventHandlers, h as useId, i as createContextScope$1, k as createPopperScope, A as Anchor, l as Presence, m as hideOthers, n as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, o as Arrow, p as composeRefs, R as ReactRemoveScroll, S as Slot, q as dispatchDiscreteCustomEvent, s as Root2$1, t as Portal$1, v as cn, w as ChevronRightIcon, x as CheckIcon, y as DotFilledIcon, z as useAlgorithmsVisibility, B as useDragAlgorithm, E as DRAG_CONTAINER_LAYOUT, G as DRAG_ITEM_TYPE, H as useTranslation, I as CHART_ACTION, J as useGlobalChartsInfo, K as useChartInfo, L as visualizeChartDataFields, M as ChartInfoProvider, N as Button, X, O as SORTING_ALGORITHM, Q as createLazyFileRoute, T as h, U as v } from "./index-DV6mjzn1.js";
+import { c as createLucideIcon, a as createCollection, b as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, d as useDirection, e as useControllableState, f as useCallbackRef, P as Primitive, g as composeEventHandlers, h as useId, i as createContextScope$1, k as createPopperScope, A as Anchor, l as Presence, m as hideOthers, n as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, o as Arrow, p as composeRefs, R as ReactRemoveScroll, S as Slot, q as dispatchDiscreteCustomEvent, s as Root2$1, t as Portal$1, v as cn, w as ChevronRightIcon, x as CheckIcon, y as DotFilledIcon, z as useAlgorithmsVisibility, B as useDragAlgorithm, E as DRAG_CONTAINER_LAYOUT, G as DRAG_ITEM_TYPE, H as useTranslation, I as CHART_ACTION, J as useGlobalChartsInfo, K as useChartInfo, L as visualizeChartDataFields, M as ChartInfoProvider, N as Button, X, O as SORTING_ALGORITHM, Q as createLazyFileRoute, T as h, U as v } from "./index-BY97JoQv.js";
 /**
  * @license lucide-react v0.451.0 - ISC
  *
@@ -1859,8 +1859,7 @@ function useChartCard(useSort) {
     removeChartInfoData,
     globalChartActionCounterRef,
     defaultChartDataRef,
-    defaultChartDataState,
-    directionForwardRef
+    defaultChartDataState
   } = useGlobalChartsInfo();
   const { sortFunctionGeneratorRef, reset, info } = useSort();
   const {
@@ -1923,10 +1922,8 @@ function useChartCard(useSort) {
       step = maxChartActionCounterRef.current;
     }
     if (step < chartActionCounterRef.current) {
-      directionForwardRef.current = false;
       resetSort();
     } else {
-      directionForwardRef.current = true;
       step -= chartActionCounterRef.current;
     }
     while (step > 0) {
@@ -1938,7 +1935,6 @@ function useChartCard(useSort) {
   }, [
     chartActionCounterRef,
     chartActionRef,
-    directionForwardRef,
     globalChartActionCounterRef,
     maxChartActionCounterRef,
     nextStep,

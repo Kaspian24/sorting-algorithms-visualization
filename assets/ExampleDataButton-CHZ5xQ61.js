@@ -1,4 +1,4 @@
-const button = "Przykładowe dane";
+const button = "Przykładowe Dane";
 const title = "Przykładowe dane";
 const description = "Wybierz przykładowe dane.";
 const unsorted = "Nieposortowane";
