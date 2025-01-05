@@ -16,7 +16,6 @@ export default function useChartCard(useSort: UseSort) {
     globalChartActionCounterRef,
     defaultChartDataRef,
     defaultChartDataState,
-    directionForwardRef,
   } = useGlobalChartsInfo()
   const { sortFunctionGeneratorRef, reset, info } = useSort()
   const {
@@ -89,10 +88,8 @@ export default function useChartCard(useSort: UseSort) {
       step = maxChartActionCounterRef.current
     }
     if (step < chartActionCounterRef.current) {
-      directionForwardRef.current = false
       resetSort()
     } else {
-      directionForwardRef.current = true
       step -= chartActionCounterRef.current
     }
     while (step > 0) {
@@ -105,7 +102,6 @@ export default function useChartCard(useSort: UseSort) {
   }, [
     chartActionCounterRef,
     chartActionRef,
-    directionForwardRef,
     globalChartActionCounterRef,
     maxChartActionCounterRef,
     nextStep,

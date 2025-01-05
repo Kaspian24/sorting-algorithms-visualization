@@ -10,6 +10,7 @@ export default function useChartControls() {
     globalChartActionCounterRef,
     globalMaxChartActionCounterRef,
     defaultChartDataState,
+    directionForwardRef,
   } = useGlobalChartsInfo()
   const { algorithmsVisibilityData } = useAlgorithmsVisibility()
   const [globalChartActionCounterState, setGlobalChartActionCounterState] =
@@ -27,6 +28,8 @@ export default function useChartControls() {
         0,
         Math.min(step, globalMaxChartActionCounterRef.current),
       )
+      directionForwardRef.current =
+        newGlobalChartActionCounter > globalChartActionCounterRef.current
       globalChartActionCounterRef.current = newGlobalChartActionCounter
       setGlobalChartActionCounterState(newGlobalChartActionCounter)
       let areAllSorted = true
@@ -41,6 +44,7 @@ export default function useChartControls() {
     [
       globalChartsInfoDataRef,
       globalMaxChartActionCounterRef,
+      directionForwardRef,
       globalChartActionCounterRef,
     ],
   )
