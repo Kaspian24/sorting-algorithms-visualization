@@ -17,7 +17,7 @@ export default function useChartCard(useSort: UseSort) {
     defaultChartDataRef,
     defaultChartDataState,
   } = useGlobalChartsInfo()
-  const { sortFunctionGeneratorRef, reset, info } = useSort()
+  const { sortFunctionGeneratorRef, reset, info, code } = useSort()
   const {
     chartDataRef,
     chartActionCounterRef,
@@ -162,5 +162,6 @@ export default function useChartCard(useSort: UseSort) {
     maxChartActionCounterState,
     maxChartCompareCounterState,
     info,
+    code,
   }
 }

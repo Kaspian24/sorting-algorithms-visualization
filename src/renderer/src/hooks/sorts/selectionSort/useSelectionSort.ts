@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { selectionSortCode } from '@renderer/hooks/sorts/selectionSort/selectionSortCode'
 import { selectionSort } from '@renderer/hooks/sorts/selectionSort/sortingFunction'
 import { SortingAlgorithmInfo, UseSort } from '@renderer/types/types'
 
@@ -26,5 +27,6 @@ export const useSelectionSort: UseSort = () => {
     sortFunctionGeneratorRef: generatorRef,
     reset,
     info,
+    code: selectionSortCode,
   }
 }

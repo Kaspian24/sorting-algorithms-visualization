@@ -31,5 +31,6 @@ export const useQuickSort: UseSort = (variant: number = 0) => {
     sortFunctionGeneratorRef: generatorRef,
     reset,
     info: variants[variant].info,
+    code: variants[variant].code,
   }
 }
