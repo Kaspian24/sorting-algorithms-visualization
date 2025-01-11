@@ -70,6 +70,8 @@ export interface ChartInfoData {
   maxChartCompareCounterRef: React.MutableRefObject<number>
   chartActionRef: React.MutableRefObject<ChartAction>
   setStep: () => void
+  setCompareStep: () => void
+  isRunningRef: React.MutableRefObject<boolean>
 }
 
 export const DRAG_ITEM_TYPE = {
