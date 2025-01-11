@@ -3,6 +3,11 @@ import {
   gapSedgewick,
   gapShell,
 } from '@renderer/hooks/sorts/shellSort/gapFunctions'
+import {
+  shellSortHibbardCode,
+  shellSortSedgewickCode,
+  shellSortShellCode,
+} from '@renderer/hooks/sorts/shellSort/shellSortCode'
 import { SortingAlgorithmVariant } from '@renderer/types/types'
 
 export interface ShellSortVariant extends SortingAlgorithmVariant {
@@ -20,6 +25,7 @@ export const variants: ShellSortVariant[] = [
       memory: 'O(1)',
       stable: false,
     },
+    code: shellSortShellCode,
     variables: {
       gapFunction: gapShell,
     },
@@ -32,6 +38,7 @@ export const variants: ShellSortVariant[] = [
       memory: 'O(1)',
       stable: false,
     },
+    code: shellSortHibbardCode,
     variables: {
       gapFunction: gapHibbard,
     },
@@ -44,6 +51,7 @@ export const variants: ShellSortVariant[] = [
       memory: 'O(1)',
       stable: false,
     },
+    code: shellSortSedgewickCode,
     variables: {
       gapFunction: gapSedgewick,
     },

@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { heapSortCode } from '@renderer/hooks/sorts/heapSort/heapSortCode'
 import { heapSort } from '@renderer/hooks/sorts/heapSort/sortingFunction'
 import { SortingAlgorithmInfo, UseSort } from '@renderer/types/types'
 
@@ -26,5 +27,6 @@ export const useHeapSort: UseSort = () => {
     sortFunctionGeneratorRef: generatorRef,
     reset,
     info,
+    code: heapSortCode,
   }
 }

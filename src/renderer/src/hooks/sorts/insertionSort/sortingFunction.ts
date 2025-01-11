@@ -11,7 +11,7 @@ export function* insertionSort(
 ) {
   const n = chartData.current.fields.length
   for (let i = 1; i < n; i++) {
-    const key = chartData.current.fields[i].number
+    const current = chartData.current.fields[i].number
     let j = i - 1
 
     while (j >= 0) {
@@ -22,7 +22,7 @@ export function* insertionSort(
         [j, j + 1],
       )
       yield 0
-      if (chartData.current.fields[j].number <= key) {
+      if (chartData.current.fields[j].number <= current) {
         break
       }
       visualizeChartDataFields(

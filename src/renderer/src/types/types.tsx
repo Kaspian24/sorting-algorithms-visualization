@@ -24,6 +24,7 @@ export interface UseSort {
     sortFunctionGeneratorRef: MutableRefObject<Generator<number, void, unknown>>
     reset: () => void
     info: SortingAlgorithmInfo
+    code: string
   }
 }
 
@@ -100,5 +101,6 @@ export interface SortingAlgorithmInfo {
 
 export interface SortingAlgorithmVariant {
   info: SortingAlgorithmInfo
+  code: string
   variables: object
 }

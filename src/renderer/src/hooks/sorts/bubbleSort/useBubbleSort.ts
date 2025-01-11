@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { useChartInfo } from '@renderer/components/providers/ChartInfoProvider/ChartInfoProvider'
+import { bubbleSortCode } from '@renderer/hooks/sorts/bubbleSort/bubblesortCode'
 import { bubbleSort } from '@renderer/hooks/sorts/bubbleSort/sortingFunction'
 import { SortingAlgorithmInfo, UseSort } from '@renderer/types/types'
 
@@ -26,5 +27,6 @@ export const useBubbleSort: UseSort = () => {
     sortFunctionGeneratorRef: generatorRef,
     reset,
     info,
+    code: bubbleSortCode,
   }
 }
