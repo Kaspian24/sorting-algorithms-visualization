@@ -6,25 +6,25 @@ import {
 
 function getDefaultColor(action: ChartAction) {
   return action === CHART_ACTION.FINISHED
-    ? 'hsl(var(--chart-finish))'
-    : 'hsl(var(--chart-default))'
+    ? 'hsl(var(--chart-5))' // finish
+    : 'hsl(var(--chart-1))' // default
 }
 
 function getFirstColor(action: ChartAction) {
   return action === CHART_ACTION.ANIMATE_SWAP ||
     action === CHART_ACTION.ANIMATE_REPLACE
-    ? 'hsl(var(--chart-swap))'
-    : 'hsl(var(--chart-compare-first))'
+    ? 'hsl(var(--chart-4))' // replace
+    : 'hsl(var(--chart-2))' // compare first
 }
 
 function getSecondColor(action: ChartAction, defaultColor: string) {
   if (action === CHART_ACTION.ANIMATE_SWAP) {
-    return 'hsl(var(--chart-swap))'
+    return 'hsl(var(--chart-4))' // swap
   }
   if (action === CHART_ACTION.ANIMATE_REPLACE) {
     return defaultColor
   }
-  return 'hsl(var(--chart-compare-second))'
+  return 'hsl(var(--chart-3))' // compare second
 }
 
 function getFirstTransform(

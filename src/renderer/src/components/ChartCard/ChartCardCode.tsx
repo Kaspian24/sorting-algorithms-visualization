@@ -1,7 +1,7 @@
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import {
-  a11yLight as light,
   atomOneDark as dark,
+  atomOneLight as light,
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import { useTheme } from '@renderer/components/providers/ThemeProvider/ThemeProvider'
 import { ScrollArea } from '@renderer/components/ui/ScrollArea'
@@ -28,8 +28,9 @@ export default function ChartCardCode({ code }: ChartCardCodeProps) {
       >
         <div className="h-full w-full select-text">
           <SyntaxHighlighter
-            className="h-full w-full"
+            className="h-full w-full items-center justify-center"
             language="typescript"
+            customStyle={{ display: 'flex', padding: '1rem' }}
             style={theme === 'dark' ? dark : light}
             wrapLongLines
           >
