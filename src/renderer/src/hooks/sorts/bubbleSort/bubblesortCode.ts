@@ -1,5 +1,4 @@
-export const bubbleSortCode = `
-function bubbleSort(arr: number[]) {
+export const bubbleSortCode = `function bubbleSort(arr: number[]) {
   const n = arr.length
 
   for (let i = 0; i < n - 1; i++) {
@@ -17,5 +16,4 @@ function bubbleSort(arr: number[]) {
       break
     }
   }
-}
-`
+}`

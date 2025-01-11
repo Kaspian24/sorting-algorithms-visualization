@@ -1,5 +1,4 @@
-export const selectionSortCode = `
-function selectionSort(arr: number[]) {
+export const selectionSortCode = `function selectionSort(arr: number[]) {
   const n = arr.length
 
   for (let i = 0; i < n - 1; i++) {
@@ -15,5 +14,4 @@ function selectionSort(arr: number[]) {
     arr[i] = arr[min_idx]
     arr[min_idx] = temp
   }
-}
-`
+}`

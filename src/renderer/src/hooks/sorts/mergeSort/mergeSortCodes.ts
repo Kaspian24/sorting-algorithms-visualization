@@ -1,5 +1,4 @@
-const mergeFunctionCode = `
-function merge(arr: number[], left: number, mid: number, right: number) {
+const mergeFunctionCode = `function merge(arr: number[], left: number, mid: number, right: number) {
   const n1 = mid - left + 1
   const n2 = right - mid
 
@@ -39,11 +38,9 @@ function merge(arr: number[], left: number, mid: number, right: number) {
     j++
     k++
   }
-}
-`
+}`
 
-const mergeSortTopBottomFunctionCode = `
-function mergeSort(arr: number[], left: number, right: number) {
+const mergeSortTopBottomFunctionCode = `function mergeSort(arr: number[], left: number, right: number) {
   if (left >= right) {
     return
   }
@@ -52,11 +49,9 @@ function mergeSort(arr: number[], left: number, right: number) {
   mergeSort(arr, left, mid)
   mergeSort(arr, mid + 1, right)
   merge(arr, left, mid, right)
-}
-`
+}`
 
-const mergeSortBottomUpFunctionCode = `
-function mergeSort(arr: number[]) {
+const mergeSortBottomUpFunctionCode = `function mergeSort(arr: number[]) {
   const n = arr.length
 
   for (let curr_size = 1; curr_size <= n - 1; curr_size *= 2) {
@@ -67,11 +62,10 @@ function mergeSort(arr: number[]) {
       merge(arr, left, mid, right)
     }
   }
-}
-`
+}`
 
 export const mergeSortTopBottomCode =
-  mergeFunctionCode + mergeSortTopBottomFunctionCode
+  mergeFunctionCode + '\n\n' + mergeSortTopBottomFunctionCode
 
 export const mergeSortBottomUpCode =
-  mergeFunctionCode + mergeSortBottomUpFunctionCode
+  mergeFunctionCode + '\n\n' + mergeSortBottomUpFunctionCode

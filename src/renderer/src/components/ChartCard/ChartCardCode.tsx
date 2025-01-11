@@ -1,3 +1,9 @@
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import {
+  a11yLight as light,
+  atomOneDark as dark,
+} from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import { useTheme } from '@renderer/components/providers/ThemeProvider/ThemeProvider'
 import { ScrollArea } from '@renderer/components/ui/ScrollArea'
 
 export interface ChartCardCodeProps {
@@ -5,10 +11,12 @@ export interface ChartCardCodeProps {
 }
 
 export default function ChartCardCode({ code }: ChartCardCodeProps) {
+  const { theme } = useTheme()
+
   return (
     <div className="flex h-0 flex-auto items-center justify-center">
       <ScrollArea
-        className="h-full w-full"
+        className="h-full w-full rounded-lg"
         draggable
         onDragStart={(e) => {
           e.preventDefault()
@@ -18,10 +26,15 @@ export default function ChartCardCode({ code }: ChartCardCodeProps) {
           e.preventDefault()
         }}
       >
-        <div className="flex h-full w-full items-center justify-center">
-          <div className="w-fit select-text whitespace-break-spaces">
+        <div className="h-full w-full select-text">
+          <SyntaxHighlighter
+            className="h-full w-full"
+            language="typescript"
+            style={theme === 'dark' ? dark : light}
+            wrapLongLines
+          >
             {code}
-          </div>
+          </SyntaxHighlighter>
         </div>
       </ScrollArea>
     </div>

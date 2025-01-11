@@ -1,5 +1,4 @@
-const heapifyFunctionCode = `
-function heapify(arr: number[], n: number, i: number) {
+const heapifyFunctionCode = `function heapify(arr: number[], n: number, i: number) {
   let largest = i
   const l = 2 * i + 1
   const r = 2 * i + 2
@@ -19,11 +18,9 @@ function heapify(arr: number[], n: number, i: number) {
 
     heapify(arr, n, largest)
   }
-}
-`
+}`
 
-const heapSortFunctionCode = `
-function heapSort(arr: number[]) {
+const heapSortFunctionCode = `function heapSort(arr: number[]) {
   const n = arr.length
 
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
@@ -37,7 +34,6 @@ function heapSort(arr: number[]) {
 
     heapify(arr, i, 0)
   }
-}
-`
+}`
 
-export const heapSortCode = heapifyFunctionCode + heapSortFunctionCode
+export const heapSortCode = heapifyFunctionCode + '\n\n' + heapSortFunctionCode

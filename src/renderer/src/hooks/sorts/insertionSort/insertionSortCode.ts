@@ -1,5 +1,4 @@
-export const insertionSortCode = `
-function insertionSort(arr: number[]) {
+export const insertionSortCode = `function insertionSort(arr: number[]) {
   const n = arr.length
 
   for (let i = 1; i < n; i++) {
@@ -13,5 +12,4 @@ function insertionSort(arr: number[]) {
     }
     arr[j + 1] = current
   }
-}
-`
+}`
