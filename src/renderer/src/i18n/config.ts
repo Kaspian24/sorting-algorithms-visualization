@@ -31,6 +31,7 @@ i18n.loadNamespaces([
   'ChartCard',
   'ChartCardFooter',
   'ChartCardInfo',
+  'ShellSortGapsInfo',
 ])
 
 export default i18n

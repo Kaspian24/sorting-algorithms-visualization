@@ -20,13 +20,17 @@ interface GlobalChartsInfoContextType {
   >
   globalChartActionCounterRef: React.MutableRefObject<number>
   globalMaxChartActionCounterRef: React.MutableRefObject<number>
+  globalChartCompareCounterRef: React.MutableRefObject<number>
+  globalMaxChartCompareCounterRef: React.MutableRefObject<number>
   durationRef: React.MutableRefObject<number>
   directionForwardRef: React.MutableRefObject<boolean>
+  compareAsStepRef: React.MutableRefObject<boolean>
 
   defaultChartDataState: ChartData
   setDefaultChartData: (numbers: number[]) => void
 
   globalMaxChartActionCounterState: number
+  globalMaxChartCompareCounterState: number
 
   addChartInfoData: (addedData: React.MutableRefObject<ChartInfoData>) => void
   removeChartInfoData: (
@@ -51,8 +55,11 @@ export function GlobalChartsInfoProvider({
   >([])
   const globalChartActionCounterRef = useRef<number>(0)
   const globalMaxChartActionCounterRef = useRef<number>(0)
+  const globalChartCompareCounterRef = useRef<number>(0)
+  const globalMaxChartCompareCounterRef = useRef<number>(0)
   const durationRef = useRef<number>(DURATION_MS)
   const directionForwardRef = useRef<boolean>(true)
+  const compareAsStepRef = useRef<boolean>(false)
 
   const [defaultChartDataState, setDefaultChartDataState] = useState<ChartData>(
     initialDefaultChartData,
@@ -61,6 +68,10 @@ export function GlobalChartsInfoProvider({
   const [
     globalMaxChartActionCounterState,
     setGlobalMaxChartActionCounterState,
+  ] = useState<number>(0)
+  const [
+    globalMaxChartCompareCounterState,
+    setGlobalMaxChartCompareCounterState,
   ] = useState<number>(0)
 
   const setDefaultChartData = useCallback((numbers: number[]) => {
@@ -81,6 +92,18 @@ export function GlobalChartsInfoProvider({
       globalChartActionCounterRef.current = Math.min(
         globalMaxChartActionCounterRef.current,
         globalChartActionCounterRef.current,
+      )
+
+      const newGlobalMaxChartCompareCounter = Math.max(
+        globalMaxChartCompareCounterRef.current,
+        addedData.current.maxChartCompareCounterRef.current,
+      )
+      globalMaxChartCompareCounterRef.current = newGlobalMaxChartCompareCounter
+      setGlobalMaxChartCompareCounterState(newGlobalMaxChartCompareCounter)
+
+      globalChartCompareCounterRef.current = Math.min(
+        globalMaxChartCompareCounterRef.current,
+        globalChartCompareCounterRef.current,
       )
     },
     [],
@@ -104,6 +127,20 @@ export function GlobalChartsInfoProvider({
         globalMaxChartActionCounterRef.current,
         globalChartActionCounterRef.current,
       )
+
+      const newGlobalMaxChartCompareCounter =
+        globalChartsInfoDataRef.current.reduce(
+          (acc, data) =>
+            Math.max(acc, data.current.maxChartCompareCounterRef.current),
+          0,
+        )
+      globalMaxChartCompareCounterRef.current = newGlobalMaxChartCompareCounter
+      setGlobalMaxChartCompareCounterState(newGlobalMaxChartCompareCounter)
+
+      globalChartCompareCounterRef.current = Math.min(
+        globalMaxChartCompareCounterRef.current,
+        globalChartCompareCounterRef.current,
+      )
     },
     [],
   )
@@ -113,13 +150,17 @@ export function GlobalChartsInfoProvider({
     globalChartsInfoDataRef,
     globalChartActionCounterRef,
     globalMaxChartActionCounterRef,
+    globalChartCompareCounterRef,
+    globalMaxChartCompareCounterRef,
     durationRef,
     directionForwardRef,
+    compareAsStepRef,
 
     defaultChartDataState,
     setDefaultChartData,
 
     globalMaxChartActionCounterState,
+    globalMaxChartCompareCounterState,
 
     addChartInfoData,
     removeChartInfoData,

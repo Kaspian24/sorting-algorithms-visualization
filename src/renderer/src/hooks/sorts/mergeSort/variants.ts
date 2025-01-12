@@ -1,5 +1,9 @@
 import { MutableRefObject } from 'react'
 import {
+  mergeSortBottomUpCode,
+  mergeSortTopBottomCode,
+} from '@renderer/hooks/sorts/mergeSort/mergeSortCodes'
+import {
   mergeSortBottomUp,
   mergeSortTopBottom,
 } from '@renderer/hooks/sorts/mergeSort/sortingFunction'
@@ -25,6 +29,7 @@ export const variants: MergeSortVariant[] = [
       memory: 'O(n)',
       stable: true,
     },
+    code: mergeSortTopBottomCode,
     variables: {
       sortFunction: mergeSortTopBottom,
     },
@@ -37,6 +42,7 @@ export const variants: MergeSortVariant[] = [
       memory: 'O(n)',
       stable: true,
     },
+    code: mergeSortBottomUpCode,
     variables: {
       sortFunction: mergeSortBottomUp,
     },

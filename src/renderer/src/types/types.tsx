@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react'
+import { MutableRefObject, ReactElement } from 'react'
 import { useBubbleSort } from '@renderer/hooks/sorts/bubbleSort/useBubbleSort'
 import { useHeapSort } from '@renderer/hooks/sorts/heapSort/useHeapSort'
 import { useInsertionSort } from '@renderer/hooks/sorts/insertionSort/useInsertionSort'
@@ -24,6 +24,8 @@ export interface UseSort {
     sortFunctionGeneratorRef: MutableRefObject<Generator<number, void, unknown>>
     reset: () => void
     info: SortingAlgorithmInfo
+    code: string
+    AdditionalInfo?: ReactElement
   }
 }
 
@@ -69,6 +71,8 @@ export interface ChartInfoData {
   maxChartCompareCounterRef: React.MutableRefObject<number>
   chartActionRef: React.MutableRefObject<ChartAction>
   setStep: () => void
+  setCompareStep: () => void
+  isRunningRef: React.MutableRefObject<boolean>
 }
 
 export const DRAG_ITEM_TYPE = {
@@ -100,5 +104,7 @@ export interface SortingAlgorithmInfo {
 
 export interface SortingAlgorithmVariant {
   info: SortingAlgorithmInfo
+  code: string
   variables: object
+  AdditionalInfo?: ReactElement
 }

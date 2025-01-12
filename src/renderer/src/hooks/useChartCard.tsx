@@ -16,8 +16,12 @@ export default function useChartCard(useSort: UseSort) {
     globalChartActionCounterRef,
     defaultChartDataRef,
     defaultChartDataState,
+    globalChartCompareCounterRef,
+    durationRef,
+    compareAsStepRef,
   } = useGlobalChartsInfo()
-  const { sortFunctionGeneratorRef, reset, info } = useSort()
+  const { sortFunctionGeneratorRef, reset, info, code, AdditionalInfo } =
+    useSort()
   const {
     chartDataRef,
     chartActionCounterRef,
@@ -39,6 +43,11 @@ export default function useChartCard(useSort: UseSort) {
     useState<number>(() => chartActionCounterRef.current)
   const [chartCompareCounterState, setChartCompareCounterState] =
     useState<number>(() => chartCompareCounterRef.current)
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const isRunningRef = useRef(false)
+
+  const savedChartStates = useRef<SavedChartState[]>([])
 
   const updateStates = useCallback(() => {
     setChartDataState({ ...chartDataRef.current })
@@ -109,6 +118,112 @@ export default function useChartCard(useSort: UseSort) {
     updateStates,
   ])
 
+  interface SavedChartState {
+    chartData: ChartData
+    chartActionCounter: number
+    chartCompareCounter: number
+  }
+
+  const displayState = useCallback((state: SavedChartState) => {
+    setChartDataState(state.chartData)
+    setChartActionCounterState(state.chartActionCounter)
+    setChartCompareCounterState(state.chartCompareCounter)
+  }, [])
+
+  const setCompareStep = useCallback(() => {
+    let oldSavedChartStates: SavedChartState[] = savedChartStates.current
+    savedChartStates.current = []
+    let step = globalChartCompareCounterRef.current
+
+    const difference = step - chartCompareCounterRef.current
+
+    if (step > maxChartCompareCounterRef.current) {
+      if (chartActionRef.current === CHART_ACTION.FINISHED) {
+        return
+      }
+      step = maxChartCompareCounterRef.current + 1
+    }
+    if (
+      step < chartCompareCounterRef.current ||
+      (step === chartCompareCounterRef.current &&
+        chartActionRef.current === CHART_ACTION.FINISHED)
+    ) {
+      resetSort()
+    } else {
+      step -= chartCompareCounterRef.current
+    }
+    while (step > 0) {
+      nextStep()
+      chartActionCounterRef.current++
+      if (
+        chartDataRef.current.visualization.action === CHART_ACTION.COMPARE ||
+        chartActionRef.current === CHART_ACTION.FINISHED
+      ) {
+        step--
+      }
+
+      if (step <= 1) {
+        savedChartStates.current.push({
+          chartData: { ...chartDataRef.current },
+          chartActionCounter: chartActionCounterRef.current,
+          chartCompareCounter: chartCompareCounterRef.current,
+        })
+      }
+    }
+
+    if (intervalRef.current) {
+      clearTimeout(intervalRef.current)
+      isRunningRef.current = false
+    }
+
+    if (difference === -1) {
+      oldSavedChartStates.pop()
+      oldSavedChartStates.reverse()
+      const newDataLength = savedChartStates.current.length
+      if (newDataLength) {
+        oldSavedChartStates.push(savedChartStates.current[newDataLength - 1])
+      }
+    } else if (difference === 1) {
+      oldSavedChartStates = savedChartStates.current
+    } else {
+      oldSavedChartStates = []
+    }
+
+    let i = 0
+    const processNextState = () => {
+      if (oldSavedChartStates.length <= i) {
+        if (intervalRef.current) {
+          clearTimeout(intervalRef.current)
+          isRunningRef.current = false
+        }
+        return
+      }
+
+      displayState(oldSavedChartStates[i])
+      i++
+      intervalRef.current = setTimeout(processNextState, durationRef.current)
+    }
+
+    if (oldSavedChartStates.length === 0) {
+      updateStates()
+    } else {
+      isRunningRef.current = true
+      processNextState()
+    }
+  }, [
+    globalChartCompareCounterRef,
+    maxChartCompareCounterRef,
+    chartCompareCounterRef,
+    chartActionRef,
+    resetSort,
+    nextStep,
+    chartActionCounterRef,
+    chartDataRef,
+    displayState,
+    durationRef,
+    updateStates,
+  ])
+
   const controlData = useRef<ChartInfoData>({
     chartDataRef,
     chartActionCounterRef,
@@ -117,6 +232,8 @@ export default function useChartCard(useSort: UseSort) {
     maxChartCompareCounterRef,
     chartActionRef,
     setStep,
+    setCompareStep,
+    isRunningRef,
   })
 
   useEffect(() => {
@@ -128,7 +245,11 @@ export default function useChartCard(useSort: UseSort) {
     maxChartCompareCounterRef.current = chartCompareCounterRef.current
     resetSort()
 
-    setStep()
+    if (compareAsStepRef.current) {
+      setCompareStep()
+    } else {
+      setStep()
+    }
 
     addChartInfoData(controlData)
 
@@ -137,6 +258,7 @@ export default function useChartCard(useSort: UseSort) {
     updateStates()
 
     return () => {
+      isRunningRef.current = false
       removeChartInfoData(controlData)
       resetSort()
     }
@@ -145,12 +267,14 @@ export default function useChartCard(useSort: UseSort) {
     chartActionCounterRef,
     chartActionRef,
     chartCompareCounterRef,
+    compareAsStepRef,
     defaultChartDataState,
     maxChartActionCounterRef,
     maxChartCompareCounterRef,
     nextStep,
     removeChartInfoData,
     resetSort,
+    setCompareStep,
     setStep,
     updateStates,
   ])
@@ -162,5 +286,7 @@ export default function useChartCard(useSort: UseSort) {
     maxChartActionCounterState,
     maxChartCompareCounterState,
     info,
+    code,
+    AdditionalInfo,
   }
 }

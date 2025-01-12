@@ -25,13 +25,13 @@ export function* mergeSortBottomUp(
 ) {
   const n = chartData.current.fields.length
 
-  for (let curr_size = 1; curr_size <= n - 1; curr_size = 2 * curr_size) {
-    for (let left_start = 0; left_start < n - 1; left_start += 2 * curr_size) {
-      const mid = Math.min(left_start + curr_size - 1, n - 1)
+  for (let curr_size = 1; curr_size <= n - 1; curr_size *= 2) {
+    for (let left = 0; left < n - 1; left += 2 * curr_size) {
+      const mid = Math.min(left + curr_size - 1, n - 1)
 
-      const right_end = Math.min(left_start + 2 * curr_size - 1, n - 1)
+      const right = Math.min(left + 2 * curr_size - 1, n - 1)
 
-      yield* merge(chartData, compareCounter, left_start, mid, right_end)
+      yield* merge(chartData, compareCounter, left, mid, right)
     }
   }
 }
