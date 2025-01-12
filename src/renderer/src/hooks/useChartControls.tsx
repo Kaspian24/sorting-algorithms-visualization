@@ -165,6 +165,7 @@ export default function useChartControls() {
   const handleReset = useCallback(() => {
     handleStop()
     setStepAll(0)
+    setStepAll(0) // clear stored savedChartStates
   }, [handleStop, setStepAll])
 
   const handleSetStep = useCallback(
