@@ -132,9 +132,7 @@ export default function useChartCard(useSort: UseSort) {
 
   const setCompareStep = useCallback(() => {
     let oldSavedChartStates: SavedChartState[] = savedChartStates.current
-    savedChartStates.current = []
     let step = globalChartCompareCounterRef.current
-
     const difference = step - chartCompareCounterRef.current
 
     if (step > maxChartCompareCounterRef.current) {
@@ -152,6 +150,7 @@ export default function useChartCard(useSort: UseSort) {
     } else {
       step -= chartCompareCounterRef.current
     }
+    savedChartStates.current = []
     while (step > 0) {
       nextStep()
       chartActionCounterRef.current++
@@ -176,7 +175,7 @@ export default function useChartCard(useSort: UseSort) {
       isRunningRef.current = false
     }
 
-    if (difference === -1) {
+    if (difference === -1 || difference === 0) {
       oldSavedChartStates.pop()
       oldSavedChartStates.reverse()
       const newDataLength = savedChartStates.current.length
