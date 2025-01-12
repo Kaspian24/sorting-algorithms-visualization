@@ -5,5 +5,5 @@
   "dane": "You can change the sorting data using either 'Custom Data' or 'Example Data' button at the top in the middle of the screen.",
   "theme": "You can switch between dark and light theme by clicking the button in the top left corner.",
   "controls": "Control the algorithms steps and speed using controls at the bottom of the screen.",
-  "info": "By pressing 'i' button in the top right corner of the algorithm card, You can learn about it's complexity and stability or see it's code"
+  "info": "By pressing the 'i' button in the upper-right corner of the algorithm card, you can learn about its complexity and stability, view the code, or, in the case of some algorithms, get additional information about them."
 }

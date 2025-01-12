@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import ChartBarChart from '@renderer/components/ChartCard/ChartBarChart'
 import ChartCardCode from '@renderer/components/ChartCard/ChartCardCode'
 import ChartCardFooter from '@renderer/components/ChartCard/ChartCardFooter'
@@ -25,24 +25,21 @@ export default function ChartCardContent({
     maxChartCompareCounterState,
     info,
     code,
+    AdditionalInfo,
   } = useChartCard(useSort)
 
   const [infoPage, setInfoPage] = useState(0)
 
-  function renderInfoPage() {
-    switch (infoPage) {
-      case 1:
-        return <ChartCardCode code={code} />
-      default:
-        return <ChartCardInfo info={info} />
-    }
-  }
+  const pages: ReactElement[] = []
+  pages.push(<ChartCardInfo info={info} />)
+  AdditionalInfo && pages.push(AdditionalInfo)
+  pages.push(<ChartCardCode code={code} />)
 
   return (
     <>
       <CardContent className="flex grow flex-col justify-center p-6 pt-0">
         {showInfo ? (
-          renderInfoPage()
+          pages[infoPage]
         ) : (
           <ChartBarChart chartDataState={chartDataState} />
         )}
@@ -50,7 +47,7 @@ export default function ChartCardContent({
       {showInfo ? (
         <ChartCardInfoFooter
           page={infoPage}
-          lastPage={1}
+          lastPage={pages.length - 1}
           setPage={setInfoPage}
         />
       ) : (

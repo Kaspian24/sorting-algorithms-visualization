@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react'
+import { MutableRefObject, ReactElement } from 'react'
 import { useBubbleSort } from '@renderer/hooks/sorts/bubbleSort/useBubbleSort'
 import { useHeapSort } from '@renderer/hooks/sorts/heapSort/useHeapSort'
 import { useInsertionSort } from '@renderer/hooks/sorts/insertionSort/useInsertionSort'
@@ -25,6 +25,7 @@ export interface UseSort {
     reset: () => void
     info: SortingAlgorithmInfo
     code: string
+    AdditionalInfo?: ReactElement
   }
 }
 
@@ -105,4 +106,5 @@ export interface SortingAlgorithmVariant {
   info: SortingAlgorithmInfo
   code: string
   variables: object
+  AdditionalInfo?: ReactElement
 }
