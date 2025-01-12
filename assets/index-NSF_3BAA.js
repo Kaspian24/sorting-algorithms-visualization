@@ -43120,6 +43120,7 @@ function useChartControls() {
   const handleReset = reactExports.useCallback(() => {
     handleStop();
     setStepAll(0);
+    setStepAll(0);
   }, [handleStop, setStepAll]);
   const handleSetStep = reactExports.useCallback(
     (step) => {
@@ -50239,7 +50240,7 @@ const IndexLazyImport = createFileRoute("/")();
 const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => Route2
-}).lazy(() => __vitePreload(() => import("./index.lazy-GZbd92LZ.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
+}).lazy(() => __vitePreload(() => import("./index.lazy-CCIlM1kC.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
 const rootRouteChildren = {
   IndexLazyRoute
 };
