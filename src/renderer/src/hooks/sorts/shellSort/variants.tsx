@@ -8,6 +8,11 @@ import {
   shellSortSedgewickCode,
   shellSortShellCode,
 } from '@renderer/hooks/sorts/shellSort/shellSortCode'
+import {
+  HibbardGapInfo,
+  SedgewickGapInfo,
+  ShellGapInfo,
+} from '@renderer/hooks/sorts/shellSort/ShellSortGapsInfo'
 import { SortingAlgorithmVariant } from '@renderer/types/types'
 
 export interface ShellSortVariant extends SortingAlgorithmVariant {
@@ -26,6 +31,7 @@ export const variants: ShellSortVariant[] = [
       stable: false,
     },
     code: shellSortShellCode,
+    AdditionalInfo: <ShellGapInfo />,
     variables: {
       gapFunction: gapShell,
     },
@@ -39,6 +45,7 @@ export const variants: ShellSortVariant[] = [
       stable: false,
     },
     code: shellSortHibbardCode,
+    AdditionalInfo: <HibbardGapInfo />,
     variables: {
       gapFunction: gapHibbard,
     },
@@ -52,6 +59,7 @@ export const variants: ShellSortVariant[] = [
       stable: false,
     },
     code: shellSortSedgewickCode,
+    AdditionalInfo: <SedgewickGapInfo />,
     variables: {
       gapFunction: gapSedgewick,
     },

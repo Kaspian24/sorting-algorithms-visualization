@@ -5,5 +5,5 @@
   "dane": "Możesz zmienić dane sortowania za pomocą przycisku „Dane Niestandardowe” lub „Przykładowe Dane” u góry, pośrodku ekranu.",
   "theme": "Możesz przełączać się między ciemnym i jasnym motywem, klikając przycisk w lewym górnym rogu.",
   "controls": "Kontroluj kroki i prędkość algorytmów za pomocą elementów sterujących u dołu ekranu.",
-  "info": "Naciskając przycisk „i” w prawym górnym rogu karty algorytmu, możesz dowiedzieć się o jego złożoności i stabilności, a także obejrzeć jego kod"
+  "info": "Naciskając przycisk „i” w prawym górnym rogu karty algorytmu, możesz poznać jego złożoność i stabilność, obejrzeć kod lub, w przypadku niektórych algorytmów, uzyskać dodatkowe informacje na ich temat."
 }

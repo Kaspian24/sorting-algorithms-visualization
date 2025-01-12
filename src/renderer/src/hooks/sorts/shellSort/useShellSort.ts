@@ -24,5 +24,6 @@ export const useShellSort: UseSort = (variant: number = 0) => {
     reset,
     info: variants[variant].info,
     code: variants[variant].code,
+    AdditionalInfo: variants[variant].AdditionalInfo,
   }
 }

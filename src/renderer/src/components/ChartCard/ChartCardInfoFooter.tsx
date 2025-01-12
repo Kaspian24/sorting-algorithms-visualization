@@ -19,8 +19,8 @@ export default function ChartCardFooter({
         <Button
           onClick={() => setPage(page - 1)}
           disabled={page < 1}
-          variant="outline"
-          className="p-0"
+          variant="ghost"
+          className="h-fit w-fit p-0"
         >
           <ChevronLeft />
         </Button>
@@ -28,8 +28,8 @@ export default function ChartCardFooter({
         <Button
           onClick={() => setPage(page + 1)}
           disabled={page >= lastPage}
-          variant="outline"
-          className="p-0"
+          variant="ghost"
+          className="h-fit w-fit p-0"
         >
           <ChevronRight />
         </Button>

@@ -24,7 +24,7 @@ const pivotMedianOfThreeFunctionCode = `function pivotMedianOfThree(arr: number[
 
 const partitionLomutoFunctionCode = (
   pivotFunction: string,
-) => `function partition(arr: number[], low: number, high: number) {
+) => `function partitionLomuto(arr: number[], low: number, high: number) {
   const pivot = ${pivotFunction}
   let i = low - 1
 
@@ -42,18 +42,18 @@ const partitionLomutoFunctionCode = (
   return i + 1
 }`
 
-const quickSortLomutoFunctionCode = `function quickSort(arr: number[], low: number, high: number) {
+const quickSortLomutoFunctionCode = `function quickSortLomuto(arr: number[], low: number, high: number) {
   if (low < high) {
-    const index = partition(arr, low, high)
+    const index = partitionLomuto(arr, low, high)
 
-    quickSort(arr, low, index - 1)
-    quickSort(arr, index + 1, high)
+    quickSortLomuto(arr, low, index - 1)
+    quickSortLomuto(arr, index + 1, high)
   }
 }`
 
 const partitionHoareFunctionCode = (
   pivotFunction: string,
-) => `function partition(arr: number[], low: number, high: number) {
+) => `function partitionHoare(arr: number[], low: number, high: number) {
   const pivot = ${pivotFunction}
 
   let i = low - 1
@@ -78,12 +78,12 @@ const partitionHoareFunctionCode = (
   }
 }`
 
-const quickSortHoareFunctionCode = `function quickSort(arr: number[], low: number, high: number) {
+const quickSortHoareFunctionCode = `function quickSortHoare(arr: number[], low: number, high: number) {
   if (low < high) {
-    const index = partition(arr, low, high)
+    const index = partitionHoare(arr, low, high)
 
-    quickSort(arr, low, index)
-    quickSort(arr, index + 1, high)
+    quickSortHoare(arr, low, index)
+    quickSortHoare(arr, index + 1, high)
   }
 }`
 
