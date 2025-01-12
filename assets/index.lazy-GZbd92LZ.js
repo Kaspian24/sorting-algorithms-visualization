@@ -1,4 +1,4 @@
-import { c as createLucideIcon, a as createCollection, b as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, d as useDirection, e as useControllableState, f as useCallbackRef, P as Primitive, g as composeEventHandlers, h as useId, i as createContextScope$1, k as createPopperScope, A as Anchor, l as Presence, m as hideOthers, n as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, o as Arrow, p as composeRefs, R as ReactRemoveScroll, S as Slot, q as dispatchDiscreteCustomEvent, s as Root2$1, t as Portal$1, v as cn, w as ChevronRightIcon, x as CheckIcon, y as DotFilledIcon, z as useAlgorithmsVisibility, B as useDragAlgorithm, E as DRAG_CONTAINER_LAYOUT, G as DRAG_ITEM_TYPE, H as useTranslation, I as CHART_ACTION, J as useGlobalChartsInfo, K as React, L as getDefaultExportFromCjs, M as useTheme, N as ScrollArea, O as Button, Q as ChevronLeft, T as ChevronRight, U as useChartInfo, V as visualizeChartDataFields, W as ChartInfoProvider, X, Y as SORTING_ALGORITHM, Z as createLazyFileRoute, _ as h, $ as v } from "./index-DLQqZgHH.js";
+import { c as createLucideIcon, a as createCollection, b as createContextScope, r as reactExports, j as jsxRuntimeExports, u as useComposedRefs, d as useDirection, e as useControllableState, f as useCallbackRef, P as Primitive, g as composeEventHandlers, h as useId, i as createContextScope$1, k as createPopperScope, A as Anchor, l as Presence, m as hideOthers, n as useFocusGuards, F as FocusScope, D as DismissableLayer, C as Content, o as Arrow, p as composeRefs, R as ReactRemoveScroll, S as Slot, q as dispatchDiscreteCustomEvent, s as Root2$1, t as Portal$1, v as cn, w as ChevronRightIcon, x as CheckIcon, y as DotFilledIcon, z as useAlgorithmsVisibility, B as useDragAlgorithm, E as DRAG_CONTAINER_LAYOUT, G as DRAG_ITEM_TYPE, H as useTranslation, I as CHART_ACTION, J as useGlobalChartsInfo, K as React, L as getDefaultExportFromCjs, M as useTheme, N as ScrollArea, O as Button, Q as ChevronLeft, T as ChevronRight, U as useChartInfo, V as visualizeChartDataFields, W as ChartInfoProvider, X, Y as SORTING_ALGORITHM, Z as createLazyFileRoute, _ as h, $ as v } from "./index-Dehx_p8K.js";
 function _typeof(o) {
   "@babel/helpers - typeof";
   return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
@@ -38260,7 +38260,6 @@ function useChartCard(useSort) {
   }, []);
   const setCompareStep = reactExports.useCallback(() => {
     let oldSavedChartStates = savedChartStates.current;
-    savedChartStates.current = [];
     let step = globalChartCompareCounterRef.current;
     const difference = step - chartCompareCounterRef.current;
     if (step > maxChartCompareCounterRef.current) {
@@ -38274,6 +38273,7 @@ function useChartCard(useSort) {
     } else {
       step -= chartCompareCounterRef.current;
     }
+    savedChartStates.current = [];
     while (step > 0) {
       nextStep();
       chartActionCounterRef.current++;
@@ -38292,7 +38292,7 @@ function useChartCard(useSort) {
       clearTimeout(intervalRef.current);
       isRunningRef.current = false;
     }
-    if (difference === -1) {
+    if (difference === -1 || difference === 0) {
       oldSavedChartStates.pop();
       oldSavedChartStates.reverse();
       const newDataLength = savedChartStates.current.length;

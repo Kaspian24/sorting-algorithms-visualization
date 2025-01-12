@@ -43076,7 +43076,7 @@ function useChartControls() {
       );
       intervalRef.current = setTimeout(() => {
         if (isAnyAnimationRunning) {
-          continueSort(50);
+          continueSort(Math.min(durationRef.current, 25));
           return;
         }
         isRunningRef.current = true;
@@ -50239,7 +50239,7 @@ const IndexLazyImport = createFileRoute("/")();
 const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => Route2
-}).lazy(() => __vitePreload(() => import("./index.lazy-BTq1Ngg5.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
+}).lazy(() => __vitePreload(() => import("./index.lazy-GZbd92LZ.js"), true ? [] : void 0, import.meta.url).then((d2) => d2.Route));
 const rootRouteChildren = {
   IndexLazyRoute
 };
