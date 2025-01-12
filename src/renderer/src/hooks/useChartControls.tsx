@@ -115,7 +115,7 @@ export default function useChartControls() {
       )
       intervalRef.current = setTimeout(() => {
         if (isAnyAnimationRunning) {
-          continueSort(50)
+          continueSort(Math.min(durationRef.current, 25))
           return
         }
         isRunningRef.current = true
